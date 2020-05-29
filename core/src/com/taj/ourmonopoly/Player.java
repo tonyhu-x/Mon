@@ -5,16 +5,24 @@ import java.util.ArrayList;
 public class Player {
  
     String name = "";
+
+    /**
+     * Player number. Should correspond to position in {@link GameInstance#players}.
+     */
+    int number;
     
+    int lastDiceRoll;
+
     /**
      * The amount of cash the player has.
      */
     private int cashAmt;
-    private ArrayList<Property> properties = new ArrayList<>();
+    private ArrayList<Block> properties = new ArrayList<>();
     private int position;
 
-    public Player(String name, int cashAmt) {
+    public Player(String name, int number, int cashAmt) {
         this.name = name;
+        this.number = number;
         this.cashAmt = cashAmt;
     }
 

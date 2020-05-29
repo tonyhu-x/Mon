@@ -11,7 +11,7 @@ public class DesktopLauncher {
 		config.title = "Monopoly Game " + GameApp.VER_MAJOR + "." + GameApp.VER_MINOR;
 		config.width = GameApp.WINDOW_WIDTH;
 		config.height = GameApp.WINDOW_HEIGHT;
-		config.fullscreen = true;
+		config.fullscreen = false;
 		config.resizable = false;
 		new LwjglApplication(new GameApp(), config);
 	}

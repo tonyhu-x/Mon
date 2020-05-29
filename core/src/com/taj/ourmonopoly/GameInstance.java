@@ -8,7 +8,7 @@ public class GameInstance {
     int turn;
 
     /**
-     * A list of players. Currently the game supports 4 players.
+     * The list of players. Currently the game supports 4 players.
      */
     ArrayList<Player> players = new ArrayList<>();
     ArrayList<Dice> dice = new ArrayList<>();
@@ -18,9 +18,25 @@ public class GameInstance {
         for (int i = 0; i < 4; i++) {
             addPlayer("fill in the blank");
         }
+
+        // determine the first player
+        for (Player p : players) {
+            if ((p.lastDiceRoll = getDiceRoll()) > players.get(turn).lastDiceRoll) {
+                turn = p.number;
+            }
+        }
+
     }
-    
+
     public void addPlayer(String name) {
-        players.add(new Player(name, startingCashAmt));
+        players.add(new Player(name, players.size(), startingCashAmt));
+    }
+
+    public int getDiceRoll() {
+        int res = 0;
+        for (var d : dice) {
+            res += d.next();
+        }
+        return res;
     }
 }

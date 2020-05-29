@@ -9,6 +9,11 @@ public class GameApp extends Game {
 	public static final int VER_MINOR = 1;
 	public static final int WINDOW_WIDTH = 1920;
 	public static final int WINDOW_HEIGHT = 1080;
+	public static final float ASPECT_RATIO;
+
+	static {
+		ASPECT_RATIO = (float) WINDOW_HEIGHT / WINDOW_WIDTH;
+	}	
 
 	SpriteBatch batch;
 

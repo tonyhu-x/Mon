@@ -43,7 +43,8 @@ public class TitleScreen extends ScreenAdapter {
                     case Input.Keys.ESCAPE:
                         System.exit(0);
                     default:
-                        return false;
+                        game.setScreen(new GameScreen());
+                        return true;
                 }
             }
         });
@@ -84,6 +85,10 @@ public class TitleScreen extends ScreenAdapter {
         game.batch.end();
     }
 
+    @Override
+    public void hide() {
+        Gdx.input.setInputProcessor(null);
+    }
     @Override
     public void dispose() {
         stage.dispose();
