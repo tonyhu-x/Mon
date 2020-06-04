@@ -1,6 +1,10 @@
 package com.taj.ourmonopoly;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import com.taj.ourmonopoly.block.Block;
 
 public class GameInstance {
 
@@ -14,6 +18,11 @@ public class GameInstance {
     ArrayList<Dice> dice = new ArrayList<>();
 
     public GameInstance() {
+        try {
+            Block.getBlockList(GameApp.PATH_TO_ASSETS + "mapData.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.turn = 0;
         for (int i = 0; i < 4; i++) {
             addPlayer("fill in the blank");
@@ -30,6 +39,11 @@ public class GameInstance {
 
     public void addPlayer(String name) {
         players.add(new Player(name, players.size(), startingCashAmt));
+    }
+
+    public void nextPlayer() {
+        turn = (turn + 1) % players.size();
+        players.get(turn).move(getDiceRoll());
     }
 
     public int getDiceRoll() {

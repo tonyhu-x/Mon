@@ -1,6 +1,7 @@
 package com.taj.ourmonopoly;
 
 import java.util.ArrayList;
+import com.taj.ourmonopoly.block.*;
 
 public class Player {
  
@@ -24,6 +25,28 @@ public class Player {
         this.name = name;
         this.number = number;
         this.cashAmt = cashAmt;
+    }
+
+    public void move(int steps) {
+        lastDiceRoll = steps;
+        forward(steps);
+        Block.queryBlock(this, position);
+    }
+
+    public boolean isForward() {
+        if (position < 50) return true;
+        return false;
+    }
+
+    public void forward(int steps) {
+        position = (position + steps) % Block.MAP_SIZE;
+    }
+
+    public void backward(int steps) {
+        position = position - steps;
+        if (position < 0) {
+            position += 80;
+        }
     }
 
     public void reset(int cashAmt) {

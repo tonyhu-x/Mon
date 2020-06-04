@@ -43,7 +43,7 @@ public class TitleScreen extends ScreenAdapter {
                     case Input.Keys.ESCAPE:
                         System.exit(0);
                     default:
-                        game.setScreen(new GameScreen());
+                        game.setScreen(new GameScreen(game));
                         return true;
                 }
             }

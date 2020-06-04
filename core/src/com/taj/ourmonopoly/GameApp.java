@@ -9,11 +9,8 @@ public class GameApp extends Game {
 	public static final int VER_MINOR = 1;
 	public static final int WINDOW_WIDTH = 1920;
 	public static final int WINDOW_HEIGHT = 1080;
-	public static final float ASPECT_RATIO;
-
-	static {
-		ASPECT_RATIO = (float) WINDOW_HEIGHT / WINDOW_WIDTH;
-	}	
+	public static final float ASPECT_RATIO = (float) WINDOW_HEIGHT / WINDOW_WIDTH;;
+	public static final String PATH_TO_ASSETS = "core/assets/";
 
 	SpriteBatch batch;
 
@@ -21,6 +18,7 @@ public class GameApp extends Game {
 	public void create() {
 		batch = new SpriteBatch();
 		setScreen(new TitleScreen(this));
+		new GameInstance();
 	}
 
 	@Override
@@ -30,6 +28,6 @@ public class GameApp extends Game {
 
 	@Override
 	public void dispose() {
-		batch.dispose();
+        batch.dispose();
 	}
 }

@@ -15,16 +15,18 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class GameScreen extends ScreenAdapter {
 
-    // beginning of test code ------
-    final float worldWidth = 100;
-    final float worldHeight = 200;
-    // end of test code ------
+    // these values preserve the aspect ratio of the map`
+    final float worldWidth = 270;
+    final float worldHeight = 390;
 
+    GameApp game;
     boolean zoomed;
     Stage stage;
-    Image map;
     Camera camera;
     
+    public GameScreen(GameApp game) {
+        this.game = game;    
+    }
 
     @Override
     public void show() {
@@ -44,10 +46,7 @@ public class GameScreen extends ScreenAdapter {
                 }
             }
         });
-        map = new Image(new Texture("map.jpg"));
-        map.setSize(worldWidth, worldHeight);
-        map.setPosition(0, 0);
-        stage.addActor(map);
+
         Gdx.input.setInputProcessor(stage);
     }
 
