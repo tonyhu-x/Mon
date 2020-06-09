@@ -5,7 +5,7 @@ import com.taj.ourmonopoly.Player;
 
 public class Jail extends SqrBlock {
 
-    public static final String IMAGE_PATH = GameApp.PATH_TO_ASSETS + "block/jail.png";
+    public static final String IMAGE_PATH = GameApp.PATH_TO_ASSETS + "blocks/jail.png";
 
     public Jail(String name, int index) {
         super(name, index);

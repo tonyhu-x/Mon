@@ -3,3 +3,4 @@
 * The very first version!
 * Added a welcome screen.
 * Added a crude zoom control.
+* Added a block system.

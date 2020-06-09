@@ -20,8 +20,10 @@ public class Player {
     private int cashAmt;
     private ArrayList<Block> properties = new ArrayList<>();
     private int position;
+    private GameInstance instance;
 
-    public Player(String name, int number, int cashAmt) {
+    public Player(GameInstance instance, String name, int number, int cashAmt) {
+        this.instance = instance;
         this.name = name;
         this.number = number;
         this.cashAmt = cashAmt;
@@ -30,7 +32,7 @@ public class Player {
     public void move(int steps) {
         lastDiceRoll = steps;
         forward(steps);
-        Block.queryBlock(this, position);
+        instance.queryBlock(this, position);
     }
 
     public boolean isForward() {
@@ -39,7 +41,7 @@ public class Player {
     }
 
     public void forward(int steps) {
-        position = (position + steps) % Block.MAP_SIZE;
+        position = (position + steps) % GameInstance.MAP_SIZE;
     }
 
     public void backward(int steps) {
