@@ -112,7 +112,7 @@ public class GameScreen extends ScreenAdapter {
             int x = Integer.parseInt(tokens[0]), y = Integer.parseInt(tokens[1]);
             int rotate = Integer.parseInt(tokens[2]);
 
-            blockImages.add(new BlockImage(instance.blocks.get(count), x, y));
+            blockImages.add(new BlockImage(instance.blocks.get(count), x, y, rotate));
             count++;
         }
 

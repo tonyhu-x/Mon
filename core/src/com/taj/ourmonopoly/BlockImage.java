@@ -9,10 +9,12 @@ public class BlockImage extends Image {
     private Texture texture;
     private Block block;
 
-    public BlockImage(Block block, float posX, float posY) {
+    public BlockImage(Block block, float posX, float posY, int rotate) {
         super(new Texture(block.getImagePath()));
         this.block = block;
         this.setBounds(posX, posY, block.getDimensions().x, block.getDimensions().y);
-    }    
+
+        this.rotateBy(rotate * 90);
+    }
 
 }
