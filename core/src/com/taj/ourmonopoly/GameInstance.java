@@ -22,7 +22,12 @@ public class GameInstance {
     ArrayList<Dice> dice = new ArrayList<>();
     ArrayList<Block> blocks;
 
-    public GameInstance() {
+    /**
+     * Creating a game instance.
+     * 
+     * @param names players' names
+     */
+    public GameInstance(String[] names) {
         try {
             blocks = Block.getBlockList(GameApp.PATH_TO_ASSETS + "blockData.txt");
         } catch (IOException e) {
@@ -31,7 +36,7 @@ public class GameInstance {
         }
         this.turn = 0;
         for (int i = 0; i < 4; i++) {
-            addPlayer("fill in the blank");
+            addPlayer(names[i]);
         }
 
         // determine the first player
@@ -59,6 +64,7 @@ public class GameInstance {
         }
         return res;
     }
+
 
     public void queryBlock(Player player, int pos) {
         if (pos < 53) {

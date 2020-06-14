@@ -33,6 +33,7 @@ public class Player {
         lastDiceRoll = steps;
         forward(steps);
         instance.queryBlock(this, position);
+        System.out.println("the current position of Player " + number + " is " + position);
     }
 
     public boolean isForward() {

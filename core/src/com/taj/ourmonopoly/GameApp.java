@@ -18,7 +18,6 @@ public class GameApp extends Game {
 	public void create() {
 		batch = new SpriteBatch();
 		setScreen(new TitleScreen(this));
-		new GameInstance();
 	}
 
 	@Override

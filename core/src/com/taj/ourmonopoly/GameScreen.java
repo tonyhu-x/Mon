@@ -33,9 +33,9 @@ public class GameScreen extends ScreenAdapter {
     boolean zoomed;
     ArrayList<BlockImage> blockImages;
 
-    public GameScreen(GameApp game) {
+    public GameScreen(GameApp game, String[] arr) {
         this.game = game;
-        this.instance = new GameInstance();
+        this.instance = new GameInstance(arr);
         blockImages = new ArrayList<>();
 
         try {
