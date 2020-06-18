@@ -13,9 +13,8 @@ public class ComChest extends RectBlock {
     }
 
     @Override
-    public void interact(Player player) {
-        // TODO Auto-generated method stub
-
+    public int interact(Player player) {
+        return 0;
     }
 
     @Override

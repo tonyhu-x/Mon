@@ -8,13 +8,19 @@ public class Go extends SqrBlock {
 
     public static final String IMAGE_PATH = GameApp.PATH_TO_ASSETS + "blocks/go.png";
 
+    /**
+     * The amount of money a player gets each time they pass Go.
+     */
+    private static final int SALARY = 200;
+
     public Go(String name, int index) {
         super(name, index);
     }
 
     @Override
-    public void interact(Player player) {
-
+    public int interact(Player player) {
+        player.setCashAmt(player.getCashAmt() + SALARY);
+        return 0;
     }
 
     @Override

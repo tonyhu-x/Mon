@@ -18,8 +18,12 @@ public class Player {
      * The amount of cash the player has.
      */
     private int cashAmt;
-    private ArrayList<Block> properties = new ArrayList<>();
+    private ArrayList<Property> properties = new ArrayList<>();
     private int position;
+
+    /**
+     * The position of the player on the map. The starting position is 0.
+     */
     private GameInstance instance;
 
     public Player(GameInstance instance, String name, int number, int cashAmt) {
@@ -50,6 +54,13 @@ public class Player {
         if (position < 0) {
             position += 80;
         }
+    }
+
+    public void purchaseProperty(Property property) {
+        properties.add(property);
+        cashAmt -= property.getPurchasePrice();
+        property.setOwner(this);
+        //TODO: check if the player can actually afford the property
     }
 
     public void reset(int cashAmt) {

@@ -29,9 +29,21 @@ public abstract class Block {
             int index = Integer.parseInt(tokens[0]);
             String name = tokens[1];
             String type = tokens[2];
-            int group = Integer.parseInt(tokens[3]); 
+            int group = Integer.parseInt(tokens[3]);
+
+            if (type.equals("Property")) {
+                int purchasePrice = Integer.parseInt(tokens[4]);
+                int[] rent = new int[5];
+                for (int i = 0; i < 5; i++) {
+                    rent[i] = Integer.parseInt(tokens[5 + i]);
+                }
+
+                blocks.add(new Property(name, index, group, purchasePrice, rent));
+            }
 
             switch (type) {
+                case "Property":
+                    break;
                 case "Bank":
                     blocks.add(new Bank(name, index));
                     break;
@@ -56,9 +68,6 @@ public abstract class Block {
                 case "Park":
                     blocks.add(new Park(name, index));
                     break;
-                case "Property":
-                    blocks.add(new Property(name, index, group));
-                    break;
                 default:
                     break;
             }
@@ -81,7 +90,7 @@ public abstract class Block {
         this.index = index;
     }
 
-    public abstract void interact(Player player);
+    public abstract int interact(Player player);
     public abstract Vector2 getDimensions();
     public abstract String getImagePath();
 }

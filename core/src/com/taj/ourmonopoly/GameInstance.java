@@ -1,20 +1,25 @@
 package com.taj.ourmonopoly;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import com.taj.ourmonopoly.block.Block;
+import com.taj.ourmonopoly.dialog.PropertyPurchaseDialog;
 
 /**
  * The non-GUI representation of a game.
  */
 public class GameInstance {
 
+    // these are constants that blocks use to tell the instance to carry out a specific task
+    public static final int TASK_NO_OP = 0;
+    public static final int TASK_CREATE_PURCHASE_DIALOG = 1;
+    // public static final int 
+
     public static final int MAP_SIZE = 80;
-    int startingCashAmt;
+    int startingCashAmt = 1500;
     int turn;
-    
+    GameScreen screen;
     /**
      * The list of players. Currently the game supports 4 players.
      */
@@ -27,7 +32,8 @@ public class GameInstance {
      * 
      * @param names players' names
      */
-    public GameInstance(String[] names) {
+    public GameInstance(GameScreen screen, String[] names) {
+        this.screen = screen;
         try {
             blocks = Block.getBlockList(GameApp.PATH_TO_ASSETS + "blockData.txt");
         } catch (IOException e) {
@@ -39,6 +45,8 @@ public class GameInstance {
             addPlayer(names[i]);
         }
 
+        this.dice.add(new Dice());
+        this.dice.add(new Dice());
         // determine the first player
         for (Player p : players) {
             if ((p.lastDiceRoll = getDiceRoll()) > players.get(turn).lastDiceRoll) {
@@ -62,25 +70,37 @@ public class GameInstance {
         for (var d : dice) {
             res += d.next();
         }
+        System.out.println("The dice roll is " + res);
         return res;
     }
 
-
     public void queryBlock(Player player, int pos) {
+        int result = 0;
         if (pos < 53) {
-            blocks.get(pos).interact(player);
+            // do nothing
         }
         else if (pos < 63) {
-            blocks.get(80 - pos).interact(player);
+            pos = 80 - pos;
         }
         else if (pos < 67) {
-            blocks.get(pos - 10).interact(player);
+            pos = pos - 10;
         }
         else if (pos < 77) {
-            blocks.get(90 - pos).interact(player);
+            pos = 90 - pos;
         }
         else {
-            blocks.get(pos - 20).interact(player);
+            pos = pos - 20;
+        }
+        result = blocks.get(pos).interact(player);
+
+        switch (result) {
+            case TASK_NO_OP:
+                break;
+            case TASK_CREATE_PURCHASE_DIALOG:
+                screen.createDialog("PurchaseProperty", blocks.get(pos), player);
+                break;
+            default:
+                break;
         }
     }
 }

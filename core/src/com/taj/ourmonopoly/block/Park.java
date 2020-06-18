@@ -12,9 +12,8 @@ public class Park extends SqrBlock {
     }
 
     @Override
-    public void interact(Player player) {
-        // TODO Auto-generated method stub
-
+    public int interact(Player player) {
+        return 0;
     }
 
     @Override

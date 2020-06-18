@@ -26,7 +26,7 @@ public class Metro extends RectBlock {
     }
 
     @Override
-    public void interact(Player player) {
+    public int interact(Player player) {
         if (which) {
             if (player.isForward()) {
                 player.forward(posDiff);
@@ -43,6 +43,8 @@ public class Metro extends RectBlock {
                 player.forward(posDiff);
             }
         }
+
+        return 0;
     }
 
     @Override
