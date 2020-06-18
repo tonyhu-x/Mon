@@ -11,3 +11,4 @@
 
 Hello, this is a test.
  Sss
+* When another player stops by a property owned by another player, he/she has to pay complete rent of the property plus 50% of.
