@@ -89,8 +89,12 @@ public abstract class Block {
         this.name = name;
         this.index = index;
     }
-
+    
     public abstract int interact(Player player);
     public abstract Vector2 getDimensions();
-    public abstract String getImagePath();
+    public abstract String getTextureName();
+    
+    public String getName() {
+        return name;
+    }
 }

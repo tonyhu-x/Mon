@@ -5,8 +5,6 @@ import com.taj.ourmonopoly.Player;
 
 public class Bank extends SqrBlock {
 
-    public static final String IMAGE_PATH = GameApp.PATH_TO_ASSETS + "blocks/bank.png";
-
     public Bank(String name, int index) {
         super(name, index);
     }
@@ -17,7 +15,7 @@ public class Bank extends SqrBlock {
     }
 
     @Override
-    public String getImagePath() {
-        return IMAGE_PATH;
+    public String getTextureName() {
+        return "bank";
     }
 }

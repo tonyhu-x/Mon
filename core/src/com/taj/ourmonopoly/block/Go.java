@@ -6,8 +6,6 @@ import com.taj.ourmonopoly.Player;
 
 public class Go extends SqrBlock {
 
-    public static final String IMAGE_PATH = GameApp.PATH_TO_ASSETS + "blocks/go.png";
-
     /**
      * The amount of money a player gets each time they pass Go.
      */
@@ -24,7 +22,7 @@ public class Go extends SqrBlock {
     }
 
     @Override
-    public String getImagePath() {
-        return IMAGE_PATH;
+    public String getTextureName() {
+        return "go";
     }
 }

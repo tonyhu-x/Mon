@@ -37,7 +37,7 @@ public class Player {
         lastDiceRoll = steps;
         forward(steps);
         instance.queryBlock(this, position);
-        System.out.println("the current position of Player " + number + " is " + position);
+        System.out.println("The current position of " + name + " is " + position);
     }
 
     public boolean isForward() {
@@ -59,10 +59,24 @@ public class Player {
     public void purchaseProperty(Property property) {
         properties.add(property);
         cashAmt -= property.getPurchasePrice();
-        property.setOwner(this);
+        property.owner = this;
         //TODO: check if the player can actually afford the property
     }
 
+    public void payTo(Player player, int amt) {
+        //TODO: check if bankrupt
+        this.pay(amt);
+        player.receive(amt);        
+    }
+
+    public void pay(int amt) {
+        this.cashAmt -= amt;
+    }
+
+    public void receive(int amt) {
+        this.cashAmt += amt; 
+    }
+    
     public void reset(int cashAmt) {
         this.cashAmt = cashAmt;
         this.properties = new ArrayList<>();    
@@ -75,5 +89,13 @@ public class Player {
 
     public int getCashAmt() {
         return cashAmt;
+    }
+
+    public String getName() {
+        return name;
+    }
+    
+    public int getNumber() {
+        return number;
     }
 }

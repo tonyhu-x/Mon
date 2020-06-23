@@ -5,7 +5,6 @@ import com.taj.ourmonopoly.Player;
 
 public class ComChest extends RectBlock {
 
-    private static final String IMAGE_PATH = GameApp.PATH_TO_ASSETS + "blocks/comChest.png";
     private static int cardIndex;
 
     public ComChest(String name, int index) {
@@ -18,7 +17,7 @@ public class ComChest extends RectBlock {
     }
 
     @Override
-    public String getImagePath() {
-        return IMAGE_PATH;
+    public String getTextureName() {
+        return "comChest";
     }
 }

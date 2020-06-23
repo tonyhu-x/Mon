@@ -7,7 +7,6 @@ import com.taj.ourmonopoly.dialog.PropertyPurchaseDialog;
 
 public class Property extends RectBlock {
 
-    private static final String IMAGE_PATH = GameApp.PATH_TO_ASSETS + "blocks/propertyL0.png";
     /**
      * Level of this property. The possible levels include 0-4. Level 0 means that
      * the property is unimploved.
@@ -16,7 +15,9 @@ public class Property extends RectBlock {
     int group;
     int purchasePrice;
     int[] rent;
-    Player owner;
+    // the number of times that the block has been visited
+    int numOfVisits;
+    public Player owner;
 
     public Property(String name, int index, int group, int purchasePrice, int[] rent) {
         super(name, index);
@@ -27,24 +28,43 @@ public class Property extends RectBlock {
 
     @Override
     public int interact(Player player) {
+        numOfVisits++;
         // the player now needs to purchase this property
         if (owner == null) {
             return GameInstance.TASK_CREATE_PURCHASE_DIALOG;
         }
-
-        return 0;
-    }
-
-    public void setOwner(Player owner) {
-        this.owner = owner;
+        else if (owner == player) {
+            return GameInstance.TASK_CREATE_UPGRADE_DIALOG;
+        }
+        else {
+            player.payTo(owner, rent[level]);
+            return GameInstance.TASK_CREATE_PAY_RENT_DIALOG;
+        }
     }
 
     @Override
-    public String getImagePath() {
-        return IMAGE_PATH;
+    public String getTextureName() {
+        if (owner == null) {
+            return "propertyUnowned";
+        }
+        else {
+            return "propertyL" + level + "P" + (owner.getNumber() + 1); 
+        }
     }
 
     public int getPurchasePrice() {
         return purchasePrice;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public int getNumOfVisits() {
+        return numOfVisits;
+    }
+
+    public int getCurrentRent() {
+        return rent[level];
     }
 }

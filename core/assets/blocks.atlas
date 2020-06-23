@@ -1,0 +1,208 @@
+blocks.png
+size: 2000, 1400
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bank
+  rotate: false
+  xy: 0, 0
+  size: 350, 350
+  orig: 350, 350
+  offset: 0, 0
+  index: -1
+chance
+  rotate: false
+  xy: 350, 0
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+comChest
+  rotate: false
+  xy: 600, 0
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+go
+  rotate: false
+  xy: 850, 0
+  size: 350, 350
+  orig: 350, 350
+  offset: 0, 0
+  index: -1
+hospital
+  rotate: false
+  xy: 1200, 0
+  size: 350, 350
+  orig: 350, 350
+  offset: 0, 0
+  index: -1
+jail
+  rotate: false
+  xy: 1550, 0
+  size: 350, 350
+  orig: 350, 350
+  offset: 0, 0
+  index: -1
+metro
+  rotate: false
+  xy: 0, 350
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+park
+  rotate: false
+  xy: 250, 350
+  size: 350, 350
+  orig: 350, 350
+  offset: 0, 0
+  index: -1
+propertyL0P1
+  rotate: false
+  xy: 600, 350
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+propertyL0P2
+  rotate: false
+  xy: 850, 350
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+propertyL0P3
+  rotate: false
+  xy: 1100, 350
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+propertyL0P4
+  rotate: false
+  xy: 1350, 350
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+propertyL1P1
+  rotate: false
+  xy: 1600, 350
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+propertyL1P2
+  rotate: false
+  xy: 0, 700
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+propertyL1P3
+  rotate: false
+  xy: 250, 700
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+propertyL1P4
+  rotate: false
+  xy: 500, 700
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+propertyL2P1
+  rotate: false
+  xy: 750, 700
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+propertyL2P2
+  rotate: false
+  xy: 1000, 700
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+propertyL2P3
+  rotate: false
+  xy: 1250, 700
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+propertyL2P4
+  rotate: false
+  xy: 1500, 700
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+propertyL3P1
+  rotate: false
+  xy: 1750, 700
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+propertyL3P2
+  rotate: false
+  xy: 0, 1050
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+propertyL3P3
+  rotate: false
+  xy: 250, 1050
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+propertyL3P4
+  rotate: false
+  xy: 500, 1050
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+propertyL4P1
+  rotate: false
+  xy: 750, 1050
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+propertyL4P2
+  rotate: false
+  xy: 1000, 1050
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+propertyL4P3
+  rotate: false
+  xy: 1250, 1050
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+propertyL4P4
+  rotate: false
+  xy: 1500, 1050
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1
+propertyUnowned
+  rotate: false
+  xy: 1750, 1050
+  size: 250, 350
+  orig: 250, 350
+  offset: 0, 0
+  index: -1

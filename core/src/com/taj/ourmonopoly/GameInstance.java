@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.taj.ourmonopoly.block.Block;
+import com.taj.ourmonopoly.block.Property;
 import com.taj.ourmonopoly.dialog.PropertyPurchaseDialog;
 
 /**
@@ -14,6 +15,9 @@ public class GameInstance {
     // these are constants that blocks use to tell the instance to carry out a specific task
     public static final int TASK_NO_OP = 0;
     public static final int TASK_CREATE_PURCHASE_DIALOG = 1;
+    public static final int TASK_CREATE_UPGRADE_DIALOG = 2;
+    public static final int TASK_CREATE_PAY_RENT_DIALOG = 3;
+
     // public static final int 
 
     public static final int MAP_SIZE = 80;
@@ -98,6 +102,10 @@ public class GameInstance {
                 break;
             case TASK_CREATE_PURCHASE_DIALOG:
                 screen.createDialog("PurchaseProperty", blocks.get(pos), player);
+                break;
+            case TASK_CREATE_PAY_RENT_DIALOG:
+                screen.createDialog("ShowAlert", player.name + " paid $" + ((Property) blocks.get(pos))
+                    .getCurrentRent() + " to " + ((Property) blocks.get(pos)).owner.name + ".");
                 break;
             default:
                 break;

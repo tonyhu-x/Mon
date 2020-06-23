@@ -5,7 +5,6 @@ import com.taj.ourmonopoly.Player;
 
 public class Metro extends RectBlock {
 
-    private static final String IMAGE_PATH = GameApp.PATH_TO_ASSETS + "blocks/metro.png";
     private static int posDiff = -1;
 
     /**
@@ -48,7 +47,7 @@ public class Metro extends RectBlock {
     }
 
     @Override
-    public String getImagePath() {
-        return IMAGE_PATH;
+    public String getTextureName() {
+        return "metro";
     }
 }

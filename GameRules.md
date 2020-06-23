@@ -7,5 +7,6 @@
 
 ## In a Game
 * A player can purchase a property if it has not been purchased by another player.
-* A player may choose to ungrade a property that he/she owns if he/she stops by the property again. The price of an upgrade is (2^n) times the original purchase price.
-* When another player stops by a property owned by another player, he/she has to pay complete rent of the property plus 50% of.
+* A player may choose to ungrade a property that he/she owns if he/she stops by the property again. The price of an upgrade is (2^n) times the original purchase price. Note that the player does not have to own every property in the group to upgrade them.
+* When a player stops by a property owned by another player, he/she has to pay complete rent of the property plus 50% of the rent of any other property in the same group.
+* 

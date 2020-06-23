@@ -25,7 +25,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.taj.ourmonopoly.block.Property;
+import com.taj.ourmonopoly.dialog.AlertDialog;
 import com.taj.ourmonopoly.dialog.PropertyPurchaseDialog;
+import com.taj.ourmonopoly.dialog.PropertyViewDialog;
 
 /**
  * The GUI representation of a game.
@@ -42,13 +44,13 @@ public class GameScreen extends ScreenAdapter {
     private Stage mainStage;
     private ArrayList<BlockImage> blockImages;
 
-    Stage uiStage;
-    Dialog dialog;
-    Label l1, l2, l3, l4;
-    TextButton nextButton;
-    VerticalGroup group;
-    Camera camera;
-    boolean zoomed;
+    private Stage uiStage;
+    private Dialog dialog;
+    private Label l1, l2, l3, l4;
+    private TextButton nextButton;
+    private VerticalGroup group;
+    private Camera camera;
+    private boolean zoomed;
 
 
     public GameScreen(GameApp game, String[] arr) {
@@ -131,9 +133,8 @@ public class GameScreen extends ScreenAdapter {
 
     public void nextMove() {
         instance.nextPlayer();
-        // beginning of test code ------
         updateLabels();
-        // end of test code ------
+        updateImages();
     }
 
     public void zoom() {
@@ -149,26 +150,68 @@ public class GameScreen extends ScreenAdapter {
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
     }
 
+    public void updateImages() {
+        for (var b : blockImages) {
+            b.updateImage();
+        }
+    }
+
     public void updateLabels() {
         l1.setText(instance.players.get(0).name + ": " + instance.players.get(0).getCashAmt());
         l2.setText(instance.players.get(1).name + ": " + instance.players.get(1).getCashAmt());
         l3.setText(instance.players.get(2).name + ": " + instance.players.get(2).getCashAmt());
         l4.setText(instance.players.get(3).name + ": " + instance.players.get(3).getCashAmt());
+        
+        switch (instance.turn) {
+            case 0:
+                l1.setColor(0, 1, 0, 1);
+                l4.setColor(1, 1, 1, 1);
+                break;
+            case 1:
+                l2.setColor(0, 1, 0, 1);
+                l1.setColor(1, 1, 1, 1);
+                break;
+            case 2:
+                l3.setColor(0, 1, 0, 1);
+                l2.setColor(1, 1, 1, 1);
+                break;
+            case 3:
+                l4.setColor(0, 1, 0, 1);
+                l3.setColor(1, 1, 1, 1);
+                break;
+        }
     }
 
     public void createDialog(String type, Object... args) {
+        Dialog d;
         switch (type) {
             case "PurchaseProperty":
-                new PropertyPurchaseDialog(
+                d = new PropertyPurchaseDialog(
                     "Purchase Property",
                     skin,
                     (Property) args[0],
                     (Player) args[1]
-                ).show(uiStage);
+                );
+                break;
+            case "ViewProperty":
+                d = new PropertyViewDialog(
+                    "View Property", 
+                    skin, 
+                    (Property) args[0]
+                );
+                break;
+            case "ShowAlert":
+                d = new AlertDialog("Alert", skin, (String) args[0]);
                 break;
             default:
-                break;
+                return;
         }
+
+        if (this.dialog != null) {
+            this.dialog.hide();
+        }
+        this.dialog = d;
+        this.dialog.show(uiStage);
     }
 
     private void createImages() throws IOException {
@@ -190,7 +233,7 @@ public class GameScreen extends ScreenAdapter {
             int x = Integer.parseInt(tokens[0]), y = Integer.parseInt(tokens[1]);
             int rotate = Integer.parseInt(tokens[2]);
 
-            blockImages.add(new BlockImage(instance.blocks.get(count), x, y, rotate));
+            blockImages.add(new BlockImage(instance.blocks.get(count), this, x, y, rotate));
             count++;
         }
 

@@ -5,7 +5,6 @@ import com.taj.ourmonopoly.Player;
 
 public class Chance extends RectBlock {
 
-    public static final String IMAGE_PATH = GameApp.PATH_TO_ASSETS + "blocks/chance.png";
     private static int cardIndex;
 
     public Chance(String name, int index) {
@@ -18,7 +17,7 @@ public class Chance extends RectBlock {
     }
     
     @Override
-    public String getImagePath() {
-        return IMAGE_PATH;
+    public String getTextureName() {
+        return "chance";
     }
 }

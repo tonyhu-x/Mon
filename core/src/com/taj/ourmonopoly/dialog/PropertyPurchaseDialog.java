@@ -19,6 +19,7 @@ public class PropertyPurchaseDialog extends Dialog {
         this.setColor(0, 1, 0, 1);
         this.property = property;
         this.player = player;
+        this.text("Do you want to purchase this property for $" + property.getPurchasePrice() + "?");
         this.button("Purchase Property", true);    
     }
 
@@ -27,6 +28,7 @@ public class PropertyPurchaseDialog extends Dialog {
         if (((boolean) object) == true) {
             player.purchaseProperty(property);            
         }
+        
     }
     
     

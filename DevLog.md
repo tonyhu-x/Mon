@@ -9,3 +9,5 @@
 * Added a game instance class and some internal logic.
 * Added an intro screen.
 * Added the ability for players to purchase properties.
+* Added the ability for players to pay rent.
+* Added dialogs.

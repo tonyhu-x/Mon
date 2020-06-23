@@ -1,11 +1,8 @@
 package com.taj.ourmonopoly.block;
 
-import com.taj.ourmonopoly.GameApp;
 import com.taj.ourmonopoly.Player;
 
 public class Park extends SqrBlock {
-
-    public static final String IMAGE_PATH = GameApp.PATH_TO_ASSETS + "blocks/park.png";
 
     public Park(String name, int index) {
         super(name, index);
@@ -17,7 +14,7 @@ public class Park extends SqrBlock {
     }
 
     @Override
-    public String getImagePath() {
-        return IMAGE_PATH;
+    public String getTextureName() {
+        return "park";
     }
 }
