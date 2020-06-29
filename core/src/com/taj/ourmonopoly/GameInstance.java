@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import com.taj.ourmonopoly.block.Block;
 import com.taj.ourmonopoly.block.Property;
-import com.taj.ourmonopoly.dialog.PropertyPurchaseDialog;
 
 /**
  * The non-GUI representation of a game.

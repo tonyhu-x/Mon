@@ -1,7 +1,5 @@
 package com.taj.ourmonopoly.block;
 
-import com.badlogic.gdx.math.Vector2;
-import com.taj.ourmonopoly.GameApp;
 import com.taj.ourmonopoly.Player;
 
 public class Go extends SqrBlock {

@@ -1,6 +1,5 @@
 package com.taj.ourmonopoly.block;
 
-import com.taj.ourmonopoly.GameApp;
 import com.taj.ourmonopoly.Player;
 
 public class Bank extends SqrBlock {

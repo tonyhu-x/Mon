@@ -3,7 +3,6 @@ package com.taj.ourmonopoly.dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.taj.ourmonopoly.Player;
 import com.taj.ourmonopoly.block.Property;
 

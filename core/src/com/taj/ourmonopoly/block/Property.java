@@ -1,9 +1,7 @@
 package com.taj.ourmonopoly.block;
 
-import com.taj.ourmonopoly.GameApp;
 import com.taj.ourmonopoly.GameInstance;
 import com.taj.ourmonopoly.Player;
-import com.taj.ourmonopoly.dialog.PropertyPurchaseDialog;
 
 public class Property extends RectBlock {
 
