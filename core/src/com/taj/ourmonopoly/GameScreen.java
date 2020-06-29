@@ -13,6 +13,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -42,6 +43,7 @@ public class GameScreen extends ScreenAdapter {
     private GameInstance instance;
     private Stage mainStage;
     private ArrayList<BlockImage> blockImages;
+    private ArrayList<PlayerImage> playerImages;
 
     private Stage uiStage;
     private Dialog dialog;
@@ -51,17 +53,21 @@ public class GameScreen extends ScreenAdapter {
     private Camera camera;
     private boolean zoomed;
 
-
     public GameScreen(GameApp game, String[] arr) {
         this.game = game;
         this.instance = new GameInstance(this, arr);
         blockImages = new ArrayList<>();
+        playerImages = new ArrayList<>();
 
         try {
             createImages();
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
+        }
+        
+        for (var p : instance.players) {
+            playerImages.add(new PlayerImage(this, p, blockImages.get(0)));
         }
     }
 
@@ -86,6 +92,7 @@ public class GameScreen extends ScreenAdapter {
             }
         });
         blockImages.forEach(mainStage::addActor);
+        playerImages.forEach(mainStage::addActor);
 
         uiStage = new Stage(new FitViewport(GameApp.WINDOW_WIDTH, GameApp.WINDOW_HEIGHT), game.batch);
         l1 = new Label(instance.players.get(0).name + ": " + instance.startingCashAmt, skin);
@@ -150,6 +157,9 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void updateImages() {
+        for (var p : playerImages) {
+            p.setBlockParent(blockImages.get(GameInstance.convertPos(p.player.getPosition())));
+        }
         for (var b : blockImages) {
             b.updateImage();
         }
@@ -237,4 +247,5 @@ public class GameScreen extends ScreenAdapter {
         }
 
     }
+
 }

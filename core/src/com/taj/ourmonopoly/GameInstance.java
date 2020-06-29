@@ -23,6 +23,7 @@ public class GameInstance {
     int startingCashAmt = 1500;
     int turn;
     GameScreen screen;
+
     /**
      * The list of players. Currently the game supports 4 players.
      */
@@ -31,7 +32,7 @@ public class GameInstance {
     ArrayList<Block> blocks;
 
     /**
-     * Creating a game instance.
+     * Creates a game instance.
      * 
      * @param names players' names
      */
@@ -79,21 +80,7 @@ public class GameInstance {
 
     public void queryBlock(Player player, int pos) {
         int result = 0;
-        if (pos < 53) {
-            // do nothing
-        }
-        else if (pos < 63) {
-            pos = 80 - pos;
-        }
-        else if (pos < 67) {
-            pos = pos - 10;
-        }
-        else if (pos < 77) {
-            pos = 90 - pos;
-        }
-        else {
-            pos = pos - 20;
-        }
+        pos = convertPos(pos);
         result = blocks.get(pos).interact(player);
 
         switch (result) {
@@ -109,5 +96,31 @@ public class GameInstance {
             default:
                 break;
         }
+    }
+
+    /**
+     * Converts player position to map position.
+     * 
+     * @param pos player position
+     * @return the converted position
+     */
+    public static int convertPos(int pos) {
+        if (pos < 53) {
+            // do nothing
+        }
+        else if (pos < 63) {
+            pos = 80 - pos;
+        }
+        else if (pos < 67) {
+            pos = pos - 10;
+        }
+        else if (pos < 77) {
+            pos = 90 - pos;
+        }
+        else {
+            pos = pos - 20;
+        }
+
+        return pos;
     }
 }

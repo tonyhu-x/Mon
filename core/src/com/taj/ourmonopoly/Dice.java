@@ -7,7 +7,7 @@ public class Dice {
     private Random generator = new Random();
 
     public int next() {
-        return generator.nextInt(6);
+        return generator.nextInt(6) + 1;
     }
     
 }

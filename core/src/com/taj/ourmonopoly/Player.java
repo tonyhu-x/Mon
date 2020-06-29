@@ -19,11 +19,14 @@ public class Player {
      */
     private int cashAmt;
     private ArrayList<Property> properties = new ArrayList<>();
-    private int position;
 
     /**
-     * The position of the player on the map. The starting position is 0.
+     * The position of the player on the map. Because the player may be moving
+     * forward or backward, the max position is greater than the number of blocks on
+     * the map. The starting position is 0.
      */
+    private int position;
+
     private GameInstance instance;
 
     public Player(GameInstance instance, String name, int number, int cashAmt) {
@@ -52,7 +55,7 @@ public class Player {
     public void backward(int steps) {
         position = position - steps;
         if (position < 0) {
-            position += 80;
+            position += GameInstance.MAP_SIZE;
         }
     }
 
@@ -97,5 +100,9 @@ public class Player {
     
     public int getNumber() {
         return number;
+    }
+
+    public int getPosition() {
+        return position;
     }
 }

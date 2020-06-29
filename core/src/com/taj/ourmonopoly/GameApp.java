@@ -17,7 +17,6 @@ public class GameApp extends Game {
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		System.out.println(PATH_TO_ASSETS);
 		setScreen(new TitleScreen(this));
 	}
 
