@@ -12,3 +12,4 @@
 * Added the ability for players to pay rent.
 * Added dialogs.
 * Added colours to reflect property ownership.
+* Added player tokens to show their locations.

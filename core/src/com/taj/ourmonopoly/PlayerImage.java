@@ -1,14 +1,12 @@
 package com.taj.ourmonopoly;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class PlayerImage extends Image {
 
-    public static final int WIDTH = 15; 
-    public static final int HEIGHT = 15; 
+    public static final int WIDTH = 10; 
+    public static final int HEIGHT = 10; 
 
     private GameScreen screen;
     Player player;
@@ -19,7 +17,7 @@ public class PlayerImage extends Image {
     private BlockImage parent;
 
     public PlayerImage(GameScreen screen, Player player, BlockImage parent) {
-        super(new Texture(GameApp.PATH_TO_ASSETS + "token.png"));
+        super(TextureInventory.getToken("tokenP" + (player.number + 1)));
         this.screen = screen;
         this.player = player;
         this.setSize(WIDTH, HEIGHT);
