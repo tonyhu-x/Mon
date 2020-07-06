@@ -24,6 +24,15 @@ public class Property extends RectBlock {
         this.rent = rent;
     }
 
+    public void upgrade() {
+        if (this.level == 4) {
+            throw new RuntimeException("That's weird. Check your code logic.");
+        }
+        
+        level++;
+        owner.pay(purchasePrice * (int) Math.pow(2, level));
+    }
+
     @Override
     public int interact(Player player) {
         numOfVisits++;
@@ -35,8 +44,8 @@ public class Property extends RectBlock {
             return GameInstance.TASK_CREATE_UPGRADE_DIALOG;
         }
         else {
-            player.payTo(owner, rent[level]);
-            return GameInstance.TASK_CREATE_PAY_RENT_DIALOG;
+            // player.payTo(owner, rent[level]);
+            return GameInstance.TASK_PAY_RENT;
         }
     }
 
@@ -64,5 +73,9 @@ public class Property extends RectBlock {
 
     public int getCurrentRent() {
         return rent[level];
+    }
+
+    public int getGroup() {
+        return group;
     }
 }

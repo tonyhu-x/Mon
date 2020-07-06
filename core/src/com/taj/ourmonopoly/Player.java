@@ -26,6 +26,11 @@ public class Player {
      * the map. The starting position is 0.
      */
     private int position;
+    
+    /**
+     * The group number of the block which the player is currently on.
+     */
+    private int group;
 
     private GameInstance instance;
 
@@ -39,7 +44,7 @@ public class Player {
     public void move(int steps) {
         lastDiceRoll = steps;
         forward(steps);
-        instance.queryBlock(this, position);
+        instance.queryBlock(this, instance.convertPos(position));
         System.out.println("The current position of " + name + " is " + position);
     }
 
@@ -50,6 +55,7 @@ public class Player {
 
     public void forward(int steps) {
         position = (position + steps) % GameInstance.MAP_SIZE;
+        setGroup();
     }
 
     public void backward(int steps) {
@@ -57,6 +63,7 @@ public class Player {
         if (position < 0) {
             position += GameInstance.MAP_SIZE;
         }
+        setGroup();
     }
 
     public void purchaseProperty(Property property) {
@@ -86,10 +93,6 @@ public class Player {
         this.position = 0;
     }
 
-    public void setCashAmt(int cashAmt) {
-        this.cashAmt = cashAmt;
-    }
-
     public int getCashAmt() {
         return cashAmt;
     }
@@ -104,5 +107,33 @@ public class Player {
 
     public int getPosition() {
         return position;
+    }
+
+    public int getGroup() {
+        return group;
+    }
+
+    /**
+     * Count the number of properties the player has in a group.
+     * 
+     * @param group the group to count
+     * @return {@code 4} if the player has a monopoly, otherwise the exact number
+     *         of properties is returned
+     */
+    public int countProperty(int group) {
+        if (instance.isMonopoly(this, group)) {
+            return 4;
+        }
+
+        int temp = 0;
+        for (var p : properties) {
+            if (p.getGroup() == group)
+                temp++;
+        }
+        return temp;
+    }
+
+    private void setGroup() {
+        group = instance.getBlockGroup(instance.convertPos(position));
     }
 }

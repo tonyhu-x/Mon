@@ -13,7 +13,6 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -158,7 +157,7 @@ public class GameScreen extends ScreenAdapter {
 
     public void updateImages() {
         for (var p : playerImages) {
-            p.setBlockParent(blockImages.get(GameInstance.convertPos(p.player.getPosition())));
+            p.setBlockParent(blockImages.get(instance.convertPos(p.player.getPosition())));
         }
         for (var b : blockImages) {
             b.updateImage();
@@ -198,6 +197,7 @@ public class GameScreen extends ScreenAdapter {
                 d = new PropertyPurchaseDialog(
                     "Purchase Property",
                     skin,
+                    this,
                     (Property) args[0],
                     (Player) args[1]
                 );
@@ -206,7 +206,9 @@ public class GameScreen extends ScreenAdapter {
                 d = new PropertyViewDialog(
                     "View Property", 
                     skin, 
-                    (Property) args[0]
+                    this,
+                    (Property) args[0],
+                    instance.getCurrentPlayer()
                 );
                 break;
             case "ShowAlert":

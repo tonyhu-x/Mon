@@ -90,9 +90,14 @@ public class BlockImage extends Image {
             image.setX(this.getX() + (images.size() - 1) * PlayerImage.WIDTH);
             image.setY(this.getY());
         }
-        else {
+        else if (this.rotate == -1) {
             image.setX(this.getX());
-            image.setY(this.getY() - (images.size() - 1) * rotate * PlayerImage.HEIGHT);
+            image.setY(this.getY() + images.size() * rotate * PlayerImage.HEIGHT);
+        }
+        // otherwise rotate == 1
+        else {
+            image.setX(this.getX() - PlayerImage.WIDTH);
+            image.setY(this.getY() + (images.size() - 1) * rotate * PlayerImage.HEIGHT);
         }
     }
 

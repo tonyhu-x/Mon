@@ -15,7 +15,7 @@ public class GameInstance {
     public static final int TASK_NO_OP = 0;
     public static final int TASK_CREATE_PURCHASE_DIALOG = 1;
     public static final int TASK_CREATE_UPGRADE_DIALOG = 2;
-    public static final int TASK_CREATE_PAY_RENT_DIALOG = 3;
+    public static final int TASK_PAY_RENT = 3;
 
     // public static final int 
 
@@ -58,6 +58,10 @@ public class GameInstance {
             }
         }
 
+        players.get(0).purchaseProperty(((Property) blocks.get(1)));
+        players.get(0).purchaseProperty(((Property) blocks.get(2)));
+        // players.get(0).purchaseProperty(((Property) blocks.get(3)));
+
     }
 
     public void addPlayer(String name) {
@@ -78,9 +82,14 @@ public class GameInstance {
         return res;
     }
 
+    /**
+     * Queries the appropriate block for action.
+     * 
+     * @param pos the position of the block (after conversion from
+     *            {@link Player#position})
+     */
     public void queryBlock(Player player, int pos) {
         int result = 0;
-        pos = convertPos(pos);
         result = blocks.get(pos).interact(player);
 
         switch (result) {
@@ -89,13 +98,66 @@ public class GameInstance {
             case TASK_CREATE_PURCHASE_DIALOG:
                 screen.createDialog("PurchaseProperty", blocks.get(pos), player);
                 break;
-            case TASK_CREATE_PAY_RENT_DIALOG:
-                screen.createDialog("ShowAlert", player.name + " paid $" + ((Property) blocks.get(pos))
-                    .getCurrentRent() + " to " + ((Property) blocks.get(pos)).owner.name + ".");
+            case TASK_PAY_RENT:
+                int rent = calcRent(pos);
+                player.payTo(((Property) blocks.get(pos)).owner, rent);
+                screen.createDialog("ShowAlert",
+                        player.name + " paid $" + rent + " to " + ((Property) blocks.get(pos)).owner.name + ".");
                 break;
             default:
                 break;
         }
+    }
+
+    
+    private int calcRent(int pos) {
+        int oldPos = pos;
+        int rent = ((Property) blocks.get(pos)).getCurrentRent();
+        Property origin = (Property) blocks.get(pos);
+        Block b = blocks.get(--pos);
+        while (b instanceof Property && ((Property) b).getGroup() == origin.getGroup()) {
+            if (((Property) b).owner == origin.owner) {
+                rent += ((Property) b).getCurrentRent() / 2;
+            }
+            b = blocks.get(--pos);
+        }
+        pos = oldPos;
+        b = blocks.get(++pos);
+
+        while (b instanceof Property && ((Property) b).getGroup() == origin.getGroup()) {
+            if (((Property) b).owner == origin.owner) {
+                rent += ((Property) b).getCurrentRent() / 2;
+            }
+            b = blocks.get(++pos);
+        }
+
+        return rent;
+    }
+
+    public int getBlockGroup(int pos) {
+        Block b = blocks.get(pos);
+        if (b instanceof Property) {
+            return ((Property) b).getGroup();
+        }
+        return 0;
+    }
+
+    public Player getCurrentPlayer() {
+        return players.get(turn);
+    }
+
+    /**
+     * Checks if the player has a monopoly on the specified group.
+     */
+    public boolean isMonopoly(Player player, int group) {
+        return blocks
+                .stream()
+                .filter(
+                    (block) ->
+                        (block instanceof Property
+                        && ((Property) block).getGroup() == group
+                        && ((Property) block).owner != player)
+                ).count() == 0;
     }
 
     /**
@@ -104,7 +166,7 @@ public class GameInstance {
      * @param pos player position
      * @return the converted position
      */
-    public static int convertPos(int pos) {
+    public int convertPos(int pos) {
         if (pos < 53) {
             // do nothing
         }

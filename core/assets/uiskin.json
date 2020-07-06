@@ -20,14 +20,15 @@
     },
     "ButtonStyle": {
         "default": {
-            "down": "default-round-down", "up": "default-round"
+            "down": "default-round-down",
+            "up": "default-round"
         }
     },
     "TextButtonStyle": {
         "default": {
             "parent": "default",
             "font": "default-font",
-            "fontColor": "white"
+            "fontColor": "white",
         }
     },
     "LabelStyle": {
@@ -42,6 +43,16 @@
             "background": "textfield",
             "font": "default-font",
             "fontColor": "white"
+        }
+    },
+    "WindowStyle": {
+        "default": {
+            "titleFont": "default-font",
+            "background": "default-window",
+            "titleFontColor": "white"
+        },
+        "dialog": {
+            "parent": "default",
         }
     }
 }

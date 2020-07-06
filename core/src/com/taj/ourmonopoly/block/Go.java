@@ -15,7 +15,7 @@ public class Go extends SqrBlock {
 
     @Override
     public int interact(Player player) {
-        player.setCashAmt(player.getCashAmt() + SALARY);
+        player.receive(200);
         return 0;
     }
 
