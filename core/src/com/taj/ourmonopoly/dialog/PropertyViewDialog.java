@@ -35,12 +35,14 @@ public class PropertyViewDialog extends Dialog {
         this.getContentTable().row();
         if (property.owner != null) {
             this.text(property.owner.getName());
+            this.getContentTable().row();
+            this.text("Level: " + property.getLevel());
+            this.getContentTable().row();
+            this.text("Current rent: $" + property.getCurrentRent());
         }
         else {
-            this.text("UNOWNED");
+            this.text("UNOWNED");        
         }
-        this.getContentTable().row();
-        this.text("Level: " + property.getLevel());
         this.getContentTable().row();
         this.text("Number of visits: " + property.getNumOfVisits());
 

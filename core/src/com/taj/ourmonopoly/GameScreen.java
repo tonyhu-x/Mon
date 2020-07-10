@@ -7,10 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -22,6 +20,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.taj.ourmonopoly.block.Property;
 import com.taj.ourmonopoly.dialog.AlertDialog;
@@ -49,8 +49,9 @@ public class GameScreen extends ScreenAdapter {
     private Label l1, l2, l3, l4;
     private TextButton nextButton;
     private VerticalGroup group;
-    private Camera camera;
-    private boolean zoomed;
+    private OrthographicCamera camera;
+    private float deltaZoom;
+    private float deltaX, deltaY;
 
     public GameScreen(GameApp game, String[] arr) {
         this.game = game;
@@ -72,24 +73,30 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        zoomed = false;
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         camera = new OrthographicCamera();
-        mainStage = new Stage(new FitViewport(worldWidth, worldHeight, camera), game.batch);
-        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
+        mainStage = new Stage(new FillViewport(worldWidth, worldHeight, camera), game.batch);
+        camera.zoom = worldHeight / (worldWidth * GameApp.ASPECT_RATIO);
+        deltaZoom = 0f;
+        // the x and y aren't real screen coordinates!!!
+        // they are the coordinates relative to the stage
         mainStage.addListener(new InputListener() {
             @Override
-            public boolean keyDown(InputEvent event, int keycode) {
-                switch (keycode) {
-                    case Input.Keys.Q:
-                    case Input.Keys.E:
-                        zoom();
-                        return true;
-                    default:
-                        return false;
-                }
+            public boolean scrolled(InputEvent event, float x, float y, int amount) {
+                deltaZoom += 0.15f * amount;
+                return true;
             }
         });
+        
+        //TODO: the click outside feature no longer works
+        mainStage.addListener(new DragListener() {
+            @Override
+            public void drag(InputEvent event, float x, float y, int pointer) {
+                deltaX -= getDeltaX();
+                deltaY -= getDeltaY();
+            }
+        });
+
         blockImages.forEach(mainStage::addActor);
         playerImages.forEach(mainStage::addActor);
 
@@ -121,12 +128,19 @@ public class GameScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(input);
     }
 
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        camera.update();
+        camera.zoom += deltaZoom * 0.1f;
+        deltaZoom = 0.9f * deltaZoom; 
+
+        camera.translate(deltaX * 0.1f, deltaY * 0.1f);
+        deltaX *= 0.9f;
+        deltaY *= 0.9f;
+
         mainStage.getViewport().apply();
         mainStage.act(delta);
         mainStage.draw();
@@ -140,19 +154,6 @@ public class GameScreen extends ScreenAdapter {
         instance.nextPlayer();
         updateLabels();
         updateImages();
-    }
-
-    public void zoom() {
-        if (zoomed) {
-            camera.viewportWidth = worldWidth;
-            camera.viewportHeight = worldHeight;
-        } else {
-            camera.viewportWidth = worldWidth / 2;
-            camera.viewportHeight = worldHeight / 2;
-        }
-
-        zoomed = !zoomed;
-        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
     }
 
     public void updateImages() {
