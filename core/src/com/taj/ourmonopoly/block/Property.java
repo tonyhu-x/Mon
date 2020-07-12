@@ -1,7 +1,7 @@
 package com.taj.ourmonopoly.block;
 
-import com.taj.ourmonopoly.GameInstance;
 import com.taj.ourmonopoly.Player;
+import com.taj.ourmonopoly.GameInstance.Task;
 
 public class Property extends RectBlock {
 
@@ -34,18 +34,18 @@ public class Property extends RectBlock {
     }
 
     @Override
-    public int interact(Player player) {
+    public Task interact(Player player) {
         numOfVisits++;
         // the player now needs to purchase this property
         if (owner == null) {
-            return GameInstance.TASK_CREATE_PURCHASE_DIALOG;
+            return Task.CREATE_PURCHASE_DIALOG;
         }
         else if (owner == player) {
-            return GameInstance.TASK_CREATE_UPGRADE_DIALOG;
+            return Task.NO_OP;
         }
         else {
             // player.payTo(owner, rent[level]);
-            return GameInstance.TASK_PAY_RENT;
+            return Task.PAY_RENT;
         }
     }
 

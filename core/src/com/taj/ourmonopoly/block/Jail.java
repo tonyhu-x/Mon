@@ -1,6 +1,7 @@
 package com.taj.ourmonopoly.block;
 
 import com.taj.ourmonopoly.Player;
+import com.taj.ourmonopoly.GameInstance.Task;
 
 public class Jail extends SqrBlock {
 
@@ -9,8 +10,8 @@ public class Jail extends SqrBlock {
     }
 
     @Override
-    public int interact(Player player) {
-        return 0;
+    public Task interact(Player player) {
+        return Task.NO_OP;
     }
 
     @Override

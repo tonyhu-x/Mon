@@ -23,8 +23,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.taj.ourmonopoly.block.Metro;
 import com.taj.ourmonopoly.block.Property;
 import com.taj.ourmonopoly.dialog.AlertDialog;
+import com.taj.ourmonopoly.dialog.MetroDialog;
 import com.taj.ourmonopoly.dialog.PropertyPurchaseDialog;
 import com.taj.ourmonopoly.dialog.PropertyViewDialog;
 
@@ -88,7 +90,6 @@ public class GameScreen extends ScreenAdapter {
             }
         });
         
-        //TODO: the click outside feature no longer works
         mainStage.addListener(new DragListener() {
             @Override
             public void drag(InputEvent event, float x, float y, int pointer) {
@@ -124,7 +125,7 @@ public class GameScreen extends ScreenAdapter {
 
         uiStage.addActor(nextButton);
 
-        var input = new InputMultiplexer(mainStage, uiStage);
+        var input = new InputMultiplexer(uiStage, mainStage);
         Gdx.input.setInputProcessor(input);
     }
 
@@ -215,6 +216,8 @@ public class GameScreen extends ScreenAdapter {
             case "ShowAlert":
                 d = new AlertDialog("Alert", skin, (String) args[0]);
                 break;
+            case "Metro":
+                d = new MetroDialog("Metro", skin, (Metro) args[0], (Player) args[1]);
             default:
                 return;
         }

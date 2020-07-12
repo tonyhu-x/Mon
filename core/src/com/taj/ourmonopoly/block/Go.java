@@ -1,6 +1,7 @@
 package com.taj.ourmonopoly.block;
 
 import com.taj.ourmonopoly.Player;
+import com.taj.ourmonopoly.GameInstance.Task;
 
 public class Go extends SqrBlock {
 
@@ -14,9 +15,9 @@ public class Go extends SqrBlock {
     }
 
     @Override
-    public int interact(Player player) {
+    public Task interact(Player player) {
         player.receive(200);
-        return 0;
+        return Task.NO_OP;
     }
 
     @Override

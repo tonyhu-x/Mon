@@ -16,6 +16,12 @@ public class GameInstance {
     public static final int TASK_CREATE_PURCHASE_DIALOG = 1;
     public static final int TASK_CREATE_UPGRADE_DIALOG = 2;
     public static final int TASK_PAY_RENT = 3;
+    public static final int TASK_METRO = 4;
+    
+    public static enum Task {
+        NO_OP, CREATE_PURCHASE_DIALOG, CREATE_UPGRADE_DIALOG,
+        PAY_RENT, METRO
+    }
 
     // public static final int 
 
@@ -89,21 +95,22 @@ public class GameInstance {
      *            {@link Player#position})
      */
     public void queryBlock(Player player, int pos) {
-        int result = 0;
-        result = blocks.get(pos).interact(player);
+        Task result = blocks.get(pos).interact(player);
 
         switch (result) {
-            case TASK_NO_OP:
+            case NO_OP:
                 break;
-            case TASK_CREATE_PURCHASE_DIALOG:
+            case CREATE_PURCHASE_DIALOG:
                 screen.createDialog("PurchaseProperty", blocks.get(pos), player);
                 break;
-            case TASK_PAY_RENT:
+            case PAY_RENT:
                 int rent = calcRent(pos);
                 player.payTo(((Property) blocks.get(pos)).owner, rent);
                 screen.createDialog("ShowAlert",
                         player.name + " paid $" + rent + " to " + ((Property) blocks.get(pos)).owner.name + ".");
                 break;
+            case METRO:
+                screen.createDialog("Metro", blocks.get(pos), player);
             default:
                 break;
         }

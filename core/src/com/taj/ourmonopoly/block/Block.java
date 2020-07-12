@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Vector2;
 import com.taj.ourmonopoly.Player;
+import com.taj.ourmonopoly.GameInstance.Task;
 
 public abstract class Block {
     
@@ -90,7 +91,7 @@ public abstract class Block {
         this.index = index;
     }
     
-    public abstract int interact(Player player);
+    public abstract Task interact(Player player);
     public abstract Vector2 getDimensions();
     public abstract String getTextureName();
     
