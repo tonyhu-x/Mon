@@ -1,5 +1,6 @@
 package com.taj.ourmonopoly.block;
 
+import com.taj.ourmonopoly.GameInstance.Task;
 import com.taj.ourmonopoly.Player;
 
 public class Metro extends RectBlock {
@@ -24,7 +25,11 @@ public class Metro extends RectBlock {
     }
 
     @Override
-    public int interact(Player player) {
+    public Task interact(Player player) {
+        return Task.METRO;
+    }
+
+    public void movePlayer(Player player) {
         if (which) {
             if (player.isForward()) {
                 player.forward(posDiff);
@@ -42,7 +47,6 @@ public class Metro extends RectBlock {
             }
         }
 
-        return 0;
     }
 
     @Override
