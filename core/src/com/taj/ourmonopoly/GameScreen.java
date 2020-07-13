@@ -217,7 +217,8 @@ public class GameScreen extends ScreenAdapter {
                 d = new AlertDialog("Alert", skin, (String) args[0]);
                 break;
             case "Metro":
-                d = new MetroDialog("Metro", skin, (Metro) args[0], (Player) args[1]);
+                d = new MetroDialog("Metro", skin, this, (Metro) args[0], (Player) args[1]);
+                break;
             default:
                 return;
         }
