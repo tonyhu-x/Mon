@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class GameApp extends Game {
 
 	public static final int VER_MAJOR = 0;
-	public static final int VER_MINOR = 2;
+	public static final int VER_MINOR = 3;
 	public static final int WINDOW_WIDTH = 1920;
 	public static final int WINDOW_HEIGHT = 1080;
 	public static final float ASPECT_RATIO = (float) WINDOW_HEIGHT / WINDOW_WIDTH;;

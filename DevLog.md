@@ -13,3 +13,7 @@
 * Added dialogs.
 * Added colours to reflect property ownership.
 * Added player tokens to show their locations.
+* Added the ability for players to upgrade properties.
+* Added zoom and drag.
+## Version 0.3
+* Added a jail system.

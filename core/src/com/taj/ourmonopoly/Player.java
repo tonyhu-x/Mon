@@ -31,7 +31,11 @@ public class Player {
      * The group number of the block which the player is currently on.
      */
     private int group;
+    public int immobilized;
 
+    /**
+     * The player becomes immobilized if he/she is in jail/the hospital.
+     */
     private GameInstance instance;
 
     public Player(GameInstance instance, String name, int number, int cashAmt) {
@@ -43,9 +47,14 @@ public class Player {
 
     public void move(int steps) {
         lastDiceRoll = steps;
+        if (immobilized > 0) {
+            immobilized--;
+        }
+        if (immobilized > 0) {
+            return;
+        }
         forward(steps);
-        instance.queryBlock(this, instance.convertPos(position));
-        System.out.println("The current position of " + name + " is " + position);
+        System.out.println("The current position is " + position);
     }
 
     public boolean isForward() {
@@ -63,6 +72,12 @@ public class Player {
         if (position < 0) {
             position += GameInstance.MAP_SIZE;
         }
+        setGroup();
+    }
+
+    public void to(int pos) {
+        position = pos;
+        System.out.println(pos);
         setGroup();
     }
 
@@ -109,8 +124,11 @@ public class Player {
         return position;
     }
 
-    public int getGroup() {
-        return group;
+    public boolean upgradeable(Property property) {
+        return
+            this.group == property.getGroup()
+            && this == property.owner
+            && this.countProperty(property.getGroup()) <= property.getLevel();
     }
 
     /**
@@ -120,7 +138,7 @@ public class Player {
      * @return {@code 4} if the player has a monopoly, otherwise the exact number
      *         of properties is returned
      */
-    public int countProperty(int group) {
+    private int countProperty(int group) {
         if (instance.isMonopoly(this, group)) {
             return 4;
         }
@@ -135,5 +153,9 @@ public class Player {
 
     private void setGroup() {
         group = instance.getBlockGroup(instance.convertPos(position));
+    }
+
+    public void setCashAmt(int cashAmt) {
+        this.cashAmt = cashAmt;
     }
 }

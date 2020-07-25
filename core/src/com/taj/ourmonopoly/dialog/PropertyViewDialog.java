@@ -47,10 +47,7 @@ public class PropertyViewDialog extends Dialog {
         this.text("Number of visits: " + property.getNumOfVisits());
 
         TextButton button = new TextButton("Upgrade", skin);
-        if (player.getGroup() != property.getGroup()
-            || player != property.owner
-            || player.countProperty(property.getGroup()) <= property.getLevel())
-        {
+        if (player.upgradeable(property)) {
             button.setDisabled(true);
             button.setText("Can't Upgrade");
         }

@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -26,6 +28,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.taj.ourmonopoly.block.Metro;
 import com.taj.ourmonopoly.block.Property;
 import com.taj.ourmonopoly.dialog.AlertDialog;
+import com.taj.ourmonopoly.dialog.HospitalDialog;
+import com.taj.ourmonopoly.dialog.JailDialog;
 import com.taj.ourmonopoly.dialog.MetroDialog;
 import com.taj.ourmonopoly.dialog.PropertyPurchaseDialog;
 import com.taj.ourmonopoly.dialog.PropertyViewDialog;
@@ -47,7 +51,7 @@ public class GameScreen extends ScreenAdapter {
     private ArrayList<PlayerImage> playerImages;
 
     private Stage uiStage;
-    private Dialog dialog;
+    private Queue<Dialog> dialogs = new LinkedList<Dialog>();
     private Label l1, l2, l3, l4;
     private TextButton nextButton;
     private VerticalGroup group;
@@ -149,6 +153,13 @@ public class GameScreen extends ScreenAdapter {
         uiStage.getViewport().apply();
         uiStage.act(delta);
         uiStage.draw();
+
+        if (dialogs.peek() != null && !dialogs.peek().hasKeyboardFocus()) {
+            dialogs.poll();
+            if (dialogs.peek() != null) {
+                dialogs.peek().show(uiStage);
+            }
+        }
     }
 
     public void nextMove() {
@@ -219,15 +230,20 @@ public class GameScreen extends ScreenAdapter {
             case "Metro":
                 d = new MetroDialog("Metro", skin, this, (Metro) args[0], (Player) args[1]);
                 break;
+            case "Jail":
+                d = new JailDialog("Jail", skin, (Player) args[0], instance, this);
+                break;
+            case "Hospital":
+                d = new HospitalDialog("Hospital", skin, (Player) args[0], instance, this);
+                break;
             default:
                 return;
         }
 
-        if (this.dialog != null) {
-            this.dialog.hide();
+        if (this.dialogs.isEmpty()) {
+            d.show(uiStage);
         }
-        this.dialog = d;
-        this.dialog.show(uiStage);
+        this.dialogs.add(d);
     }
 
     private void createImages() throws IOException {

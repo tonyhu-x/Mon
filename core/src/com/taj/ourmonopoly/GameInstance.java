@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.taj.ourmonopoly.block.Block;
+import com.taj.ourmonopoly.block.Hospital;
+import com.taj.ourmonopoly.block.Jail;
 import com.taj.ourmonopoly.block.Property;
 
 /**
@@ -11,16 +13,9 @@ import com.taj.ourmonopoly.block.Property;
  */
 public class GameInstance {
 
-    // these are constants that blocks use to tell the instance to carry out a specific task
-    public static final int TASK_NO_OP = 0;
-    public static final int TASK_CREATE_PURCHASE_DIALOG = 1;
-    public static final int TASK_CREATE_UPGRADE_DIALOG = 2;
-    public static final int TASK_PAY_RENT = 3;
-    public static final int TASK_METRO = 4;
-    
     public static enum Task {
         NO_OP, CREATE_PURCHASE_DIALOG, CREATE_UPGRADE_DIALOG,
-        PAY_RENT, METRO
+        PAY_RENT, METRO, PAY_HUNDRED, RECIEVE_FIFTY, GO_TO_JAIL, CREATE_JAIL_DIALOG, SPLIT_CASH, GO_TO_HOSPITAL, CREATE_HOSPITAL_DIALOG
     }
 
     // public static final int 
@@ -28,6 +23,7 @@ public class GameInstance {
     public static final int MAP_SIZE = 80;
     int startingCashAmt = 1500;
     int turn;
+    boolean isDouble;
     GameScreen screen;
 
     /**
@@ -36,6 +32,11 @@ public class GameInstance {
     ArrayList<Player> players = new ArrayList<>();
     ArrayList<Dice> dice = new ArrayList<>();
     ArrayList<Block> blocks;
+
+    // convenience variables
+    Jail jail;
+    Hospital hospital;
+
 
     /**
      * Creates a game instance.
@@ -51,6 +52,14 @@ public class GameInstance {
             System.exit(-1);
         }
         this.turn = 0;
+
+        for (var b : blocks) {
+            if (b instanceof Jail)
+                jail = (Jail) b;
+            else if (b instanceof Hospital)
+                hospital = (Hospital) b;
+        }
+        
         for (int i = 0; i < 4; i++) {
             addPlayer(names[i]);
         }
@@ -64,8 +73,9 @@ public class GameInstance {
             }
         }
 
-        players.get(0).purchaseProperty(((Property) blocks.get(1)));
-        players.get(0).purchaseProperty(((Property) blocks.get(2)));
+        hospital.accept(players.get(0));
+        // players.get(0).purchaseProperty(((Property) blocks.get(1)));
+        // players.get(0).purchaseProperty(((Property) blocks.get(2)));
         // players.get(0).purchaseProperty(((Property) blocks.get(3)));
 
     }
@@ -75,17 +85,16 @@ public class GameInstance {
     }
 
     public void nextPlayer() {
-        turn = (turn + 1) % players.size();
-        players.get(turn).move(getDiceRoll());
+        nextPlayer(true);
     }
 
-    public int getDiceRoll() {
-        int res = 0;
-        for (var d : dice) {
-            res += d.next();
+    private void nextPlayer(boolean next) {
+        if (next) {
+            turn = (turn + 1) % players.size();
         }
-        System.out.println("The dice roll is " + res);
-        return res;
+        var p = players.get(turn);
+        p.move(getDiceRoll());
+        queryBlock(p);
     }
 
     /**
@@ -94,7 +103,8 @@ public class GameInstance {
      * @param pos the position of the block (after conversion from
      *            {@link Player#position})
      */
-    public void queryBlock(Player player, int pos) {
+    private void queryBlock(Player player) {
+        int pos = convertPos(player.getPosition());
         Task result = blocks.get(pos).interact(player);
 
         switch (result) {
@@ -111,12 +121,80 @@ public class GameInstance {
                 break;
             case METRO:
                 screen.createDialog("Metro", blocks.get(pos), player);
+                break;
+            case PAY_HUNDRED:
+                screen.createDialog("ShowAlert", player.name + " paid $100.");
+                break;
+            case RECIEVE_FIFTY:
+                screen.createDialog("ShowAlert", player.name + " recieved $50.");
+                break;
+            case GO_TO_JAIL:
+                screen.createDialog("ShowAlert", "Oops! To jail...");
+                jail.accept(player);
+                break;
+            case GO_TO_HOSPITAL:
+                screen.createDialog("ShowAlert", "Oops! To hospital...");
+                hospital.accept(player);
+                break;
+            case SPLIT_CASH:
+                screen.createDialog("ShowAlert", "Every player's cash is equally redistributed!");
+                splitCash();
+                break;
+            case CREATE_JAIL_DIALOG:
+                screen.createDialog("Jail", player);
+                break;
+            case CREATE_HOSPITAL_DIALOG:
+                screen.createDialog("Hospital", player);
+                break;
             default:
                 break;
         }
     }
 
+    public void payAndRelease(Player player) {
+        player.pay(50);
+        jail.release(player);
+        nextPlayer(false);
+    }
+
+    public void payAndCure(Player player) {
+        player.pay(100);
+        hospital.release(player);
+        nextPlayer(false);
+    }
+
+    public void tryToReleaseFromJail(Player player) {
+        int roll = getDiceRoll();
+        if (isDouble) {
+            jail.release(player);
+            player.move(roll);
+            queryBlock(player);
+        }
+        else if (player.immobilized == 1) {
+            screen.createDialog("ShowAlert", "Oops! No double this time. You have to pay now.");
+            payAndRelease(player);
+        }
+        else {
+            screen.createDialog("ShowAlert", "Oops! No double this time.");
+        }
+    }
     
+    public void tryToReleaseFromHospital(Player player) {
+        int roll = getDiceRoll();
+        if (roll <= 5) {
+            hospital.release(player);
+            player.move(roll);
+            queryBlock(player);
+        }
+        else if (player.immobilized == 1) {
+            screen.createDialog("ShowAlert", "Oops! Not enough luck this time. You have to pay now.");
+            payAndCure(player);
+        }
+        else {
+            screen.createDialog("ShowAlert", "Oops! Not enough luck this time.");
+        }
+    }
+
     private int calcRent(int pos) {
         int oldPos = pos;
         int rent = ((Property) blocks.get(pos)).getCurrentRent();
@@ -139,6 +217,16 @@ public class GameInstance {
         }
 
         return rent;
+    }
+
+    private void splitCash() {
+        int cashSum = players
+            .stream()
+            .mapToInt(Player::getCashAmt)
+            .sum();
+        for (var p : players) {
+            p.setCashAmt(cashSum / players.size());
+        }
     }
 
     public int getBlockGroup(int pos) {
@@ -192,4 +280,15 @@ public class GameInstance {
 
         return pos;
     }
+
+    private int getDiceRoll() {
+        int roll1, roll2;
+        roll1 = dice.get(0).next();
+        roll2 = dice.get(1).next();
+        isDouble = roll1 == roll2;
+        
+        System.out.println("The dice roll is " + roll1 + " and " + roll2);
+        return roll1 + roll2;
+    }
+
 }
