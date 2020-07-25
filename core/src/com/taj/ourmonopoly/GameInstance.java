@@ -178,13 +178,13 @@ public class GameInstance {
             // do nothing
         }
         else if (pos < 63) {
-            pos = 80 - pos;
+            pos = pos - 26;
         }
         else if (pos < 67) {
             pos = pos - 10;
         }
         else if (pos < 77) {
-            pos = 90 - pos;
+            pos = pos - 54;
         }
         else {
             pos = pos - 20;
