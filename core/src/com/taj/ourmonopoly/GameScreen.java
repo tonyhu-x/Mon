@@ -73,7 +73,7 @@ public class GameScreen extends ScreenAdapter {
         }
         
         for (var p : instance.players) {
-            playerImages.add(new PlayerImage(this, p, blockImages.get(0)));
+            playerImages.add(new PlayerImage(p, blockImages.get(0)));
         }
     }
 

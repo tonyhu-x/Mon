@@ -8,7 +8,6 @@ public class PlayerImage extends Image {
     public static final int WIDTH = 10; 
     public static final int HEIGHT = 10; 
 
-    private GameScreen screen;
     Player player;
     
     /**
@@ -16,9 +15,8 @@ public class PlayerImage extends Image {
      */
     private BlockImage parent;
 
-    public PlayerImage(GameScreen screen, Player player, BlockImage parent) {
+    public PlayerImage(Player player, BlockImage parent) {
         super(TextureInventory.getToken("tokenP" + (player.number + 1)));
-        this.screen = screen;
         this.player = player;
         this.setSize(WIDTH, HEIGHT);
         this.setBlockParent(parent);

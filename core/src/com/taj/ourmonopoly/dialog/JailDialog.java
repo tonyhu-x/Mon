@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.taj.ourmonopoly.GameInstance;
 import com.taj.ourmonopoly.GameScreen;
 import com.taj.ourmonopoly.Player;
-import com.taj.ourmonopoly.block.Jail;
 
 public class JailDialog extends Dialog {
 

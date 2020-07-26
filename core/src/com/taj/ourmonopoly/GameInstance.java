@@ -32,6 +32,7 @@ public class GameInstance {
     ArrayList<Player> players = new ArrayList<>();
     ArrayList<Dice> dice = new ArrayList<>();
     ArrayList<Block> blocks;
+    private int lastDiceRoll = -1;
 
     // convenience variables
     Jail jail;
@@ -89,11 +90,15 @@ public class GameInstance {
     }
 
     private void nextPlayer(boolean next) {
+        nextPlayer(next, true);
+    }
+
+    private void nextPlayer(boolean next, boolean newDiceRoll) {
         if (next) {
             turn = (turn + 1) % players.size();
         }
         var p = players.get(turn);
-        p.move(getDiceRoll());
+        p.move(newDiceRoll ? getDiceRoll() : lastDiceRoll);
         queryBlock(p);
     }
 
@@ -164,11 +169,10 @@ public class GameInstance {
     }
 
     public void tryToReleaseFromJail(Player player) {
-        int roll = getDiceRoll();
+        getDiceRoll();
         if (isDouble) {
             jail.release(player);
-            player.move(roll);
-            queryBlock(player);
+            nextPlayer(false, false);
         }
         else if (player.immobilized == 1) {
             screen.createDialog("ShowAlert", "Oops! No double this time. You have to pay now.");
@@ -183,8 +187,7 @@ public class GameInstance {
         int roll = getDiceRoll();
         if (roll <= 5) {
             hospital.release(player);
-            player.move(roll);
-            queryBlock(player);
+            nextPlayer(false, false);
         }
         else if (player.immobilized == 1) {
             screen.createDialog("ShowAlert", "Oops! Not enough luck this time. You have to pay now.");
@@ -286,7 +289,7 @@ public class GameInstance {
         roll1 = dice.get(0).next();
         roll2 = dice.get(1).next();
         isDouble = roll1 == roll2;
-        
+        lastDiceRoll = roll1 + roll2;
         System.out.println("The dice roll is " + roll1 + " and " + roll2);
         return roll1 + roll2;
     }

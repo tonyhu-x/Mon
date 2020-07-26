@@ -63,6 +63,10 @@ public class Player {
     }
 
     public void forward(int steps) {
+        // the player has passed Go
+        if (position + steps > GameInstance.MAP_SIZE) {
+            receive(Go.SALARY);
+        }
         position = (position + steps) % GameInstance.MAP_SIZE;
         setGroup();
     }
