@@ -5,6 +5,9 @@
 * Each player starts at the block marked as "Go".
 * Each player rolls two dice. The player with the highest sum goes first. The next player is player # (curPlayer + 1). After player four finishes, player one goes.
 
+## Go
+* Each time a player passes Go, he/she recieves an amount of salary. The amount is $200 at the beginning of each game. It increases by $50 following each pass, capping at $600. Each individual therefore may recieve different salaries depending on their pace. 
+
 ## Property
 * A player can purchase a property if it has not been purchased by another player.
 * A player may choose to ungrade a property that he/she owns if he/she stops by the property again. The price of an upgrade is (2^n) times the original purchase price. Note that the player does not have to own every property in the group to upgrade them.

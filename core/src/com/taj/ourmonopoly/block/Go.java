@@ -5,10 +5,13 @@ import com.taj.ourmonopoly.GameInstance.Task;
 
 public class Go extends SqrBlock {
 
-    /**
-     * The amount of money a player gets each time they pass Go.
-     */
-    public static final int SALARY = 200;
+    public static final int SALARY_MIN = 200;
+    public static final int STEP = 50;
+    public static final int SALARY_MAX = 600;
+
+    public static int salary(int roundCount) {
+        return Math.min(SALARY_MIN + (roundCount - 1) * STEP, SALARY_MAX);
+    }
 
     public Go(String name, int index) {
         super(name, index);

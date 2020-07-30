@@ -31,6 +31,12 @@ public class Player {
      * the map. The starting position is 0.
      */
     private int position;
+
+    /**
+     * The number of rounds the player has completed, equivalent to the number of
+     * times he/she has passed Go.
+     */
+    private int roundCount;
     
     /**
      * The group number of the block which the player is currently on.
@@ -70,7 +76,8 @@ public class Player {
     public void forward(int steps) {
         // the player has passed Go
         if (position + steps > GameInstance.MAP_SIZE) {
-            receive(Go.SALARY);
+            roundCount++;
+            receive(Go.salary(roundCount));
         }
         // the player has passed a bank
         if (position < 13 && position + steps >= 13
