@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.taj.ourmonopoly.block.Bank;
 import com.taj.ourmonopoly.block.Block;
 import com.taj.ourmonopoly.block.Property;
 
@@ -15,7 +16,6 @@ public class BlockImage extends Image {
 
     private Block block;
     private String prevTextureName;
-    private GameScreen screen;
     private ArrayList<PlayerImage> images;
     private int rotate;
 
@@ -23,7 +23,6 @@ public class BlockImage extends Image {
         super(TextureInventory.getRegion(block.getTextureName()));
         prevTextureName = block.getTextureName();
         this.block = block;
-        this.screen = screen;
         this.rotate = rotate;
         this.images = new ArrayList<>();
         this.setBounds(posX, posY, block.getDimensions().x, block.getDimensions().y);
@@ -34,6 +33,9 @@ public class BlockImage extends Image {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (block instanceof Property) {
                     screen.createDialog("ViewProperty", block);
+                }
+                if (block instanceof Bank) {
+                    screen.createDialog("Bank");
                 }
                 return true;                
             }
@@ -87,17 +89,14 @@ public class BlockImage extends Image {
     public void pushImage(PlayerImage image) {
         images.add(image);
         if (this.rotate == 0) {
-            image.setX(this.getX() + (images.size() - 1) * PlayerImage.WIDTH);
-            image.setY(this.getY());
+            image.newTarget(this.getX() + (images.size() - 1) * PlayerImage.WIDTH, this.getY());
         }
         else if (this.rotate == -1) {
-            image.setX(this.getX());
-            image.setY(this.getY() + images.size() * rotate * PlayerImage.HEIGHT);
+            image.newTarget(this.getX(), this.getY() + images.size() * rotate * PlayerImage.HEIGHT);
         }
         // otherwise rotate == 1
         else {
-            image.setX(this.getX() - PlayerImage.WIDTH);
-            image.setY(this.getY() + (images.size() - 1) * rotate * PlayerImage.HEIGHT);
+            image.newTarget(this.getX() - PlayerImage.WIDTH, this.getY() + (images.size() - 1) * rotate * PlayerImage.HEIGHT);
         }
     }
 
