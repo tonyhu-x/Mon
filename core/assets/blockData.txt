@@ -1,60 +1,60 @@
 0,Go,Go,-1,-1,,,,,
-1,A,Property,1,300,90,270,630,1350,2790
-2,A,Property,1,300,90,270,630,1350,2790
-3,A,Chance,-1,-1,,,,,
-4,A,Property,2,300,90,270,630,1350,2790
-5,A,Property,2,300,90,270,630,1350,2790
-6,A,ComChest,-1,-1,,,,,
-7,A,Property,3,300,90,270,630,1350,2790
-8,A,Property,3,300,90,270,630,1350,2790
-9,A,Jail,-1,-1,,,,,
-10,A,Property,4,200,50,150,350,750,1550
-11,A,Property,4,200,50,150,350,750,1550
-12,A,Property,4,200,50,150,350,750,1550
-13,A,Bank,-1,-1,,,,,
-14,A,Property,5,300,90,270,630,1350,2790
-15,A,Property,5,300,90,270,630,1350,2790
-16,A,Metro,-1,-1,,,,,
-17,A,Property,6,300,90,270,630,1350,2790
-18,A,Property,6,300,90,270,630,1350,2790
-19,A,Chance,-1,-1,,,,,
-20,A,Property,7,300,90,270,630,1350,2790
-21,A,Property,7,300,90,270,630,1350,2790
-22,A,Park,-1,-1,,,,,
-23,A,Property,8,150,30,90,210,450,930
-24,A,Property,8,150,30,90,210,450,930
-25,A,Property,8,150,30,90,210,450,930
-26,A,Property,8,150,30,90,210,450,930
-27,A,Bank,-1,-1,,,,,
-28,A,Property,9,300,90,270,630,1350,2790
-29,A,Property,9,300,90,270,630,1350,2790
-30,A,Metro,-1,-1,,,,,
-31,A,Property,10,300,90,270,630,1350,2790
-32,A,Property,10,300,90,270,630,1350,2790
-33,A,ComChest,-1,-1,,,,,
-34,A,Property,11,300,90,270,630,1350,2790
-35,A,Property,11,300,90,270,630,1350,2790
-36,A,Park,-1,-1,,,,,
-37,A,Property,12,200,50,150,350,750,1550
-38,A,Property,12,200,50,150,350,750,1550
-39,A,Property,12,200,50,150,350,750,1550
-40,A,Park,-1,-1,,,,,
-41,A,Property,13,300,90,270,630,1350,2790
-42,A,Property,13,300,90,270,630,1350,2790
-43,A,ComChest,-1,-1,,,,,
-44,A,Property,14,300,90,270,630,1350,2790
-45,A,Property,14,300,90,270,630,1350,2790
-46,A,Chance,-1,-1,,,,,
-47,A,Property,15,300,90,270,630,1350,2790
-48,A,Property,15,300,90,270,630,1350,2790
-49,A,Hospital,-1,-1,,,,,
-50,A,Property,16,200,50,150,350,750,1550
-51,A,Property,16,200,50,150,350,750,1550
-52,A,Property,16,200,50,150,350,750,1550
-53,A,Property,17,150,30,90,210,450,930
-54,A,Property,17,150,30,90,210,450,930
-55,A,Property,17,150,30,90,210,450,930
-56,A,Property,17,150,30,90,210,450,930
-57,A,Property,18,200,50,150,350,750,1550
-58,A,Property,18,200,50,150,350,750,1550
-59,A,Property,18,200,50,150,350,750,1550
+1,Oak Avenue,Property,1,300,90,270,630,1350,2790
+2,Birch Avenue,Property,1,300,90,270,630,1350,2790
+3,Chance,Chance,-1,-1,,,,,
+4,Lavander Street,Property,2,300,90,270,630,1350,2790
+5,Lily Street,Property,2,300,90,270,630,1350,2790
+6,Community Chest,ComChest,-1,-1,,,,,
+7,Lincoln Avenue,Property,3,300,90,270,630,1350,2790
+8,Trump Avenue,Property,3,300,90,270,630,1350,2790
+9,Top-Security Jail,Jail,-1,-1,,,,,
+10,Broadway Hall,Property,4,200,50,150,350,750,1550
+11,Grand Hall,Property,4,200,50,150,350,750,1550
+12,Crystal Hall,Property,4,200,50,150,350,750,1550
+13,National Bank,Bank,-1,-1,,,,,
+14,Union Road,Property,5,300,90,270,630,1350,2790
+15,Independence Road,Property,5,300,90,270,630,1350,2790
+16,Simple Railroad Cor.,Metro,-1,-1,,,,,
+17,Ragged Road,Property,6,300,90,270,630,1350,2790
+18,Silk Road,Property,6,300,90,270,630,1350,2790
+19,Chance,Chance,-1,-1,,,,,
+20,Ontario Street,Property,7,300,90,270,630,1350,2790
+21,Manchester Street,Property,7,300,90,270,630,1350,2790
+22,Black Park,Park,-1,-1,,,,,
+23,Twilight Avenue S,Property,8,150,30,90,210,450,930
+24,Dawn Avenue,Property,8,150,30,90,210,450,930
+25,Dusk Avenue,Property,8,150,30,90,210,450,930
+26,Twilight Avenue N,Property,8,150,30,90,210,450,930
+27,Bank of Gileadus,Bank,-1,-1,,,,,
+28,Aurora Boulevard,Property,9,300,90,270,630,1350,2790
+29,Lunar Crescent,Property,9,300,90,270,630,1350,2790
+30,Métro Simple,Metro,-1,-1,,,,,
+31,Dvorak House,Property,10,300,90,270,630,1350,2790
+32,Colemak Property,Property,10,300,90,270,630,1350,2790
+33,Community Chest,ComChest,-1,-1,,,,,
+34,Haunted Building,Property,11,300,90,270,630,1350,2790
+35,Paradise,Property,11,300,90,270,630,1350,2790
+36,White Park,Park,-1,-1,,,,,
+37,Palais Diamant,Property,12,200,50,150,350,750,1550
+38,Maison de ville,Property,12,200,50,150,350,750,1550
+39,Quartier français,Property,12,200,50,150,350,750,1550
+40,Mystery Park,Park,-1,-1,,,,,
+41,Hexavenue,Property,13,300,90,270,630,1350,2790
+42,Octavenue,Property,13,300,90,270,630,1350,2790
+43,Community Chest,ComChest,-1,-1,,,,,
+44,The Tattooist,Property,14,300,90,270,630,1350,2790
+45,The Barber,Property,14,300,90,270,630,1350,2790
+46,Chance,Chance,-1,-1,,,,,
+47,Pride,Property,15,300,90,270,630,1350,2790
+48,Dignity,Property,15,300,90,270,630,1350,2790
+49,State Hospital,Hospital,-1,-1,,,,,
+50,Genisis,Property,16,200,50,150,350,750,1550
+51,Maximam,Property,16,200,50,150,350,750,1550
+52,Diversity,Property,16,200,50,150,350,750,1550
+53,Nativity,Property,17,150,30,90,210,450,930
+54,Growth,Property,17,150,30,90,210,450,930
+55,Defiance,Property,17,150,30,90,210,450,930
+56,Acceptance,Property,17,150,30,90,210,450,930
+57,Maturity,Property,18,200,50,150,350,750,1550
+58,Tranquility,Property,18,200,50,150,350,750,1550
+59,Eternity,Property,18,200,50,150,350,750,1550
