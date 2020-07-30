@@ -17,3 +17,5 @@
 * Added zoom and drag.
 ## Version 0.3
 * Added a jail system.
+* Added a hospital system.
+* Added a bank system.

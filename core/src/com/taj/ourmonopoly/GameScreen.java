@@ -28,6 +28,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.taj.ourmonopoly.block.Metro;
 import com.taj.ourmonopoly.block.Property;
 import com.taj.ourmonopoly.dialog.AlertDialog;
+import com.taj.ourmonopoly.dialog.BankDialog;
 import com.taj.ourmonopoly.dialog.HospitalDialog;
 import com.taj.ourmonopoly.dialog.JailDialog;
 import com.taj.ourmonopoly.dialog.MetroDialog;
@@ -178,10 +179,10 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void updateLabels() {
-        l1.setText(instance.players.get(0).name + ": " + instance.players.get(0).getCashAmt());
-        l2.setText(instance.players.get(1).name + ": " + instance.players.get(1).getCashAmt());
-        l3.setText(instance.players.get(2).name + ": " + instance.players.get(2).getCashAmt());
-        l4.setText(instance.players.get(3).name + ": " + instance.players.get(3).getCashAmt());
+        l1.setText(instance.players.get(0).name + ": " + instance.players.get(0).cashAmt);
+        l2.setText(instance.players.get(1).name + ": " + instance.players.get(1).cashAmt);
+        l3.setText(instance.players.get(2).name + ": " + instance.players.get(2).cashAmt);
+        l4.setText(instance.players.get(3).name + ": " + instance.players.get(3).cashAmt);
         
         switch (instance.turn) {
             case 0:
@@ -235,6 +236,9 @@ public class GameScreen extends ScreenAdapter {
                 break;
             case "Hospital":
                 d = new HospitalDialog("Hospital", skin, (Player) args[0], instance, this);
+                break;
+            case "Bank":
+                d = new BankDialog("Bank", skin, instance.getCurrentPlayer());
                 break;
             default:
                 return;

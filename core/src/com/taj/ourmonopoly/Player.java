@@ -17,7 +17,12 @@ public class Player {
     /**
      * The amount of cash the player has.
      */
-    private int cashAmt;
+    public int cashAmt;
+
+    /**
+     * The money the player keeps in the bank.
+     */
+    public int savings;
     private ArrayList<Property> properties = new ArrayList<>();
 
     /**
@@ -67,6 +72,14 @@ public class Player {
         if (position + steps > GameInstance.MAP_SIZE) {
             receive(Go.SALARY);
         }
+        // the player has passed a bank
+        if (position < 13 && position + steps >= 13
+            || position < 27 && position + steps >= 27
+            || position < 53 && position + steps >= 53
+            || position < 67 && position + steps >= 67)
+        {
+            Bank.processTransactions(this);
+        }
         position = (position + steps) % GameInstance.MAP_SIZE;
         setGroup();
     }
@@ -79,6 +92,7 @@ public class Player {
         setGroup();
     }
 
+    // directly teleports player, does not pass Go or bank
     public void to(int pos) {
         position = pos;
         System.out.println(pos);
@@ -110,10 +124,6 @@ public class Player {
         this.cashAmt = cashAmt;
         this.properties = new ArrayList<>();    
         this.position = 0;
-    }
-
-    public int getCashAmt() {
-        return cashAmt;
     }
 
     public String getName() {
@@ -159,7 +169,4 @@ public class Player {
         group = instance.getBlockGroup(instance.convertPos(position));
     }
 
-    public void setCashAmt(int cashAmt) {
-        this.cashAmt = cashAmt;
-    }
 }

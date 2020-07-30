@@ -17,3 +17,10 @@
 * Once in the hospital, the player becomes immobilized for 4 rounds instead of 3.
 * The player can attempt to get a dice roll to get out of the hospital early. The player gets out of the hospital if the dice roll is smaller than or equal to 5.
 * The player can also get out of the hospital early by paying a $100 fee.
+
+## Bank
+* The bank is where players can deposit their money in order to earn interest.
+* A player cannot use his/her savings to purchase or upgrade property. However, if he/she does not have enough cash to pay for other deductions, the savings can be used.
+* A player can place transactions whenever he/she wishes, but those transactions will only be processed when they pass either bank.
+* At the time a transaction is processed, if the player does not have enough cash/savings, the transaction will be cancelled.
+* The interest rate is 5 %. Interest is paid at the beginning of each of the player's turns.

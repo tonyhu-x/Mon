@@ -3,6 +3,7 @@ package com.taj.ourmonopoly;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.taj.ourmonopoly.block.Bank;
 import com.taj.ourmonopoly.block.Block;
 import com.taj.ourmonopoly.block.Hospital;
 import com.taj.ourmonopoly.block.Jail;
@@ -94,10 +95,15 @@ public class GameInstance {
     }
 
     private void nextPlayer(boolean next, boolean newDiceRoll) {
+        Player p;
         if (next) {
             turn = (turn + 1) % players.size();
+            p = players.get(turn);
+            Bank.refresh(p);            
         }
-        var p = players.get(turn);
+        else {
+            p = players.get(turn);
+        }
         p.move(newDiceRoll ? getDiceRoll() : lastDiceRoll);
         queryBlock(p);
     }
@@ -225,10 +231,10 @@ public class GameInstance {
     private void splitCash() {
         int cashSum = players
             .stream()
-            .mapToInt(Player::getCashAmt)
+            .mapToInt(p -> p.cashAmt)
             .sum();
         for (var p : players) {
-            p.setCashAmt(cashSum / players.size());
+            p.cashAmt = cashSum / players.size();
         }
     }
 
