@@ -34,7 +34,7 @@ public class ComChest extends RectBlock {
                 return Task.PAY_HUNDRED;
             case 1:
                 player.receive(50);
-                return Task.RECIEVE_FIFTY;
+                return Task.RECEIVE_FIFTY;
             case 2:
                 return Task.GO_TO_JAIL;
             default:

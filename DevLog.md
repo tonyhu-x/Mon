@@ -19,3 +19,5 @@
 * Added a jail system.
 * Added a hospital system.
 * Added a bank system.
+* Modified salary rules.
+* Added names to blocks.

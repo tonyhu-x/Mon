@@ -16,7 +16,7 @@ public class GameInstance {
 
     public static enum Task {
         NO_OP, CREATE_PURCHASE_DIALOG, CREATE_UPGRADE_DIALOG,
-        PAY_RENT, METRO, PAY_HUNDRED, RECIEVE_FIFTY, GO_TO_JAIL, CREATE_JAIL_DIALOG, SPLIT_CASH, GO_TO_HOSPITAL, CREATE_HOSPITAL_DIALOG
+        PAY_RENT, METRO, PAY_HUNDRED, RECEIVE_FIFTY, GO_TO_JAIL, CREATE_JAIL_DIALOG, SPLIT_CASH, GO_TO_HOSPITAL, CREATE_HOSPITAL_DIALOG
     }
 
     // public static final int 
@@ -136,8 +136,8 @@ public class GameInstance {
             case PAY_HUNDRED:
                 screen.createDialog("ShowAlert", player.name + " paid $100.");
                 break;
-            case RECIEVE_FIFTY:
-                screen.createDialog("ShowAlert", player.name + " recieved $50.");
+            case RECEIVE_FIFTY:
+                screen.createDialog("ShowAlert", player.name + " received $50.");
                 break;
             case GO_TO_JAIL:
                 screen.createDialog("ShowAlert", "Oops! To jail...");
@@ -298,6 +298,14 @@ public class GameInstance {
         lastDiceRoll = roll1 + roll2;
         System.out.println("The dice roll is " + roll1 + " and " + roll2);
         return roll1 + roll2;
+    }
+
+    /**
+     * Serves as a wrapper around the
+     * {@link GameScreen#createDialog(String, Object...)} method.
+     */
+    public void createDialog(String type, Object... args) {
+        screen.createDialog(type, args);
     }
 
 }

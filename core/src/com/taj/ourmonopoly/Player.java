@@ -75,9 +75,10 @@ public class Player {
 
     public void forward(int steps) {
         // the player has passed Go
-        if (position + steps > GameInstance.MAP_SIZE) {
+        if (position + steps >= GameInstance.MAP_SIZE) {
             roundCount++;
             receive(Go.salary(roundCount));
+            instance.createDialog("ShowAlert", "You have received $" + Go.salary(roundCount) + ".");
         }
         // the player has passed a bank
         if (position < 13 && position + steps >= 13
