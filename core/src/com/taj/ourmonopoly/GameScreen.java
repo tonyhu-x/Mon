@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -27,6 +28,7 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.taj.ourmonopoly.block.Metro;
 import com.taj.ourmonopoly.block.Property;
+import com.taj.ourmonopoly.dialog.AlertActionDialog;
 import com.taj.ourmonopoly.dialog.AlertDialog;
 import com.taj.ourmonopoly.dialog.BankDialog;
 import com.taj.ourmonopoly.dialog.HospitalDialog;
@@ -34,6 +36,7 @@ import com.taj.ourmonopoly.dialog.JailDialog;
 import com.taj.ourmonopoly.dialog.MetroDialog;
 import com.taj.ourmonopoly.dialog.PropertyPurchaseDialog;
 import com.taj.ourmonopoly.dialog.PropertyViewDialog;
+import com.taj.ourmonopoly.dialog.AlertActionDialog.AlertAction;
 
 /**
  * The GUI representation of a game.
@@ -227,6 +230,15 @@ public class GameScreen extends ScreenAdapter {
                 break;
             case "ShowAlert":
                 d = new AlertDialog("Alert", skin, (String) args[0]);
+                break;
+            case "AlertAction":
+                d = new AlertActionDialog(
+                    "Alert",
+                    skin,
+                    this,
+                    (String) args[0],
+                    (AlertAction) args[1]
+                );
                 break;
             case "Metro":
                 d = new MetroDialog("Metro", skin, this, (Metro) args[0], (Player) args[1]);

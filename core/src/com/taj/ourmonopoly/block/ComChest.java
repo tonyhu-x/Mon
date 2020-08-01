@@ -11,8 +11,9 @@ public class ComChest extends RectBlock {
     // 0: pay $100
     // 1: get $50
     // 2: go to jail
+    // 3: advance to Go
 
-    private static final int CARD_MAX = 3;
+    private static final int CARD_MAX = 4;
     private static final Random random = new Random();
     private static int lastDraw = -1;
 
@@ -30,13 +31,13 @@ public class ComChest extends RectBlock {
 
         switch (cardIndex) {
             case 0:
-                player.pay(100);
                 return Task.PAY_HUNDRED;
             case 1:
-                player.receive(50);
                 return Task.RECEIVE_FIFTY;
             case 2:
                 return Task.GO_TO_JAIL;
+            case 3:
+                return Task.ADVANCE_TO_GO;
             default:
                 return Task.NO_OP;
 

@@ -8,6 +8,8 @@ import com.taj.ourmonopoly.block.Block;
 import com.taj.ourmonopoly.block.Hospital;
 import com.taj.ourmonopoly.block.Jail;
 import com.taj.ourmonopoly.block.Property;
+import com.taj.ourmonopoly.dialog.AlertActionDialog;
+import com.taj.ourmonopoly.dialog.AlertActionDialog.AlertAction;
 
 /**
  * The non-GUI representation of a game.
@@ -16,7 +18,7 @@ public class GameInstance {
 
     public static enum Task {
         NO_OP, CREATE_PURCHASE_DIALOG, CREATE_UPGRADE_DIALOG,
-        PAY_RENT, METRO, PAY_HUNDRED, RECEIVE_FIFTY, GO_TO_JAIL, CREATE_JAIL_DIALOG, SPLIT_CASH, GO_TO_HOSPITAL, CREATE_HOSPITAL_DIALOG
+        PAY_RENT, METRO, PAY_HUNDRED, RECEIVE_FIFTY, GO_TO_JAIL, CREATE_JAIL_DIALOG, SPLIT_CASH, GO_TO_HOSPITAL, CREATE_HOSPITAL_DIALOG, ADVANCE_TO_GO, BACK_TWO
     }
 
     // public static final int 
@@ -104,7 +106,8 @@ public class GameInstance {
         else {
             p = players.get(turn);
         }
-        p.move(newDiceRoll ? getDiceRoll() : lastDiceRoll);
+        // p.move(newDiceRoll ? getDiceRoll() : lastDiceRoll);
+        p.move(3);
         queryBlock(p);
     }
 
@@ -134,22 +137,49 @@ public class GameInstance {
                 screen.createDialog("Metro", blocks.get(pos), player);
                 break;
             case PAY_HUNDRED:
+                player.pay(100);
                 screen.createDialog("ShowAlert", player.name + " paid $100.");
                 break;
             case RECEIVE_FIFTY:
+                player.receive(50);
                 screen.createDialog("ShowAlert", player.name + " received $50.");
                 break;
             case GO_TO_JAIL:
-                screen.createDialog("ShowAlert", "Oops! To jail...");
-                jail.accept(player);
+                screen.createDialog("AlertAction", "Oops! To jail...", new AlertAction() {
+                    @Override
+                    public void apply() {
+                        jail.accept(player);
+                    }
+                });
                 break;
             case GO_TO_HOSPITAL:
-                screen.createDialog("ShowAlert", "Oops! To hospital...");
-                hospital.accept(player);
+                screen.createDialog("AlertAction", "Oops! To hospital...", new AlertAction() {
+                    @Override
+                    public void apply() {
+                        hospital.accept(player);
+                    }
+                });
+                break;
+            case ADVANCE_TO_GO:
+                screen.createDialog("AlertAction", "Advancing to Go...", new AlertAction() {
+                    @Override
+                    public void apply() {
+                        player.forward(MAP_SIZE - player.getPosition());
+                    }
+                });
                 break;
             case SPLIT_CASH:
                 screen.createDialog("ShowAlert", "Every player's cash is equally redistributed!");
                 splitCash();
+                break;
+            case BACK_TWO:
+                screen.createDialog("AlertAction", "Going back two spaces...", new AlertAction() {
+                    @Override
+                    public void apply() {
+                        player.backward(2);
+                        GameInstance.this.queryBlock(player);
+                    }
+                });
                 break;
             case CREATE_JAIL_DIALOG:
                 screen.createDialog("Jail", player);

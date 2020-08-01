@@ -21,3 +21,5 @@
 * Added a bank system.
 * Modified salary rules.
 * Added names to blocks.
+* Added more ComChest and Chance cards.
+* Added a stop animation at ComChest/Chance before the effect is executed.
