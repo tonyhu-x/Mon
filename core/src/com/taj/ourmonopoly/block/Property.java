@@ -32,6 +32,14 @@ public class Property extends RectBlock {
         level++;
         owner.pay(purchasePrice * (int) Math.pow(2, level));
     }
+    
+    public void downgrade() {
+        if (this.level == 0) {
+            throw new RuntimeException("That's weird. Check your code logic.");
+        }
+        owner.receive((int) (0.75 * purchasePrice * Math.pow(2, level)));
+        level--;
+    }
 
     @Override
     public Task interact(Player player) {

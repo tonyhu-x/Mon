@@ -87,6 +87,7 @@ public class Player {
             || position < 67 && position + steps >= 67)
         {
             Bank.processTransactions(this);
+            instance.createDialog("ShowAlert", "Transactions have been processed.");
         }
         position = (position + steps) % GameInstance.MAP_SIZE;
         setGroup();
@@ -150,7 +151,13 @@ public class Player {
         return
             this.group == property.getGroup()
             && this == property.owner
-            && this.countProperty(property.getGroup()) <= property.getLevel();
+            && this.countProperty(property.getGroup()) > property.getLevel();
+    }
+
+    public boolean downgradeable(Property property) {
+        return
+            this == property.owner
+            && property.getLevel() > 0;
     }
 
     /**

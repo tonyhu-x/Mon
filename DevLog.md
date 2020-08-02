@@ -23,3 +23,6 @@
 * Added names to blocks.
 * Added more ComChest and Chance cards.
 * Added a stop animation at ComChest/Chance before the effect is executed.
+* Fixed a bug that causes IndexOutOfBoundsException
+* Added the ability for players to downgrade properties.
+* Added a space shortcut to proceed to next player.

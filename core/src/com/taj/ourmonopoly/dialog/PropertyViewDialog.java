@@ -47,20 +47,29 @@ public class PropertyViewDialog extends Dialog {
         this.text("Number of visits: " + property.getNumOfVisits());
 
         TextButton button = new TextButton("Upgrade", skin);
-        if (player.upgradeable(property)) {
+        if (!player.upgradeable(property)) {
             button.setDisabled(true);
             button.setText("Can't Upgrade");
         }
+        TextButton button2 = new TextButton("Downgrade", skin);
+        if (!player.downgradeable(property)) {
+            button2.setDisabled(true);
+            button2.setText("Can't Downgrade");
+        }
     
         this.button(button, true);
+        this.button(button2, false);
     }
     
     @Override
     protected void result(Object object) {
         if (((boolean) object) == true) {
             this.property.upgrade();
-            screen.updateImages();
-            screen.updateLabels();
         }
+        else {
+            this.property.downgrade();
+        }
+        screen.updateImages();
+        screen.updateLabels();
     }
 }
