@@ -77,7 +77,7 @@ public class GameInstance {
             }
         }
 
-        hospital.accept(players.get(0));
+        // hospital.accept(players.get(0));
         // players.get(0).purchaseProperty(((Property) blocks.get(1)));
         // players.get(0).purchaseProperty(((Property) blocks.get(2)));
         // players.get(0).purchaseProperty(((Property) blocks.get(3)));
@@ -106,8 +106,8 @@ public class GameInstance {
         else {
             p = players.get(turn);
         }
-        // p.move(newDiceRoll ? getDiceRoll() : lastDiceRoll);
-        p.move(3);
+        p.move(newDiceRoll ? getDiceRoll() : lastDiceRoll);
+        // p.move(3);
         queryBlock(p);
     }
 
@@ -245,12 +245,18 @@ public class GameInstance {
             }
             b = blocks.get(--pos);
         }
+        if (oldPos == blocks.size() - 1) {
+            return rent;
+        }
         pos = oldPos;
         b = blocks.get(++pos);
 
         while (b instanceof Property && ((Property) b).getGroup() == origin.getGroup()) {
             if (((Property) b).owner == origin.owner) {
                 rent += ((Property) b).getCurrentRent() / 2;
+            }
+            if (pos == blocks.size() - 1) {
+                return rent;
             }
             b = blocks.get(++pos);
         }
