@@ -5,11 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -122,7 +122,7 @@ public class GameScreen extends ScreenAdapter {
         group.setBounds(0, 0, 300, 400);
         uiStage.addActor(group);
         
-        nextButton = new TextButton("Next Player", skin);
+        nextButton = new TextButton("Next Player\n(Space)", skin);
         nextButton.setBounds(1500, 200, 200, 300);
         nextButton.addListener(new ClickListener() {
             @Override
@@ -132,6 +132,19 @@ public class GameScreen extends ScreenAdapter {
         });
 
         uiStage.addActor(nextButton);
+        uiStage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                switch (keycode) {
+                    case Input.Keys.SPACE:
+                        nextMove();
+                        break;
+                    default:
+                        return false;
+                }
+                return true;
+            }
+        });
 
         var input = new InputMultiplexer(uiStage, mainStage);
         Gdx.input.setInputProcessor(input);
