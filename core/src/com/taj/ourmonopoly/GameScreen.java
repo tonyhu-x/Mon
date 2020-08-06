@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -29,6 +30,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.taj.ourmonopoly.block.Metro;
 import com.taj.ourmonopoly.block.Property;
 import com.taj.ourmonopoly.dialog.AlertActionDialog;
+import com.taj.ourmonopoly.dialog.AlertActionDialog.AlertAction;
 import com.taj.ourmonopoly.dialog.AlertDialog;
 import com.taj.ourmonopoly.dialog.BankDialog;
 import com.taj.ourmonopoly.dialog.HospitalDialog;
@@ -36,7 +38,7 @@ import com.taj.ourmonopoly.dialog.JailDialog;
 import com.taj.ourmonopoly.dialog.MetroDialog;
 import com.taj.ourmonopoly.dialog.PropertyPurchaseDialog;
 import com.taj.ourmonopoly.dialog.PropertyViewDialog;
-import com.taj.ourmonopoly.dialog.AlertActionDialog.AlertAction;
+import com.taj.ourmonopoly.dialog.TradeDialog;
 
 /**
  * The GUI representation of a game.
@@ -52,22 +54,26 @@ public class GameScreen extends ScreenAdapter {
     private GameInstance instance;
     private Stage mainStage;
     private ArrayList<BlockImage> blockImages;
+    private ArrayList<BlockImage> selectedImages;
     private ArrayList<PlayerImage> playerImages;
 
     private Stage uiStage;
     private Queue<Dialog> dialogs = new LinkedList<Dialog>();
     private Label l1, l2, l3, l4;
     private TextButton nextButton;
+    private TextButton tradeButton;
     private VerticalGroup group;
     private OrthographicCamera camera;
     private float deltaZoom;
     private float deltaX, deltaY;
+    private boolean isTrading;
 
     public GameScreen(GameApp game, String[] arr) {
         this.game = game;
         this.instance = new GameInstance(this, arr);
         blockImages = new ArrayList<>();
         playerImages = new ArrayList<>();
+        selectedImages = new ArrayList<>();
 
         try {
             createImages();
@@ -123,7 +129,7 @@ public class GameScreen extends ScreenAdapter {
         uiStage.addActor(group);
         
         nextButton = new TextButton("Next Player\n(Space)", skin);
-        nextButton.setBounds(1500, 200, 200, 300);
+        nextButton.setBounds(1500, 200, 200, 200);
         nextButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -131,10 +137,50 @@ public class GameScreen extends ScreenAdapter {
             }
         });
 
+        tradeButton = new TextButton("Trade", skin);
+        tradeButton.setBounds(1500, 450, 200, 200);
+        tradeButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (isTrading) {
+                    if (selectedImages.isEmpty()) {
+                        isTrading = false;
+                        tradeButton.setColor(1, 1, 1, 1);
+                    }
+                    else {
+                        ArrayList<Property> pro1 = new ArrayList<>();
+                        ArrayList<Property> pro2 = new ArrayList<>();
+                        
+                        for (var im : selectedImages) {
+                            var p = (Property) im.getBlock();
+                            if (p.owner == instance.getCurrentPlayer())
+                                pro1.add(p);
+                            else
+                                pro2.add(p);
+                        }
+
+                        if (pro2.isEmpty()) {
+                            // undetermined trading partner
+                        }
+                        else {
+                            createDialog("Trade", instance.getCurrentPlayer(), pro2.get(0).owner, pro1, pro2);
+                        }
+                    }
+                }
+                else {
+                    isTrading = true;
+                    tradeButton.setColor(1, 0, 0, 1);
+                }
+            }
+        });
+        
         uiStage.addActor(nextButton);
+        uiStage.addActor(tradeButton);
         uiStage.addListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
+                if (!dialogs.isEmpty())
+                    return false;
                 switch (keycode) {
                     case Input.Keys.SPACE:
                         nextMove();
@@ -180,6 +226,9 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void nextMove() {
+        // disable the button and shortcut when trading
+        if (isTrading)
+            return;
         instance.nextPlayer();
         updateLabels();
         updateImages();
@@ -220,6 +269,7 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void createDialog(String type, Object... args) {
         Dialog d;
         switch (type) {
@@ -265,6 +315,17 @@ public class GameScreen extends ScreenAdapter {
             case "Bank":
                 d = new BankDialog("Bank", skin, instance.getCurrentPlayer());
                 break;
+            case "Trade":
+                d = new TradeDialog(
+                    "Trade",
+                    skin,
+                    this,
+                    (Player) args[0],
+                    (Player) args[1],
+                    (ArrayList<Property>) args[2],
+                    (ArrayList<Property>) args[3]
+                );
+                break;
             default:
                 return;
         }
@@ -300,4 +361,52 @@ public class GameScreen extends ScreenAdapter {
 
     }
 
+    public void selectImage(BlockImage image) {
+        Property p = (Property) image.getBlock();
+        if (p.owner != instance.getCurrentPlayer()) {
+            for (var im : blockImages) {
+                if (im.getBlock() instanceof Property
+                        && ((Property) im.getBlock()).owner != p.owner
+                        && ((Property) im.getBlock()).owner != instance.getCurrentPlayer()
+                        || !(im.getBlock() instanceof Property))
+                {
+                    if (im.getTouchable() == Touchable.disabled)
+                        break;
+                    im.disable();
+                }
+            }
+        }
+        selectedImages.add(image);
+    }
+
+    public void deselectImage(BlockImage image) {
+        selectedImages.remove(image);
+        long count = selectedImages
+                        .stream()
+                        .filter(i -> ((Property) i.getBlock()).owner != instance.getCurrentPlayer())
+                        .count();
+        if (count == 0) {
+            for (var b : blockImages) {
+                b.enable();
+            }
+        }
+    }
+
+    public void exitTrading() {
+        for (var b : blockImages) {
+            b.deselect();
+            b.enable();
+        }
+        selectedImages.clear();
+        tradeButton.setColor(1, 1, 1, 1);
+        isTrading = false;
+    }
+
+    public boolean isTrading() {
+        return isTrading;
+    }
+
+    public GameInstance getInstance() {
+        return instance;
+    }
 }

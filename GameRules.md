@@ -24,7 +24,7 @@
 
 ## Bank
 * The bank is where players can deposit their money in order to earn interest.
-* A player cannot use his/her savings to purchase or upgrade property. However, if he/she does not have enough cash to pay for other deductions, the savings can be used.
+* A player cannot use his/her savings to purchase or upgrade property, nor can he/she trade with them. However, if he/she does not have enough cash to pay for other deductions, the savings can be used.
 * A player can place transactions whenever he/she wishes, but those transactions will only be processed when they pass either bank.
 * At the time a transaction is processed, if the player does not have enough cash/savings, the transaction will be cancelled.
 * The interest rate is 5 %. Interest is paid at the beginning of each of the player's turns.

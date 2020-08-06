@@ -2,9 +2,11 @@ package com.taj.ourmonopoly;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -14,14 +16,17 @@ import com.taj.ourmonopoly.block.Property;
 
 public class BlockImage extends Image {
 
+    private GameScreen screen;
     private Block block;
     private String prevTextureName;
     private ArrayList<PlayerImage> images;
     private int rotate;
+    private boolean selected;
 
     public BlockImage(Block block, GameScreen screen, float posX, float posY, int rotate) {
         super(TextureInventory.getRegion(block.getTextureName()));
         prevTextureName = block.getTextureName();
+        this.screen = screen;
         this.block = block;
         this.rotate = rotate;
         this.images = new ArrayList<>();
@@ -31,11 +36,25 @@ public class BlockImage extends Image {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (block instanceof Property) {
-                    screen.createDialog("ViewProperty", block);
+                if (screen.isTrading()) {
+                    if (selected) {
+                        if (deselect()) {
+                            screen.deselectImage(BlockImage.this);
+                        }
+                    }
+                    else {
+                        if (select()) {
+                            screen.selectImage(BlockImage.this);
+                        }
+                    }
                 }
-                if (block instanceof Bank) {
-                    screen.createDialog("Bank");
+                else {
+                    if (block instanceof Property) {
+                        screen.createDialog("ViewProperty", block);
+                    }
+                    else if (block instanceof Bank) {
+                        screen.createDialog("Bank");
+                    }
                 }
                 return true;                
             }
@@ -62,7 +81,7 @@ public class BlockImage extends Image {
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 BlockImage.this.addAction(
-                    Actions.parallel (
+                    Actions.parallel(
                         Actions.scaleTo(
                             1,
                             1,
@@ -102,5 +121,46 @@ public class BlockImage extends Image {
 
     public void removeImage(PlayerImage image) {
         images.remove(image);
+    }
+
+    public void disable() {
+        if (selected)
+            return;
+        this.setColor(0.4f, 0f, 0.5f, 1f);
+        this.setTouchable(Touchable.disabled);
+    }
+
+    public void enable() {
+        if (selected)
+            return;
+        this.setColor(1, 1, 1, 1);
+        this.setTouchable(Touchable.enabled);
+    }
+
+    public Block getBlock() {
+        return block;
+    }
+
+    public boolean select() {
+        // you can only select unimproved property for trading purporses
+        if (block instanceof Property && ((Property) block).owner != null && ((Property) block).getLevel() == 0) {
+            selected = true;
+            this.setColor(1, 1, 1, 0.6f);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean deselect() {
+        if (block instanceof Property && ((Property) block).owner != null && ((Property) block).getLevel() == 0) {
+            selected = false;
+            this.setColor(1, 1, 1, 1);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }

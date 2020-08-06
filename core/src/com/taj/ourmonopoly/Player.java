@@ -115,6 +115,16 @@ public class Player {
         //TODO: check if the player can actually afford the property
     }
 
+    public void transferProperty(Property property, Player newOwner) {
+        properties.remove(property);
+        newOwner.addProperty(property);
+    }
+    
+    private void addProperty(Property property) {
+        properties.add(property);
+        property.owner = this;
+    }
+
     public void payTo(Player player, int amt) {
         //TODO: check if bankrupt
         this.pay(amt);
