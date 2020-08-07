@@ -24,6 +24,16 @@ public class PlayerImage extends Image {
         this.setBlockParent(parent);
     }
 
+    /**
+     * A stand-alone image.
+     * 
+     * @param player the player to represent
+     */
+    public PlayerImage(Player player) {
+        super(TextureInventory.getToken("tokenP" + (player.number + 1)));
+        this.player = player;
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         this.toFront();

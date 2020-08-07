@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -59,10 +60,14 @@ public class GameScreen extends ScreenAdapter {
 
     private Stage uiStage;
     private Queue<Dialog> dialogs = new LinkedList<Dialog>();
-    private Label l1, l2, l3, l4;
+    private Label infoLabels[];
+    /**
+     * Fixed images that appear beside the labels.
+     */
+    private PlayerImage infoImages[];
     private TextButton nextButton;
     private TextButton tradeButton;
-    private VerticalGroup group;
+    private Table table;
     private OrthographicCamera camera;
     private float deltaZoom;
     private float deltaX, deltaY;
@@ -116,17 +121,19 @@ public class GameScreen extends ScreenAdapter {
         playerImages.forEach(mainStage::addActor);
 
         uiStage = new Stage(new FitViewport(GameApp.WINDOW_WIDTH, GameApp.WINDOW_HEIGHT), game.batch);
-        l1 = new Label(instance.players.get(0).name + ": " + instance.startingCashAmt, skin);
-        l2 = new Label(instance.players.get(1).name + ": " + instance.startingCashAmt, skin);
-        l3 = new Label(instance.players.get(2).name + ": " + instance.startingCashAmt, skin);
-        l4 = new Label(instance.players.get(3).name + ": " + instance.startingCashAmt, skin);
-        group = new VerticalGroup();
-        group.addActor(l1);
-        group.addActor(l2);
-        group.addActor(l3);
-        group.addActor(l4);
-        group.setBounds(0, 0, 300, 400);
-        uiStage.addActor(group);
+        infoLabels = new Label[instance.players.size()];
+        infoImages = new PlayerImage[instance.players.size()];
+        table = new Table();
+        for (Player p : instance.players) {
+            infoLabels[p.number] = new Label(p.name + ": " + instance.startingCashAmt, skin);
+            infoImages[p.number] = new PlayerImage(p);
+            table.add(infoImages[p.number]).size(80, 80).spaceRight(30);
+            table.add(infoLabels[p.number]);
+            table.row();
+        }
+
+        table.setBounds(50, 50, 300, 400);
+        uiStage.addActor(table);
         
         nextButton = new TextButton("Next Player\n(Space)", skin);
         nextButton.setBounds(1500, 200, 200, 200);
@@ -244,29 +251,11 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void updateLabels() {
-        l1.setText(instance.players.get(0).name + ": " + instance.players.get(0).cashAmt);
-        l2.setText(instance.players.get(1).name + ": " + instance.players.get(1).cashAmt);
-        l3.setText(instance.players.get(2).name + ": " + instance.players.get(2).cashAmt);
-        l4.setText(instance.players.get(3).name + ": " + instance.players.get(3).cashAmt);
-        
-        switch (instance.turn) {
-            case 0:
-                l1.setColor(0, 1, 0, 1);
-                l4.setColor(1, 1, 1, 1);
-                break;
-            case 1:
-                l2.setColor(0, 1, 0, 1);
-                l1.setColor(1, 1, 1, 1);
-                break;
-            case 2:
-                l3.setColor(0, 1, 0, 1);
-                l2.setColor(1, 1, 1, 1);
-                break;
-            case 3:
-                l4.setColor(0, 1, 0, 1);
-                l3.setColor(1, 1, 1, 1);
-                break;
+        for (var p : instance.players) {
+            infoLabels[p.number].setText(p.name + ": " + p.cashAmt);
         }
+        infoLabels[instance.turn].setColor(0, 1, 0, 1);
+        infoLabels[instance.turn == 0 ? infoLabels.length - 1 : instance.turn - 1].setColor(1, 1, 1, 1);
     }
 
     @SuppressWarnings("unchecked")
