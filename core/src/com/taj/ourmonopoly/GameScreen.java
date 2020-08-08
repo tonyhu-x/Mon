@@ -55,7 +55,6 @@ public class GameScreen extends ScreenAdapter {
     private GameInstance instance;
     private Stage mainStage;
     private ArrayList<BlockImage> blockImages;
-    private ArrayList<BlockImage> selectedImages;
     private ArrayList<PlayerImage> playerImages;
 
     private Stage uiStage;
@@ -71,7 +70,11 @@ public class GameScreen extends ScreenAdapter {
     private OrthographicCamera camera;
     private float deltaZoom;
     private float deltaX, deltaY;
+
+    // trading
     private boolean isTrading;
+    private ArrayList<BlockImage> selectedImages;
+    private Player selectedPlayer;
 
     public GameScreen(GameApp game, String[] arr) {
         this.game = game;
@@ -88,7 +91,7 @@ public class GameScreen extends ScreenAdapter {
         }
         
         for (var p : instance.players) {
-            playerImages.add(new PlayerImage(p, blockImages.get(0)));
+            playerImages.add(new PlayerImage(p, blockImages.get(0), this));
         }
     }
 
@@ -126,7 +129,7 @@ public class GameScreen extends ScreenAdapter {
         table = new Table();
         for (Player p : instance.players) {
             infoLabels[p.number] = new Label(p.name + ": " + instance.startingCashAmt, skin);
-            infoImages[p.number] = new PlayerImage(p);
+            infoImages[p.number] = new PlayerImage(p, this);
             table.add(infoImages[p.number]).size(80, 80).spaceRight(30);
             table.add(infoLabels[p.number]);
             table.row();
@@ -151,10 +154,12 @@ public class GameScreen extends ScreenAdapter {
             public void clicked(InputEvent event, float x, float y) {
                 if (isTrading) {
                     if (selectedImages.isEmpty()) {
-                        isTrading = false;
-                        tradeButton.setColor(1, 1, 1, 1);
+                        exitTrading();
                     }
                     else {
+                        if (selectedPlayer == null) {
+                            return;
+                        }
                         ArrayList<Property> pro1 = new ArrayList<>();
                         ArrayList<Property> pro2 = new ArrayList<>();
                         
@@ -165,13 +170,7 @@ public class GameScreen extends ScreenAdapter {
                             else
                                 pro2.add(p);
                         }
-
-                        if (pro2.isEmpty()) {
-                            // undetermined trading partner
-                        }
-                        else {
-                            createDialog("Trade", instance.getCurrentPlayer(), pro2.get(0).owner, pro1, pro2);
-                        }
+                        createDialog("Trade", instance.getCurrentPlayer(), selectedPlayer, pro1, pro2);
                     }
                 }
                 else {
@@ -350,35 +349,53 @@ public class GameScreen extends ScreenAdapter {
 
     }
 
+    public void selectPlayer(Player p) {
+        if (p == instance.getCurrentPlayer() || p == selectedPlayer) {
+            return;
+        }
+        for (var im : blockImages) {
+            im.enable();
+            if (im.getBlock() instanceof Property && ((Property) im.getBlock()).owner == instance.getCurrentPlayer()) {
+                continue;
+            }
+            // clear previously selected property
+            if (selectedPlayer != null)
+                im.deselect();
+            // disable other property choices
+            if (im.getBlock() instanceof Property
+                    && ((Property) im.getBlock()).owner != p
+                    && ((Property) im.getBlock()).owner != instance.getCurrentPlayer()
+                    || !(im.getBlock() instanceof Property))
+            {
+                if (im.getTouchable() == Touchable.disabled)
+                    break;
+                im.disable();
+            }
+        }
+        selectedImages.removeIf(i -> ((Property) i.getBlock()).owner != instance.getCurrentPlayer());
+        selectedPlayer = p;
+    }
+
     public void selectImage(BlockImage image) {
         Property p = (Property) image.getBlock();
         if (p.owner != instance.getCurrentPlayer()) {
-            for (var im : blockImages) {
-                if (im.getBlock() instanceof Property
-                        && ((Property) im.getBlock()).owner != p.owner
-                        && ((Property) im.getBlock()).owner != instance.getCurrentPlayer()
-                        || !(im.getBlock() instanceof Property))
-                {
-                    if (im.getTouchable() == Touchable.disabled)
-                        break;
-                    im.disable();
-                }
-            }
+            selectPlayer(p.owner);
         }
         selectedImages.add(image);
     }
 
     public void deselectImage(BlockImage image) {
         selectedImages.remove(image);
-        long count = selectedImages
-                        .stream()
-                        .filter(i -> ((Property) i.getBlock()).owner != instance.getCurrentPlayer())
-                        .count();
-        if (count == 0) {
-            for (var b : blockImages) {
-                b.enable();
-            }
-        }
+        // long count = selectedImages
+        //                 .stream()
+        //                 .filter(i -> ((Property) i.getBlock()).owner != instance.getCurrentPlayer())
+        //                 .count();
+        // if (count == 0) {
+        //     for (var b : blockImages) {
+        //         b.enable();
+        //     }
+        //     selectedPlayer = null;
+        // }
     }
 
     public void exitTrading() {
@@ -387,6 +404,7 @@ public class GameScreen extends ScreenAdapter {
             b.enable();
         }
         selectedImages.clear();
+        selectedPlayer = null;
         tradeButton.setColor(1, 1, 1, 1);
         isTrading = false;
     }

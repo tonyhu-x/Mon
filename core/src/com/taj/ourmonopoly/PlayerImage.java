@@ -1,6 +1,8 @@
 package com.taj.ourmonopoly;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class PlayerImage extends Image {
@@ -14,14 +16,28 @@ public class PlayerImage extends Image {
      * The {@link BlockImage} cantaining the player.
      */
     private BlockImage parent;
+    private GameScreen screen;
     private float deltaX, deltaY;
 
-    public PlayerImage(Player player, BlockImage parent) {
+    private InputListener listener = new InputListener() {
+        @Override
+        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            if (screen.isTrading()) {
+                screen.selectPlayer(player);
+            }
+
+            return true;
+        }
+    };
+
+    public PlayerImage(Player player, BlockImage parent, GameScreen screen) {
         super(TextureInventory.getToken("tokenP" + (player.number + 1)));
         this.player = player;
+        this.screen = screen;
         this.setSize(WIDTH, HEIGHT);
         this.setX(-1);
         this.setBlockParent(parent);
+        this.addListener(listener);
     }
 
     /**
@@ -29,9 +45,11 @@ public class PlayerImage extends Image {
      * 
      * @param player the player to represent
      */
-    public PlayerImage(Player player) {
+    public PlayerImage(Player player, GameScreen screen) {
         super(TextureInventory.getToken("tokenP" + (player.number + 1)));
         this.player = player;
+        this.screen = screen;
+        this.addListener(listener);
     }
 
     @Override

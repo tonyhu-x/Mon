@@ -27,3 +27,4 @@
 * Added the ability for players to downgrade properties.
 * Added a space shortcut to proceed to next player.
 * Added a trading system.
+* Added player icons next to labels.
