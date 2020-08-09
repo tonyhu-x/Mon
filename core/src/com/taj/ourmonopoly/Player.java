@@ -108,13 +108,13 @@ public class Player {
         setGroup();
     }
 
-    public void purchaseProperty(Property property) {
-        purchaseProperty(property, property.getPurchasePrice());
+    public void getProperty(Property property) {
+        getProperty(property, property.getPurchasePrice());
     }
     
-    public void purchaseProperty(Property property, int price) {
+    public void getProperty(Property property, int price) {
         properties.add(property);
-        cashAmt -= price;
+        this.pay(price);
         property.owner = this;
     }
 
@@ -129,13 +129,27 @@ public class Player {
     }
 
     public void payTo(Player player, int amt) {
-        //TODO: check if bankrupt
         this.pay(amt);
         player.receive(amt);        
     }
 
     public void pay(int amt) {
-        this.cashAmt -= amt;
+        if (this.cashAmt >= amt) {
+            this.cashAmt -= amt;
+        }
+        else if (this.savings + this.cashAmt >= amt) {
+            this.savings -= amt - this.cashAmt;
+            this.cashAmt = 0;
+        }
+        else if (!this.properties.isEmpty()){
+            this.cashAmt = amt - this.savings;
+            this.savings = 0;
+            instance.bankruptCheck(this);
+        }
+        else {
+            instance.bankrupt(this);
+        }
+        
     }
 
     public void receive(int amt) {
