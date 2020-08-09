@@ -35,7 +35,7 @@ public class PropertyPurchaseDialog extends Dialog {
     @Override
     protected void result(Object object) {
         if (((boolean) object) == true) {
-            player.purchaseProperty(property);            
+            player.getProperty(property);            
             screen.updateImages();
             screen.updateLabels();
         }

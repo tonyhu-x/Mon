@@ -284,6 +284,15 @@ public class GameInstance {
         }
     }
 
+    public void bankruptCheck(Player player) {
+        // if (player.)
+        // screen.createDialog()
+    }
+
+    public void bankrupt(Player player) {
+        
+    }
+
     public int getBlockGroup(int pos) {
         Block b = blocks.get(pos);
         if (b instanceof Property) {
@@ -353,6 +362,4 @@ public class GameInstance {
     public void createDialog(String type, Object... args) {
         screen.createDialog(type, args);
     }
-
-
 }
