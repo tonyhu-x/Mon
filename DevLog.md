@@ -28,3 +28,4 @@
 * Added a space shortcut to proceed to next player.
 * Added a trading system.
 * Added player icons next to labels.
+* Add an auction system.

@@ -34,6 +34,7 @@ import com.taj.ourmonopoly.dialog.AlertActionDialog;
 import com.taj.ourmonopoly.dialog.AlertActionDialog.AlertAction;
 import com.taj.ourmonopoly.dialog.AlertDialog;
 import com.taj.ourmonopoly.dialog.BankDialog;
+import com.taj.ourmonopoly.dialog.BlindAuctionDialog;
 import com.taj.ourmonopoly.dialog.HospitalDialog;
 import com.taj.ourmonopoly.dialog.JailDialog;
 import com.taj.ourmonopoly.dialog.MetroDialog;
@@ -269,6 +270,9 @@ public class GameScreen extends ScreenAdapter {
                     (Property) args[0],
                     (Player) args[1]
                 );
+                break;
+            case "BlindAuction":
+                d = new BlindAuctionDialog("Blind Auction", skin, this, (Property) args[0]);
                 break;
             case "ViewProperty":
                 d = new PropertyViewDialog(

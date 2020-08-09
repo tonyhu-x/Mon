@@ -109,10 +109,13 @@ public class Player {
     }
 
     public void purchaseProperty(Property property) {
+        purchaseProperty(property, property.getPurchasePrice());
+    }
+    
+    public void purchaseProperty(Property property, int price) {
         properties.add(property);
-        cashAmt -= property.getPurchasePrice();
+        cashAmt -= price;
         property.owner = this;
-        //TODO: check if the player can actually afford the property
     }
 
     public void transferProperty(Property property, Player newOwner) {

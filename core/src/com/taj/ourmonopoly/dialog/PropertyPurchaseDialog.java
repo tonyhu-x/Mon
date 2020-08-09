@@ -22,7 +22,14 @@ public class PropertyPurchaseDialog extends Dialog {
         this.player = player;
         this.screen = screen;
         this.text("Do you want to purchase this property for $" + property.getPurchasePrice() + "?");
-        this.button("Purchase Property", true);    
+        TextButton button1 = new TextButton("Purchase Property", skin);
+        if (player.cashAmt < property.getPurchasePrice()) {
+            button1.setDisabled(true);
+            button1.setText("Not Enough Cash");
+        }
+        TextButton button2 = new TextButton("Blind Auction", skin);
+        this.button(button1, true);
+        this.button(button2, false);
     }
 
     @Override
@@ -32,7 +39,9 @@ public class PropertyPurchaseDialog extends Dialog {
             screen.updateImages();
             screen.updateLabels();
         }
-        
+        else {
+            screen.createDialog("BlindAuction", property);
+        }
     }
     
     

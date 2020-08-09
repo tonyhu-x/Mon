@@ -32,7 +32,7 @@ public class GameInstance {
     /**
      * The list of players. Currently the game supports 4 players.
      */
-    ArrayList<Player> players = new ArrayList<>();
+    public ArrayList<Player> players = new ArrayList<>();
     ArrayList<Dice> dice = new ArrayList<>();
     ArrayList<Block> blocks;
     private int lastDiceRoll = -1;

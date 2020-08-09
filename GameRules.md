@@ -10,11 +10,21 @@
 
 ## Property
 * A player can purchase a property if it has not been purchased by another player.
+* A player can choose not to purchase a property, in which case the property goes to a blind auction. See below for details on auctioning. 
 * A player may choose to ungrade a property that he/she owns if he/she stops by the property again. The price of an upgrade is (2^n) times the original purchase price. Note that the player does not have to own every property in the group to upgrade them.
 * A player may upgrade any property belonging to the same group he/she is on when it is his/her turn. He/she may not upgrade property out of turn.
 * The maximum level that a property can be upgraded to depends on the number of properties the player owns. If the player has a monopoly, each property in that group can be upgraded to level 4 (the highest possible). Otherwise, the number of upgrades a property can have corrpesponds to the number of properties in the group belonging to tha player.
 * A property can be downgraded if a player so wishes. He/she will receive 75 % of the original upgrade price for each downgrade. The player does not have to be near the target property to downgrade it. However, he/she may not downgrade property out of turn.
 * When a player stops by a property owned by another player, he/she has to pay complete rent of the property plus 50 % of the rent of any other property in the same group.
+
+## Auctions
+* Auctions take place in the form of "blind" auctions. In an auction, each player takes turns giving a target price, a price which they are willing to pay for the property. At the end, the player with the highest target price acquires the property.
+* If more than one player offers the highest target price, the property is given to the player who offers first.
+* The current player goes first in an auction, followed by the normal order (i.e. the next player), until every player has made an offer.
+* There is no system in place to prevent players from making a bid too high to afford. Therefore, it is possible for a player to go bankrupt right after an auction.
+
+## Trading
+* A property cannot be traded unless it is unimproved.
 
 ## Hospital
 * The hospital is similar to the jail, in that if a player is hospitalized, he/she has to stay for a certian number of rounds before being freed.
