@@ -95,6 +95,7 @@ public class GameScreen extends ScreenAdapter {
     private PlayerImage[] infoImages;
     private TextButton nextButton;
     private TextButton tradeButton;
+    private TextButton sellButton;
     private Table table;
     private OrthographicCamera camera;
     private float deltaZoom;
@@ -104,6 +105,8 @@ public class GameScreen extends ScreenAdapter {
     private boolean isTrading;
     private ArrayList<BlockImage> selectedImages;
     private Player selectedPlayer;
+
+    private boolean isSelling;
 
     public GameScreen(GameApp game, String[] arr) {
         this.game = game;
@@ -181,6 +184,7 @@ public class GameScreen extends ScreenAdapter {
         tradeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                if (isSelling) return;
                 if (isTrading) {
                     if (selectedImages.isEmpty()) {
                         exitTrading();
@@ -209,8 +213,35 @@ public class GameScreen extends ScreenAdapter {
             }
         });
         
+        sellButton = new TextButton("Sell\nProperty", skin);
+        sellButton.setBounds(1500, 700, 200, 150);
+        sellButton.setVisible(false);
+        sellButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (isTrading) return;
+                isSelling = !isSelling;
+                if (isSelling) {
+                    sellButton.setColor(1, 0, 0, 1);
+                    for (var im : blockImages) {
+                        if (im.getBlock() instanceof Property
+                            && ((Property) im.getBlock()).owner == instance.getCurrentPlayer())
+                            continue;
+                        im.disable();
+                    }
+                }
+                else {
+                    for (var im : blockImages) {
+                        im.enable();
+                    }
+                    sellButton.setColor(1, 1, 1, 1);
+                }
+            }
+        });
+        
         uiStage.addActor(nextButton);
         uiStage.addActor(tradeButton);
+        uiStage.addActor(sellButton);
         uiStage.addListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
@@ -436,6 +467,10 @@ public class GameScreen extends ScreenAdapter {
 
     public boolean isTrading() {
         return isTrading;
+    }
+
+    public boolean isSelling() {
+        return isSelling;
     }
 
     public GameInstance getInstance() {

@@ -28,4 +28,5 @@
 * Added a space shortcut to proceed to next player.
 * Added a trading system.
 * Added player icons next to labels.
+* Added the ability for players to sell properties when near bankrupt.
 * Add an auction system.

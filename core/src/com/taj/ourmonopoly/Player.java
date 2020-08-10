@@ -123,6 +123,15 @@ public class Player {
         properties.remove(property);
         newOwner.addProperty(property);
     }
+
+    public void sellProperty(Property property) {
+        while (downgradeable(property)) {
+            property.downgrade();
+        }
+        properties.remove(property);
+        this.receive((int) (0.5 * property.getPurchasePrice()));
+        property.owner = null;
+    }
     
     private void addProperty(Property property) {
         properties.add(property);

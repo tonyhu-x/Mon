@@ -48,6 +48,11 @@ public class BlockImage extends Image {
                         }
                     }
                 }
+                else if (screen.isSelling()) {
+                    // no need to check ownership since other blocks are already disabled
+                    Property p = (Property) BlockImage.this.block;
+                    p.owner.sellProperty(p);
+                }
                 else {
                     if (block instanceof Property) {
                         screen.createDialog("ViewProperty", block);
