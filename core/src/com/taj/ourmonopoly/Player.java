@@ -135,26 +135,34 @@ public class Player {
      * @param amt
      */
     public void payTo(Player player, int amt) {
-        this.pay(amt);
+        int result = this.pay(amt);
+        if (result == 1) {
+            instance.bankruptCheck(this, player);
+        }
+        else if (result == -1) {
+            instance.bankrupt(this, player);
+        }
         if (player != null)
             player.receive(amt); 
     }
 
-    private void pay(int amt) {
+    private int pay(int amt) {
         if (this.cashAmt >= amt) {
             this.cashAmt -= amt;
+            return 0;
         }
         else if (this.savings + this.cashAmt >= amt) {
             this.savings -= amt - this.cashAmt;
             this.cashAmt = 0;
+            return 0;
         }
         else if (!this.properties.isEmpty()){
             this.cashAmt = amt - this.savings;
             this.savings = 0;
-            instance.bankruptCheck(this);
+            return 1;
         }
         else {
-            instance.bankrupt(this);
+            return -1;
         }
         
     }

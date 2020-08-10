@@ -288,12 +288,12 @@ public class GameInstance {
         }
     }
 
-    public void bankruptCheck(Player player) {
+    public void bankruptCheck(Player player, Player toWhom) {
         // if (player.)
         // screen.createDialog()
     }
 
-    public void bankrupt(Player player) {
+    public void bankrupt(Player player, Player toWhom) {
         
     }
 
