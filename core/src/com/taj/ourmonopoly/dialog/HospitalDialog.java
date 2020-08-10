@@ -35,7 +35,6 @@ public class HospitalDialog extends Dialog {
         else {
             instance.tryToReleaseFromHospital(player);
         }
-        screen.updateImages();
         screen.updateLabels();
     }
 }

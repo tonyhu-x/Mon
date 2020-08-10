@@ -20,7 +20,6 @@ public class AlertActionDialog extends AlertDialog {
                 if (x < 0 || x > AlertActionDialog.this.getWidth() || y < 0 || y > AlertActionDialog.this.getHeight()) {
                     AlertActionDialog.this.hide();
                     action.apply();
-                    screen.updateImages();
                     screen.updateLabels();
                     return true;
                 }

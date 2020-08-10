@@ -98,7 +98,8 @@ public class BlockImage extends Image {
         });
     }
 
-    public void updateImage() {
+    @Override
+    public void act(float delta) {
         if (block.getTextureName() != prevTextureName) {
             this.setDrawable(new TextureRegionDrawable(TextureInventory.getRegion(block.getTextureName())));
             this.prevTextureName = block.getTextureName();

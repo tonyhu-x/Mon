@@ -216,6 +216,10 @@ public class GameScreen extends ScreenAdapter {
         deltaX *= 0.9f;
         deltaY *= 0.9f;
 
+        for (var p : playerImages) {
+            p.setBlockParent(blockImages.get(instance.convertPos(p.player.getPosition())));
+        }
+
         mainStage.getViewport().apply();
         mainStage.act(delta);
         mainStage.draw();
@@ -236,18 +240,9 @@ public class GameScreen extends ScreenAdapter {
         // disable the button and shortcut when trading
         if (isTrading)
             return;
+        infoLabels[instance.turn].setColor(1, 1, 1, 1);
         instance.nextPlayer();
         updateLabels();
-        updateImages();
-    }
-
-    public void updateImages() {
-        for (var p : playerImages) {
-            p.setBlockParent(blockImages.get(instance.convertPos(p.player.getPosition())));
-        }
-        for (var b : blockImages) {
-            b.updateImage();
-        }
     }
 
     public void updateLabels() {
@@ -255,7 +250,6 @@ public class GameScreen extends ScreenAdapter {
             infoLabels[p.number].setText(p.name + ": " + p.cashAmt);
         }
         infoLabels[instance.turn].setColor(0, 1, 0, 1);
-        infoLabels[instance.turn == 0 ? infoLabels.length - 1 : instance.turn - 1].setColor(1, 1, 1, 1);
     }
 
     @SuppressWarnings("unchecked")

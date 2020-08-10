@@ -26,7 +26,6 @@ public class MetroDialog extends Dialog {
     protected void result(Object object) {
         if (((boolean) object) == true) {
             metro.movePlayer(player);
-            screen.updateImages();
             screen.updateLabels();
         }
         else {

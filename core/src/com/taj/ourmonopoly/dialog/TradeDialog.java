@@ -117,7 +117,6 @@ public class TradeDialog extends Dialog {
             screen.exitTrading();
         }
 
-        screen.updateImages();
         screen.updateLabels();
     }
 }

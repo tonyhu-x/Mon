@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.taj.ourmonopoly.GameInstance;
 import com.taj.ourmonopoly.GameScreen;
 import com.taj.ourmonopoly.Player;
-
 public class JailDialog extends Dialog {
 
     private Player player;
@@ -35,7 +34,6 @@ public class JailDialog extends Dialog {
         else {
             instance.tryToReleaseFromJail(player);
         }
-        screen.updateImages();
         screen.updateLabels();
     }
 }
