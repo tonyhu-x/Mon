@@ -69,6 +69,5 @@ public class PropertyViewDialog extends Dialog {
         else {
             this.property.downgrade();
         }
-        screen.updateLabels();
     }
 }

@@ -23,7 +23,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
@@ -46,6 +45,30 @@ import com.taj.ourmonopoly.dialog.TradeDialog;
  * The GUI representation of a game.
  */
 public class GameScreen extends ScreenAdapter {
+    
+    private static class InfoLabel extends Label {
+
+        private static Player curPlayer;
+
+        private Player p;
+
+        public InfoLabel(Skin skin, Player player) {
+            super(player.name + ": " + player.cashAmt, skin);
+            this.p = player;
+        }
+
+        @Override
+        public void act(float delta) {
+            super.act(delta);
+            this.setText(p.name + ": " + p.cashAmt);
+            if (this.p == curPlayer) {
+                this.setColor(0, 1, 0, 1);
+            }
+            else {
+                this.setColor(1, 1, 1, 1);
+            }
+        }
+    }
 
     // these values preserve the aspect ratio of the map`
     final float worldWidth = 270;
@@ -60,7 +83,7 @@ public class GameScreen extends ScreenAdapter {
 
     private Stage uiStage;
     private Queue<Dialog> dialogs = new LinkedList<Dialog>();
-    private Label infoLabels[];
+    private InfoLabel[] infoLabels;
     /**
      * Fixed images that appear beside the labels.
      */
@@ -125,11 +148,11 @@ public class GameScreen extends ScreenAdapter {
         playerImages.forEach(mainStage::addActor);
 
         uiStage = new Stage(new FitViewport(GameApp.WINDOW_WIDTH, GameApp.WINDOW_HEIGHT), game.batch);
-        infoLabels = new Label[instance.players.size()];
+        infoLabels = new InfoLabel[instance.players.size()];
         infoImages = new PlayerImage[instance.players.size()];
         table = new Table();
         for (Player p : instance.players) {
-            infoLabels[p.number] = new Label(p.name + ": " + instance.startingCashAmt, skin);
+            infoLabels[p.number] = new InfoLabel(skin, p);
             infoImages[p.number] = new PlayerImage(p, this);
             table.add(infoImages[p.number]).size(80, 80).spaceRight(30);
             table.add(infoLabels[p.number]);
@@ -224,6 +247,8 @@ public class GameScreen extends ScreenAdapter {
         mainStage.act(delta);
         mainStage.draw();
 
+        InfoLabel.curPlayer = instance.getCurrentPlayer();
+
         uiStage.getViewport().apply();
         uiStage.act(delta);
         uiStage.draw();
@@ -240,16 +265,7 @@ public class GameScreen extends ScreenAdapter {
         // disable the button and shortcut when trading
         if (isTrading)
             return;
-        infoLabels[instance.turn].setColor(1, 1, 1, 1);
         instance.nextPlayer();
-        updateLabels();
-    }
-
-    public void updateLabels() {
-        for (var p : instance.players) {
-            infoLabels[p.number].setText(p.name + ": " + p.cashAmt);
-        }
-        infoLabels[instance.turn].setColor(0, 1, 0, 1);
     }
 
     @SuppressWarnings("unchecked")

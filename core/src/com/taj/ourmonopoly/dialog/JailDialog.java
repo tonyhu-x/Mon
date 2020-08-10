@@ -34,6 +34,5 @@ public class JailDialog extends Dialog {
         else {
             instance.tryToReleaseFromJail(player);
         }
-        screen.updateLabels();
     }
 }
