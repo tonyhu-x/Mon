@@ -114,7 +114,7 @@ public class Player {
     
     public void getProperty(Property property, int price) {
         properties.add(property);
-        this.pay(price);
+        this.payTo(null, price);
         property.owner = this;
     }
 
@@ -128,12 +128,19 @@ public class Player {
         property.owner = this;
     }
 
+    /**
+     * Pays some money.
+     * 
+     * @param player {@code null} is understood to refer to the bank
+     * @param amt
+     */
     public void payTo(Player player, int amt) {
         this.pay(amt);
-        player.receive(amt);        
+        if (player != null)
+            player.receive(amt); 
     }
 
-    public void pay(int amt) {
+    private void pay(int amt) {
         if (this.cashAmt >= amt) {
             this.cashAmt -= amt;
         }
@@ -188,7 +195,7 @@ public class Player {
     }
 
     /**
-     * Count the number of properties the player has in a group.
+     * Counts the number of properties the player has in a group.
      * 
      * @param group the group to count
      * @return {@code 4} if the player has a monopoly, otherwise the exact number

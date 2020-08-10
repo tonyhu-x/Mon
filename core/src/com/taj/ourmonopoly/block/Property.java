@@ -30,7 +30,7 @@ public class Property extends RectBlock {
         }
         
         level++;
-        owner.pay(purchasePrice * (int) Math.pow(2, level));
+        owner.payTo(null, purchasePrice * (int) Math.pow(2, level));
     }
     
     public void downgrade() {

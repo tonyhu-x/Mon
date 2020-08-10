@@ -137,7 +137,7 @@ public class GameInstance {
                 screen.createDialog("Metro", blocks.get(pos), player);
                 break;
             case PAY_HUNDRED:
-                player.pay(100);
+                player.payTo(null, 100);
                 screen.createDialog("ShowAlert", player.name + " paid $100.");
                 break;
             case RECEIVE_FIFTY:
@@ -193,13 +193,13 @@ public class GameInstance {
     }
 
     public void payAndRelease(Player player) {
-        player.pay(50);
+        player.payTo(null, 50);
         jail.release(player);
         nextPlayer(false);
     }
 
     public void payAndCure(Player player) {
-        player.pay(100);
+        player.payTo(null, 100);
         hospital.release(player);
         nextPlayer(false);
     }
