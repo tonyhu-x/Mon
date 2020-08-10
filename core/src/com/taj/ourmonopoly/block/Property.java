@@ -41,6 +41,10 @@ public class Property extends RectBlock {
         level--;
     }
 
+    public int worth() {
+        return (int) (purchasePrice * 0.5 + 0.75 * purchasePrice * (Math.pow(2, level + 1) - 2));
+    }
+
     @Override
     public Task interact(Player player) {
         numOfVisits++;

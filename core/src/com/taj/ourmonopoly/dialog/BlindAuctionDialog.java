@@ -64,8 +64,8 @@ public class BlindAuctionDialog extends Dialog {
             button.setText("Finish");
         }
         else if (ind == instance.getCurrentPlayer().getNumber() + instance.players.size() - 1) {
-            highestBidder.getProperty(property, highestBid);
             screen.createDialog("ShowAlert", highestBidder.getName() + " acquired the property!");
+            highestBidder.getProperty(property, highestBid);
             return;
         }
 

@@ -60,7 +60,12 @@ public class GameScreen extends ScreenAdapter {
         @Override
         public void act(float delta) {
             super.act(delta);
-            this.setText(p.name + ": " + p.cashAmt);
+            if (p.isBankrupt) {
+                this.setText(p.name + ": Bankrupt");
+            }
+            else
+                this.setText(p.name + ": " + p.cashAmt);
+            
             if (this.p == curPlayer) {
                 this.setColor(0, 1, 0, 1);
             }
@@ -87,7 +92,7 @@ public class GameScreen extends ScreenAdapter {
     /**
      * Fixed images that appear beside the labels.
      */
-    private PlayerImage infoImages[];
+    private PlayerImage[] infoImages;
     private TextButton nextButton;
     private TextButton tradeButton;
     private Table table;
@@ -239,8 +244,14 @@ public class GameScreen extends ScreenAdapter {
         deltaX *= 0.9f;
         deltaY *= 0.9f;
 
-        for (var p : playerImages) {
-            p.setBlockParent(blockImages.get(instance.convertPos(p.player.getPosition())));
+        for (var iter = playerImages.iterator(); iter.hasNext(); ) {
+            var p = iter.next();
+            if (p.player.isBankrupt) {
+                p.remove();
+                iter.remove();
+            }
+            else
+                p.setBlockParent(blockImages.get(instance.convertPos(p.player.getPosition())));
         }
 
         mainStage.getViewport().apply();

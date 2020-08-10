@@ -8,7 +8,6 @@ import com.taj.ourmonopoly.block.Block;
 import com.taj.ourmonopoly.block.Hospital;
 import com.taj.ourmonopoly.block.Jail;
 import com.taj.ourmonopoly.block.Property;
-import com.taj.ourmonopoly.dialog.AlertActionDialog;
 import com.taj.ourmonopoly.dialog.AlertActionDialog.AlertAction;
 
 /**
@@ -77,25 +76,20 @@ public class GameInstance {
             }
         }
 
-        // hospital.accept(players.get(0));
-        // players.get(0).purchaseProperty(((Property) blocks.get(1)));
-        // players.get(0).purchaseProperty(((Property) blocks.get(2)));
-        // players.get(0).purchaseProperty(((Property) blocks.get(3)));
-
     }
-
+    
     public void addPlayer(String name) {
         players.add(new Player(this, name, players.size(), startingCashAmt));
     }
-
+    
     public void nextPlayer() {
         nextPlayer(true);
     }
-
+    
     private void nextPlayer(boolean next) {
         nextPlayer(next, true);
     }
-
+    
     private void nextPlayer(boolean next, boolean newDiceRoll) {
         Player p;
         if (next) {
@@ -110,7 +104,7 @@ public class GameInstance {
         // p.move(3);
         queryBlock(p);
     }
-
+    
     /**
      * Queries the appropriate block for action.
      * 
@@ -294,7 +288,14 @@ public class GameInstance {
     }
 
     public void bankrupt(Player player, Player toWhom) {
-        
+        screen.createDialog("ShowAlert", player.getName() + " is bankrupt!");
+        player.payTo(toWhom, player.netWorth());
+        // 500 bonus
+        if (toWhom != null)
+            toWhom.receive(500);
+
+        player.isBankrupt = true;
+        players.remove(player);
     }
 
     public int getBlockGroup(int pos) {

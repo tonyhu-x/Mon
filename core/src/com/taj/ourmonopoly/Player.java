@@ -13,6 +13,7 @@ public class Player {
     int number;
     
     int lastDiceRoll;
+    public boolean isBankrupt;
 
     /**
      * The amount of cash the player has.
@@ -142,7 +143,7 @@ public class Player {
         else if (result == -1) {
             instance.bankrupt(this, player);
         }
-        if (player != null)
+        else if (player != null)
             player.receive(amt); 
     }
 
@@ -156,9 +157,9 @@ public class Player {
             this.cashAmt = 0;
             return 0;
         }
-        else if (!this.properties.isEmpty()){
-            this.cashAmt = amt - this.savings;
-            this.savings = 0;
+        else if (netWorth() >= amt){
+            // this.cashAmt = amt - this.savings;
+            // this.savings = 0;
             return 1;
         }
         else {
@@ -220,6 +221,14 @@ public class Player {
                 temp++;
         }
         return temp;
+    }
+
+    int netWorth() {
+        int worth = savings + cashAmt;
+        for (var p : properties) {
+            worth += p.worth();
+        }
+        return worth;
     }
 
     private void setGroup() {

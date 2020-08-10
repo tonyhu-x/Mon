@@ -38,3 +38,7 @@
 * A player can place transactions whenever he/she wishes, but those transactions will only be processed when they pass either bank.
 * At the time a transaction is processed, if the player does not have enough cash/savings, the transaction will be cancelled.
 * The interest rate is 5 %. Interest is paid at the beginning of each of the player's turns.
+
+## Bankruptcy
+* A player is automatically considered bankrupt if his/her debt is greater than his/her net worth (same determination as in Monopoly).
+* If a player is in debt but not yet bankrupt, he/she can choose to negotiate trade deals or downgrade properties. If the above strategies do not suffice in paying the debt, the player goes bankrupt.
