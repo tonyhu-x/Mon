@@ -23,7 +23,7 @@ public class GameInstance {
     // public static final int 
 
     public static final int MAP_SIZE = 80;
-    int startingCashAmt = 1500;
+    public static final int INITIAL_CASH_AMT = 3000;
     int turn;
     boolean isDouble;
     GameScreen screen;
@@ -79,7 +79,7 @@ public class GameInstance {
     }
     
     public void addPlayer(String name) {
-        players.add(new Player(this, name, players.size(), startingCashAmt));
+        players.add(new Player(this, name, players.size(), INITIAL_CASH_AMT));
     }
     
     public void nextPlayer() {

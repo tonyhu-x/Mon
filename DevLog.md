@@ -32,3 +32,4 @@
 * Added the ability for players to sell properties when near bankrupt.
 * Added an auction system.
 * Corrected dialog orders.
+* Adjusted initial cash amount.
