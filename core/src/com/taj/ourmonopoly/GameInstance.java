@@ -289,7 +289,12 @@ public class GameInstance {
     }
 
     public void bankrupt(Player player, Player toWhom) {
-        screen.createDialog("ShowAlert", player.getName() + " is bankrupt!");
+        screen.createDialog("AlertAction", player.getName() + " is bankrupt!", new AlertAction() {
+            @Override
+            public void apply() {
+                nextPlayer();
+            }
+        });
         // 500 bonus
         if (toWhom != null)
             toWhom.receive(500);
@@ -312,7 +317,12 @@ public class GameInstance {
     }
 
     public Player getCurrentPlayer() {
-        return players.get(turn);
+        try {
+            return players.get(turn);
+        }
+        catch (Exception e) {
+            return null;
+        }
     }
 
     /**
