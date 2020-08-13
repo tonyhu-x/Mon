@@ -33,3 +33,4 @@
 * Added an auction system.
 * Corrected dialog orders.
 * Adjusted initial cash amount.
+* Added gameover response.

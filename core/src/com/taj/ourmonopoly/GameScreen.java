@@ -479,6 +479,15 @@ public class GameScreen extends ScreenAdapter {
         isTrading = false;
     }
 
+    public void gameOver(Player winner) {
+        createDialog("AlertAction", "Game is over! Congratulations to " + winner.name + "!", new AlertAction() {
+			@Override
+			public void apply() {
+				game.setScreen(new TitleScreen(game));
+			}
+        }); 
+    }
+
     public boolean isTrading() {
         return isTrading;
     }
@@ -499,5 +508,18 @@ public class GameScreen extends ScreenAdapter {
 	public void waitForPlayer(Player player) {
         currentPlayer = player;
         nextButton.setText("Done");
-	}
+    }
+    
+    @Override
+    public void dispose() {
+        skin.dispose();
+        uiStage.dispose();
+        mainStage.dispose();
+    }
+    
+    @Override
+    public void hide() {
+        this.dispose();
+        Gdx.input.setInputProcessor(null);
+    }
 }

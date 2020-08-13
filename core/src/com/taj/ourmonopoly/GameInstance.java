@@ -306,6 +306,10 @@ public class GameInstance {
             }
         }
         players.remove(player);
+        // the game is over
+        if (players.size() == 1) {
+            screen.gameOver(player);
+        }
     }
 
     public int getBlockGroup(int pos) {
