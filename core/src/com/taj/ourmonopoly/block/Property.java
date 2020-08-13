@@ -71,6 +71,11 @@ public class Property extends RectBlock {
         }
     }
 
+    public void vacate() {
+        this.owner = null;
+        this.level = 0;
+    }
+
     public int getPurchasePrice() {
         return purchasePrice;
     }

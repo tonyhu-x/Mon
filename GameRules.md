@@ -22,7 +22,7 @@
 * Auctions take place in the form of "blind" auctions. In an auction, each player takes turns giving a target price, a price which they are willing to pay for the property. At the end, the player with the highest target price acquires the property.
 * If more than one player offers the highest target price, the property is given to the player who offers first.
 * The current player goes first in an auction, followed by the normal order (i.e. the next player), until every player has made an offer.
-* There is no system in place to prevent players from making a bid too high to afford. Therefore, it is possible for a player to go bankrupt right after an auction.
+* The greatest amount a player can offer is his/her net worth. However, currently this does not fully prevent players from making a bid too high to afford. Therefore, it is possible for a player to go bankrupt right after an auction.
 
 ## Trading
 * A property cannot be traded unless it is unimproved.
@@ -43,3 +43,5 @@
 ## Bankruptcy
 * A player is automatically considered bankrupt if his/her debt is greater than his/her net worth (same determination as in Monopoly).
 * If a player is in debt but not yet bankrupt, he/she can choose to negotiate trade deals or downgrade or sell properties. If all the strategies do not suffice in paying the debt, the player goes bankrupt.
+* When a player goes bankrupt, his/her properties are sold back to the bank, their levels reset to 0. Other players may purchase them when they land on them.
+* When a player goes bankrupt due to another player, that player receives an amount equal to the player's net worth plus $500 as compensation/bonus.

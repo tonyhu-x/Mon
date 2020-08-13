@@ -101,6 +101,8 @@ public class GameScreen extends ScreenAdapter {
     private float deltaZoom;
     private float deltaX, deltaY;
 
+    private Player currentPlayer;
+
     // trading
     private boolean isTrading;
     private ArrayList<BlockImage> selectedImages;
@@ -111,6 +113,7 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(GameApp game, String[] arr) {
         this.game = game;
         this.instance = new GameInstance(this, arr);
+        this.currentPlayer = instance.getCurrentPlayer();
         blockImages = new ArrayList<>();
         playerImages = new ArrayList<>();
         selectedImages = new ArrayList<>();
@@ -198,12 +201,12 @@ public class GameScreen extends ScreenAdapter {
                         
                         for (var im : selectedImages) {
                             var p = (Property) im.getBlock();
-                            if (p.owner == instance.getCurrentPlayer())
+                            if (p.owner == currentPlayer)
                                 pro1.add(p);
                             else
                                 pro2.add(p);
                         }
-                        createDialog("Trade", instance.getCurrentPlayer(), selectedPlayer, pro1, pro2);
+                        createDialog("Trade", currentPlayer, selectedPlayer, pro1, pro2);
                     }
                 }
                 else {
@@ -225,7 +228,7 @@ public class GameScreen extends ScreenAdapter {
                     sellButton.setColor(1, 0, 0, 1);
                     for (var im : blockImages) {
                         if (im.getBlock() instanceof Property
-                            && ((Property) im.getBlock()).owner == instance.getCurrentPlayer())
+                            && ((Property) im.getBlock()).owner == currentPlayer)
                             continue;
                         im.disable();
                     }
@@ -262,7 +265,6 @@ public class GameScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(input);
     }
 
-
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 0, 0, 1);
@@ -289,7 +291,14 @@ public class GameScreen extends ScreenAdapter {
         mainStage.act(delta);
         mainStage.draw();
 
-        InfoLabel.curPlayer = instance.getCurrentPlayer();
+        InfoLabel.curPlayer = currentPlayer;
+        // near bankrupt, allow selling
+        if (currentPlayer.cashAmt < 0) {
+            sellButton.setVisible(true);
+        }
+        else if (!isSelling) {
+            sellButton.setVisible(false);
+        }
 
         uiStage.getViewport().apply();
         uiStage.act(delta);
@@ -305,9 +314,14 @@ public class GameScreen extends ScreenAdapter {
 
     public void nextMove() {
         // disable the button and shortcut when trading
-        if (isTrading)
+        if (isTrading || isSelling)
             return;
+        if (currentPlayer.cashAmt < 0) {
+            return;
+        }
+        nextButton.setText("Next Player\n(Space)");
         instance.nextPlayer();
+        currentPlayer = instance.getCurrentPlayer();
     }
 
     @SuppressWarnings("unchecked")
@@ -332,7 +346,7 @@ public class GameScreen extends ScreenAdapter {
                     skin, 
                     this,
                     (Property) args[0],
-                    instance.getCurrentPlayer()
+                    currentPlayer
                 );
                 break;
             case "ShowAlert":
@@ -357,7 +371,7 @@ public class GameScreen extends ScreenAdapter {
                 d = new HospitalDialog("Hospital", skin, (Player) args[0], instance, this);
                 break;
             case "Bank":
-                d = new BankDialog("Bank", skin, instance.getCurrentPlayer());
+                d = new BankDialog("Bank", skin, currentPlayer);
                 break;
             case "Trade":
                 d = new TradeDialog(
@@ -406,12 +420,12 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void selectPlayer(Player p) {
-        if (p == instance.getCurrentPlayer() || p == selectedPlayer) {
+        if (p == currentPlayer || p == selectedPlayer) {
             return;
         }
         for (var im : blockImages) {
             im.enable();
-            if (im.getBlock() instanceof Property && ((Property) im.getBlock()).owner == instance.getCurrentPlayer()) {
+            if (im.getBlock() instanceof Property && ((Property) im.getBlock()).owner == currentPlayer) {
                 continue;
             }
             // clear previously selected property
@@ -420,7 +434,7 @@ public class GameScreen extends ScreenAdapter {
             // disable other property choices
             if (im.getBlock() instanceof Property
                     && ((Property) im.getBlock()).owner != p
-                    && ((Property) im.getBlock()).owner != instance.getCurrentPlayer()
+                    && ((Property) im.getBlock()).owner != currentPlayer
                     || !(im.getBlock() instanceof Property))
             {
                 if (im.getTouchable() == Touchable.disabled)
@@ -428,13 +442,13 @@ public class GameScreen extends ScreenAdapter {
                 im.disable();
             }
         }
-        selectedImages.removeIf(i -> ((Property) i.getBlock()).owner != instance.getCurrentPlayer());
+        selectedImages.removeIf(i -> ((Property) i.getBlock()).owner != currentPlayer);
         selectedPlayer = p;
     }
 
     public void selectImage(BlockImage image) {
         Property p = (Property) image.getBlock();
-        if (p.owner != instance.getCurrentPlayer()) {
+        if (p.owner != currentPlayer) {
             selectPlayer(p.owner);
         }
         selectedImages.add(image);
@@ -444,7 +458,7 @@ public class GameScreen extends ScreenAdapter {
         selectedImages.remove(image);
         // long count = selectedImages
         //                 .stream()
-        //                 .filter(i -> ((Property) i.getBlock()).owner != instance.getCurrentPlayer())
+        //                 .filter(i -> ((Property) i.getBlock()).owner != currentPlayer)
         //                 .count();
         // if (count == 0) {
         //     for (var b : blockImages) {
@@ -476,4 +490,14 @@ public class GameScreen extends ScreenAdapter {
     public GameInstance getInstance() {
         return instance;
     }
+
+    /**
+     * Suspends the current player and let the other player take action.
+     * 
+     * @param player the other player
+     */
+	public void waitForPlayer(Player player) {
+        currentPlayer = player;
+        nextButton.setText("Done");
+	}
 }

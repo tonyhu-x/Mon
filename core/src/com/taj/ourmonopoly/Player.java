@@ -142,17 +142,21 @@ public class Player {
      * Pays some money.
      * 
      * @param player {@code null} is understood to refer to the bank
-     * @param amt
+     * @param amt the amount paid
      */
     public void payTo(Player player, int amt) {
         int result = this.pay(amt);
-        if (result == 1) {
-            instance.bankruptCheck(this, player);
-        }
-        else if (result == -1) {
+        if (result == -1) {
             instance.bankrupt(this, player);
+            if (player != null) {
+                player.receive(netWorth());
+            }
+            return;
         }
-        else if (player != null)
+        if (result == 1) {
+            instance.bankruptCheck(this);
+        }
+        if (player != null)
             player.receive(amt); 
     }
 
@@ -167,14 +171,13 @@ public class Player {
             return 0;
         }
         else if (netWorth() >= amt){
-            // this.cashAmt = amt - this.savings;
-            // this.savings = 0;
+            this.cashAmt = cashAmt + savings - amt;
+            this.savings = 0;
             return 1;
         }
         else {
             return -1;
         }
-        
     }
 
     public void receive(int amt) {
@@ -232,7 +235,7 @@ public class Player {
         return temp;
     }
 
-    int netWorth() {
+    public int netWorth() {
         int worth = savings + cashAmt;
         for (var p : properties) {
             worth += p.worth();

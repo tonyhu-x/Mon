@@ -40,9 +40,10 @@ public class BlindAuctionDialog extends Dialog {
     @Override
     protected void result(Object object) {
         int bid;
+        var curPlayer = instance.players.get(ind >= instance.players.size() ? ind - instance.players.size() : ind);
         try {
             bid = Integer.parseInt(field.getText());
-            if (bid < 0) {
+            if (bid < 0 || bid > curPlayer.netWorth()) {
                 throw new NumberFormatException();
             }
         }
@@ -53,7 +54,6 @@ public class BlindAuctionDialog extends Dialog {
         }
 
         field.setColor(1, 1, 1, 1);
-        var curPlayer = instance.players.get(ind >= instance.players.size() ? ind - instance.players.size() : ind);
         if (bid > highestBid) {
             highestBidder = curPlayer;
             highestBid = bid;

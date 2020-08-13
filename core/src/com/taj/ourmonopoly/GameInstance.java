@@ -123,9 +123,9 @@ public class GameInstance {
                 break;
             case PAY_RENT:
                 int rent = calcRent(pos);
-                player.payTo(((Property) blocks.get(pos)).owner, rent);
                 screen.createDialog("ShowAlert",
-                        player.name + " paid $" + rent + " to " + ((Property) blocks.get(pos)).owner.name + ".");
+                    player.name + " paid $" + rent + " to " + ((Property) blocks.get(pos)).owner.name + ".");
+                player.payTo(((Property) blocks.get(pos)).owner, rent);
                 break;
             case METRO:
                 screen.createDialog("Metro", blocks.get(pos), player);
@@ -282,19 +282,24 @@ public class GameInstance {
         }
     }
 
-    public void bankruptCheck(Player player, Player toWhom) {
-        // if (player.)
-        // screen.createDialog()
+    public void bankruptCheck(Player player) {
+        int target = -player.cashAmt;
+        screen.createDialog("ShowAlert", "You are about to go bankrupt. You need to raise $" + target + ".");
+        screen.waitForPlayer(player);
     }
 
     public void bankrupt(Player player, Player toWhom) {
         screen.createDialog("ShowAlert", player.getName() + " is bankrupt!");
-        player.payTo(toWhom, player.netWorth());
         // 500 bonus
         if (toWhom != null)
             toWhom.receive(500);
 
         player.isBankrupt = true;
+        for (var b : blocks) {
+            if (b instanceof Property && ((Property) b).owner == player) {
+                ((Property) b).vacate();
+            }
+        }
         players.remove(player);
     }
 
