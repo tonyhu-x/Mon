@@ -8,7 +8,7 @@ public class DesktopLauncher {
 
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title = "Monopoly Game " + GameApp.VER_MAJOR + "." + GameApp.VER_MINOR;
+		config.title = "Mon " + GameApp.VER_MAJOR + "." + GameApp.VER_MINOR + "." + GameApp.VER_PATCH;
 		config.width = GameApp.WINDOW_WIDTH;
 		config.height = GameApp.WINDOW_HEIGHT;
 		config.fullscreen = false;
