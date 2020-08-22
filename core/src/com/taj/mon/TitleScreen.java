@@ -62,7 +62,7 @@ public class TitleScreen extends ScreenAdapter {
         logo.setAlign(Align.center);
         logo.setPosition(
             (GameApp.WINDOW_WIDTH - logo.getWidth()) / 2,
-            (GameApp.WINDOW_HEIGHT - logo.getImageHeight()) / 2
+            (GameApp.WINDOW_HEIGHT - logo.getImageHeight()) / 2 - 100
         );
 
         diceAtlas = new TextureAtlas(Gdx.files.internal("dice.atlas"));

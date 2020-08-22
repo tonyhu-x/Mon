@@ -1,207 +1,207 @@
-blocks.png
-size: 2000, 1400
+blocks2.png
+size: 2016, 1408
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 bank
   rotate: false
-  xy: 0, 0
+  xy: 1, 1
   size: 350, 350
   orig: 350, 350
   offset: 0, 0
   index: -1
 chance
   rotate: false
-  xy: 350, 0
+  xy: 353, 1
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 comChest
   rotate: false
-  xy: 600, 0
+  xy: 605, 1
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 go
   rotate: false
-  xy: 850, 0
+  xy: 857, 1
   size: 350, 350
   orig: 350, 350
   offset: 0, 0
   index: -1
 hospital
   rotate: false
-  xy: 1200, 0
+  xy: 1209, 1
   size: 350, 350
   orig: 350, 350
   offset: 0, 0
   index: -1
 jail
   rotate: false
-  xy: 1550, 0
+  xy: 1561, 1
   size: 350, 350
   orig: 350, 350
   offset: 0, 0
   index: -1
 metro
   rotate: false
-  xy: 0, 350
+  xy: 1, 353
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 park
   rotate: false
-  xy: 250, 350
+  xy: 253, 353
   size: 350, 350
   orig: 350, 350
   offset: 0, 0
   index: -1
 propertyL0P1
   rotate: false
-  xy: 600, 350
+  xy: 605, 353
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 propertyL0P2
   rotate: false
-  xy: 850, 350
+  xy: 857, 353
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 propertyL0P3
   rotate: false
-  xy: 1100, 350
+  xy: 1109, 353
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 propertyL0P4
   rotate: false
-  xy: 1350, 350
+  xy: 1361, 353
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 propertyL1P1
   rotate: false
-  xy: 1600, 350
+  xy: 1613, 353
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 propertyL1P2
   rotate: false
-  xy: 0, 700
+  xy: 1, 705
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 propertyL1P3
   rotate: false
-  xy: 250, 700
+  xy: 253, 705
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 propertyL1P4
   rotate: false
-  xy: 500, 700
+  xy: 505, 705
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 propertyL2P1
   rotate: false
-  xy: 750, 700
+  xy: 757, 705
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 propertyL2P2
   rotate: false
-  xy: 1000, 700
+  xy: 1009, 705
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 propertyL2P3
   rotate: false
-  xy: 1250, 700
+  xy: 1261, 705
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 propertyL2P4
   rotate: false
-  xy: 1500, 700
+  xy: 1513, 705
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 propertyL3P1
   rotate: false
-  xy: 1750, 700
+  xy: 1765, 705
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 propertyL3P2
   rotate: false
-  xy: 0, 1050
+  xy: 1, 1057
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 propertyL3P3
   rotate: false
-  xy: 250, 1050
+  xy: 253, 1057
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 propertyL3P4
   rotate: false
-  xy: 500, 1050
+  xy: 505, 1057
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 propertyL4P1
   rotate: false
-  xy: 750, 1050
+  xy: 757, 1057
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 propertyL4P2
   rotate: false
-  xy: 1000, 1050
+  xy: 1009, 1057
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 propertyL4P3
   rotate: false
-  xy: 1250, 1050
+  xy: 1261, 1057
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 propertyL4P4
   rotate: false
-  xy: 1500, 1050
+  xy: 1513, 1057
   size: 250, 350
   orig: 250, 350
   offset: 0, 0
   index: -1
 propertyUnowned
   rotate: false
-  xy: 1750, 1050
+  xy: 1765, 1057
   size: 250, 350
   orig: 250, 350
   offset: 0, 0

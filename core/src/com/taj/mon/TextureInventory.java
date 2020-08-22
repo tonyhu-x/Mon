@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class TextureInventory {
 
-    private static final TextureAtlas TEXTURE = new TextureAtlas(Gdx.files.internal("blocks.atlas"));
+    private static final TextureAtlas TEXTURE = new TextureAtlas(Gdx.files.internal("blocks2.atlas"));
     private static final TextureAtlas TOKENS = new TextureAtlas(Gdx.files.internal("tokens.atlas"));
 
     private static HashMap<String, TextureRegion> regions = new HashMap<>();
