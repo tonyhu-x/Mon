@@ -6,6 +6,7 @@ This is the first official playable version!
 * Check out our new logo and the more colourful map.
 * Added a PATCH version number.
 * Fixed compatibility issues with Gradle.
+* Fixei file I/O issues in JAR.
 
 ## Version 0.3
 * Added a jail system.

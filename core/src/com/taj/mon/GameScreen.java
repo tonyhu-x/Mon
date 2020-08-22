@@ -1,10 +1,9 @@
 package com.taj.mon;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -33,6 +32,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.taj.mon.block.Metro;
 import com.taj.mon.block.Property;
 import com.taj.mon.dialog.AlertActionDialog;
+import com.taj.mon.dialog.AlertActionDialog.AlertAction;
 import com.taj.mon.dialog.AlertDialog;
 import com.taj.mon.dialog.BankDialog;
 import com.taj.mon.dialog.BlindAuctionDialog;
@@ -42,7 +42,6 @@ import com.taj.mon.dialog.MetroDialog;
 import com.taj.mon.dialog.PropertyPurchaseDialog;
 import com.taj.mon.dialog.PropertyViewDialog;
 import com.taj.mon.dialog.TradeDialog;
-import com.taj.mon.dialog.AlertActionDialog.AlertAction;
 
 /**
  * The GUI representation of a game.
@@ -368,13 +367,7 @@ public class GameScreen extends ScreenAdapter {
 
     private void createImages() throws IOException {
         BufferedReader csvReader = null;
-        try {
-            csvReader = new BufferedReader(new FileReader(new File(FileHandle.class.getResource("/blockPos.txt").toURI())));
-        } catch (FileNotFoundException | URISyntaxException e) {
-            System.out.println("File not found!");
-            e.printStackTrace();
-            System.exit(-1);
-        }
+        csvReader = new BufferedReader(new InputStreamReader(FileHandle.class.getResourceAsStream("/blockPos.txt")));
 
         String row;
         int count = 0;

@@ -1,29 +1,20 @@
 package com.taj.mon.block;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
-import com.taj.mon.Player;
 import com.taj.mon.GameInstance.Task;
+import com.taj.mon.Player;
 
 public abstract class Block {
 
     public static ArrayList<Block> getBlockList(String path) throws IOException {
         BufferedReader csvReader = null;
-        try {
-            csvReader = new BufferedReader(new FileReader(new File(FileHandle.class.getResource("/" + path).toURI())));
-        } catch (FileNotFoundException | URISyntaxException e) {
-            System.out.println("File not found!");
-            e.printStackTrace();
-            System.exit(-1);
-        }
+        csvReader = new BufferedReader(new InputStreamReader(FileHandle.class.getResourceAsStream("/" + path)));
 
         ArrayList<Block> blocks = new ArrayList<>(60);
         String row;
