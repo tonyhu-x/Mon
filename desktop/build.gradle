@@ -6,6 +6,7 @@ sourceSets.main.resources.srcDirs = ["../core/assets"]
 
 project.ext.mainClassName = "com.taj.mon.desktop.DesktopLauncher"
 project.ext.assetsDir = new File("../core/assets")
+archivesBaseName = "Mon"
 
 task run(dependsOn: classes, type: JavaExec) {
     main = project.mainClassName
