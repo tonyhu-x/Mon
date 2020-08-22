@@ -1,9 +1,11 @@
 package com.taj.mon;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -12,6 +14,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -45,7 +48,7 @@ import com.taj.mon.dialog.AlertActionDialog.AlertAction;
  * The GUI representation of a game.
  */
 public class GameScreen extends ScreenAdapter {
-    
+
     private static class InfoLabel extends Label {
 
         private static Player curPlayer;
@@ -62,14 +65,12 @@ public class GameScreen extends ScreenAdapter {
             super.act(delta);
             if (p.isBankrupt) {
                 this.setText(p.name + ": Bankrupt");
-            }
-            else
+            } else
                 this.setText(p.name + ": " + p.cashAmt);
-            
+
             if (this.p == curPlayer) {
                 this.setColor(0, 1, 0, 1);
-            }
-            else {
+            } else {
                 this.setColor(1, 1, 1, 1);
             }
         }
@@ -124,7 +125,7 @@ public class GameScreen extends ScreenAdapter {
             e.printStackTrace();
             System.exit(-1);
         }
-        
+
         for (var p : instance.players) {
             playerImages.add(new PlayerImage(p, blockImages.get(0), this));
         }
@@ -146,7 +147,7 @@ public class GameScreen extends ScreenAdapter {
                 return true;
             }
         });
-        
+
         mainStage.addListener(new DragListener() {
             @Override
             public void drag(InputEvent event, float x, float y, int pointer) {
@@ -172,7 +173,7 @@ public class GameScreen extends ScreenAdapter {
 
         table.setBounds(50, 50, 300, 400);
         uiStage.addActor(table);
-        
+
         nextButton = new TextButton("Next Player\n(Space)", skin);
         nextButton.setBounds(1500, 200, 200, 200);
         nextButton.addListener(new ClickListener() {
@@ -187,18 +188,18 @@ public class GameScreen extends ScreenAdapter {
         tradeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (isSelling) return;
+                if (isSelling)
+                    return;
                 if (isTrading) {
                     if (selectedImages.isEmpty()) {
                         exitTrading();
-                    }
-                    else {
+                    } else {
                         if (selectedPlayer == null) {
                             return;
                         }
                         ArrayList<Property> pro1 = new ArrayList<>();
                         ArrayList<Property> pro2 = new ArrayList<>();
-                        
+
                         for (var im : selectedImages) {
                             var p = (Property) im.getBlock();
                             if (p.owner == currentPlayer)
@@ -208,32 +209,30 @@ public class GameScreen extends ScreenAdapter {
                         }
                         createDialog("Trade", currentPlayer, selectedPlayer, pro1, pro2);
                     }
-                }
-                else {
+                } else {
                     isTrading = true;
                     tradeButton.setColor(1, 0, 0, 1);
                 }
             }
         });
-        
+
         sellButton = new TextButton("Sell\nProperty", skin);
         sellButton.setBounds(1500, 700, 200, 150);
         sellButton.setVisible(false);
         sellButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (isTrading) return;
+                if (isTrading)
+                    return;
                 isSelling = !isSelling;
                 if (isSelling) {
                     sellButton.setColor(1, 0, 0, 1);
                     for (var im : blockImages) {
-                        if (im.getBlock() instanceof Property
-                            && ((Property) im.getBlock()).owner == currentPlayer)
+                        if (im.getBlock() instanceof Property && ((Property) im.getBlock()).owner == currentPlayer)
                             continue;
                         im.disable();
                     }
-                }
-                else {
+                } else {
                     for (var im : blockImages) {
                         im.enable();
                     }
@@ -241,7 +240,7 @@ public class GameScreen extends ScreenAdapter {
                 }
             }
         });
-        
+
         uiStage.addActor(nextButton);
         uiStage.addActor(tradeButton);
         uiStage.addActor(sellButton);
@@ -271,19 +270,18 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.zoom += deltaZoom * 0.1f;
-        deltaZoom = 0.9f * deltaZoom; 
+        deltaZoom = 0.9f * deltaZoom;
 
         camera.translate(deltaX * 0.1f, deltaY * 0.1f);
         deltaX *= 0.9f;
         deltaY *= 0.9f;
 
-        for (var iter = playerImages.iterator(); iter.hasNext(); ) {
+        for (var iter = playerImages.iterator(); iter.hasNext();) {
             var p = iter.next();
             if (p.player.isBankrupt) {
                 p.remove();
                 iter.remove();
-            }
-            else
+            } else
                 p.setBlockParent(blockImages.get(instance.convertPos(p.player.getPosition())));
         }
 
@@ -295,8 +293,7 @@ public class GameScreen extends ScreenAdapter {
         // near bankrupt, allow selling
         if (currentPlayer.cashAmt < 0) {
             sellButton.setVisible(true);
-        }
-        else if (!isSelling) {
+        } else if (!isSelling) {
             sellButton.setVisible(false);
         }
 
@@ -329,37 +326,19 @@ public class GameScreen extends ScreenAdapter {
         Dialog d;
         switch (type) {
             case "PurchaseProperty":
-                d = new PropertyPurchaseDialog(
-                    "Purchase Property",
-                    skin,
-                    this,
-                    (Property) args[0],
-                    (Player) args[1]
-                );
+                d = new PropertyPurchaseDialog("Purchase Property", skin, this, (Property) args[0], (Player) args[1]);
                 break;
             case "BlindAuction":
                 d = new BlindAuctionDialog("Blind Auction", skin, this, (Property) args[0]);
                 break;
             case "ViewProperty":
-                d = new PropertyViewDialog(
-                    "View Property", 
-                    skin, 
-                    this,
-                    (Property) args[0],
-                    currentPlayer
-                );
+                d = new PropertyViewDialog("View Property", skin, this, (Property) args[0], currentPlayer);
                 break;
             case "ShowAlert":
                 d = new AlertDialog("Alert", skin, (String) args[0]);
                 break;
             case "AlertAction":
-                d = new AlertActionDialog(
-                    "Alert",
-                    skin,
-                    this,
-                    (String) args[0],
-                    (AlertAction) args[1]
-                );
+                d = new AlertActionDialog("Alert", skin, this, (String) args[0], (AlertAction) args[1]);
                 break;
             case "Metro":
                 d = new MetroDialog("Metro", skin, this, (Metro) args[0], (Player) args[1]);
@@ -374,15 +353,8 @@ public class GameScreen extends ScreenAdapter {
                 d = new BankDialog("Bank", skin, currentPlayer);
                 break;
             case "Trade":
-                d = new TradeDialog(
-                    "Trade",
-                    skin,
-                    this,
-                    (Player) args[0],
-                    (Player) args[1],
-                    (ArrayList<Property>) args[2],
-                    (ArrayList<Property>) args[3]
-                );
+                d = new TradeDialog("Trade", skin, this, (Player) args[0], (Player) args[1],
+                        (ArrayList<Property>) args[2], (ArrayList<Property>) args[3]);
                 break;
             default:
                 return;
@@ -395,12 +367,10 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void createImages() throws IOException {
-        String path = GameApp.PATH_TO_ASSETS + "blockPos.txt";
         BufferedReader csvReader = null;
         try {
-            csvReader = new BufferedReader(new FileReader(path));
-        }
-        catch (FileNotFoundException e) {
+            csvReader = new BufferedReader(new FileReader(new File(FileHandle.class.getResource("/blockPos.txt").toURI())));
+        } catch (FileNotFoundException | URISyntaxException e) {
             System.out.println("File not found!");
             e.printStackTrace();
             System.exit(-1);

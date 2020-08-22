@@ -3,6 +3,7 @@ package com.taj.mon;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.taj.mon.block.Bank;
 import com.taj.mon.block.Block;
 import com.taj.mon.block.Hospital;
@@ -49,7 +50,7 @@ public class GameInstance {
     public GameInstance(GameScreen screen, String[] names) {
         this.screen = screen;
         try {
-            blocks = Block.getBlockList(GameApp.PATH_TO_ASSETS + "blockData.txt");
+            blocks = Block.getBlockList("blockData.txt");
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
