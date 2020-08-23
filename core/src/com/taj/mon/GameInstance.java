@@ -3,7 +3,6 @@ package com.taj.mon;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
 import com.taj.mon.block.Bank;
 import com.taj.mon.block.Block;
 import com.taj.mon.block.Hospital;
@@ -102,7 +101,6 @@ public class GameInstance {
             p = players.get(turn);
         }
         p.move(newDiceRoll ? getDiceRoll() : lastDiceRoll);
-        // p.move(3);
         queryBlock(p);
     }
     
@@ -140,40 +138,22 @@ public class GameInstance {
                 screen.createDialog("ShowAlert", player.name + " received $50.");
                 break;
             case GO_TO_JAIL:
-                screen.createDialog("AlertAction", "Oops! To jail...", new AlertAction() {
-                    @Override
-                    public void apply() {
-                        jail.accept(player);
-                    }
-                });
+                screen.createDialog("AlertAction", "Oops! To jail...", (AlertAction) () -> jail.accept(player));
                 break;
             case GO_TO_HOSPITAL:
-                screen.createDialog("AlertAction", "Oops! To hospital...", new AlertAction() {
-                    @Override
-                    public void apply() {
-                        hospital.accept(player);
-                    }
-                });
+                screen.createDialog("AlertAction", "Oops! To hospital...", (AlertAction) () -> hospital.accept(player));
                 break;
             case ADVANCE_TO_GO:
-                screen.createDialog("AlertAction", "Advancing to Go...", new AlertAction() {
-                    @Override
-                    public void apply() {
-                        player.forward(MAP_SIZE - player.getPosition());
-                    }
-                });
+                screen.createDialog("AlertAction", "Advancing to Go...", (AlertAction) () -> player.forward(MAP_SIZE - player.getPosition()));
                 break;
             case SPLIT_CASH:
                 screen.createDialog("ShowAlert", "Every player's cash is equally redistributed!");
                 splitCash();
                 break;
             case BACK_TWO:
-                screen.createDialog("AlertAction", "Going back two spaces...", new AlertAction() {
-                    @Override
-                    public void apply() {
-                        player.backward(2);
-                        GameInstance.this.queryBlock(player);
-                    }
+                screen.createDialog("AlertAction", "Going back two spaces...", (AlertAction) () -> {
+                    player.backward(2);
+                    GameInstance.this.queryBlock(player);
                 });
                 break;
             case CREATE_JAIL_DIALOG:

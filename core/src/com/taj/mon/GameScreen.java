@@ -1,10 +1,8 @@
 package com.taj.mon;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -343,10 +341,10 @@ public class GameScreen extends ScreenAdapter {
                 d = new MetroDialog("Metro", skin, this, (Metro) args[0], (Player) args[1]);
                 break;
             case "Jail":
-                d = new JailDialog("Jail", skin, (Player) args[0], instance, this);
+                d = new JailDialog("Jail", skin, this, (Player) args[0]);
                 break;
             case "Hospital":
-                d = new HospitalDialog("Hospital", skin, (Player) args[0], instance, this);
+                d = new HospitalDialog("Hospital", skin, this, (Player) args[0]);
                 break;
             case "Bank":
                 d = new BankDialog("Bank", skin, currentPlayer);

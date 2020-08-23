@@ -2,20 +2,17 @@ package com.taj.mon.dialog;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.taj.mon.GameInstance;
 import com.taj.mon.GameScreen;
 import com.taj.mon.Player;
 
 public class HospitalDialog extends Dialog {
 
     private Player player;
-    private GameInstance instance;
     private GameScreen screen;
 
-    public HospitalDialog(String title, Skin skin, Player player, GameInstance instance, GameScreen screen) {
+    public HospitalDialog(String title, Skin skin, GameScreen screen, Player player) {
         super(title, skin);
         this.player = player;
-        this.instance = instance;
         this.screen = screen;
         this.text(
             "You have "
@@ -29,11 +26,11 @@ public class HospitalDialog extends Dialog {
     
     @Override
     protected void result(Object object) {
-        if (((boolean) object) == true) {
-            instance.payAndCure(player);
+        if (((boolean) object)) {
+            screen.getInstance().payAndCure(player);
         }
         else {
-            instance.tryToReleaseFromHospital(player);
+            screen.getInstance().tryToReleaseFromHospital(player);
         }
     }
 }
