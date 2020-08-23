@@ -231,13 +231,13 @@ public class GameInstance {
 
     // it is assumed that the parameters are correct
     public void trade(Player p1, Player p2,
-                        ArrayList<Property> pro1, ArrayList<Property> pro2, int amt1, int amt2)
+                        ArrayList<Property> pro1, ArrayList<Property> pro2, int amt)
     {
-        if (amt1 > amt2) {
-            p1.payTo(p2, amt1 - amt2);
+        if (amt > 0) {
+            p1.payTo(p2, amt);
         }
         else {
-            p2.payTo(p1, amt2 - amt1);
+            p2.payTo(p1, amt);
         }
         pro1.forEach(p -> p1.transferProperty(p, p2));
         pro2.forEach(p -> p2.transferProperty(p, p1));

@@ -1,12 +1,14 @@
 package com.taj.mon.dialog;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.taj.mon.GameScreen;
 import com.taj.mon.Player;
 import com.taj.mon.block.Property;
@@ -18,7 +20,9 @@ public class TradeDialog extends Dialog {
     private ArrayList<Property> pro1, pro2;
     private Label l1;
     private Label l2;
-    private TextField tf1, tf2;
+    private TextButton mode;
+    private boolean receive;
+    private TextField amountField;
 
     /**
      * Constructs a trade dialog.
@@ -39,8 +43,7 @@ public class TradeDialog extends Dialog {
         table.defaults().width(300).center();
         l1 = new Label("You:", skin);
         l2 = new Label(p2.getName() + ":", skin);
-        tf1 = new TextField("0", skin);
-        tf2 = new TextField("0", skin);
+        amountField = new TextField("0", skin);
         this.p1 = p1;
         this.p2 = p2;
         this.pro1 = pro1;
@@ -49,7 +52,7 @@ public class TradeDialog extends Dialog {
         table.add(l2);
         table.row();
 
-        if (pro1.size() == 0) {
+        if (pro1.isEmpty()) {
             table.add(new Label("None", skin));
         }
         else {
@@ -60,7 +63,7 @@ public class TradeDialog extends Dialog {
             builder.deleteCharAt(builder.toString().length() - 1);
             table.add(new Label(builder.toString(), skin));
         }
-        if (pro2.size() == 0) {
+        if (pro2.isEmpty()) {
             table.add(new Label("None", skin));
         }
         else {
@@ -72,8 +75,21 @@ public class TradeDialog extends Dialog {
             table.add(new Label(builder.toString(), skin));
         }
         table.row();
-        table.add(tf1);
-        table.add(tf2);
+        mode = new TextButton("You pay:", skin);
+        mode.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                receive = !receive;
+                if (receive) {
+                    mode.setText("You get:");
+                }
+                else {
+                    mode.setText("You pay:");
+                }
+            }
+        });
+        table.add(mode);
+        table.add(amountField);
         
         this.button("Offer", null);
         this.button("Cancel", false);
@@ -83,16 +99,14 @@ public class TradeDialog extends Dialog {
     protected void result(Object object) {
         if (object == null) {
             cancel();
-            int amt1, amt2;
+            int amount;
             try {
-                amt1 = Integer.parseInt(tf1.getText());
-                amt2 = Integer.parseInt(tf2.getText());
-                if (amt1 < 0 || amt2 < 0 || amt1 > p1.cashAmt || amt2 > p2.cashAmt) {
+                amount = Integer.parseInt(amountField.getText());
+                if (amount < 0 || receive && amount > p2.cashAmt || !receive && amount > p1.cashAmt) {
                     throw new NumberFormatException();
                 }
             } catch (NumberFormatException e) {
-                tf1.setColor(1, 0, 0, 1);
-                tf2.setColor(1, 0, 0, 1);
+                amountField.setColor(1, 0, 0, 1);
                 cancel();
                 return;
             }
@@ -100,17 +114,15 @@ public class TradeDialog extends Dialog {
             this.getButtonTable().clearChildren();
             this.button("Accept", true);
             this.button("Reject", false);
+            this.mode.setText(receive ? "You pay:" : "You get:");
+            this.mode.setDisabled(true);
             l1.setText(p1.getName() + ":");
             l2.setText("You:");
-            tf1.setDisabled(true);
-            tf2.setDisabled(true);
+            amountField.setDisabled(true);
         }
-        else if (((boolean) object) == true) {
-            int amt1, amt2;
-            amt1 = Integer.parseInt(tf1.getText());
-            amt2 = Integer.parseInt(tf2.getText());
-
-            screen.getInstance().trade(p1, p2, pro1, pro2, amt1, amt2);
+        else if ((boolean) object) {
+            int amount = Integer.parseInt(amountField.getText());
+            screen.getInstance().trade(p1, p2, pro1, pro2, receive ? -amount : amount);
             screen.exitTrading();
         }
         else {
