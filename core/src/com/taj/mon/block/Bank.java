@@ -22,21 +22,27 @@ public class Bank extends SqrBlock {
             this.amount = amount;
         }
 
-        private void apply() {
+        /**
+         * Applies the transaction.
+         * 
+         * @return {@code true} if the transaction is successfully applied.
+         */
+        private boolean apply() {
             if (amount > 0) {
                 if (player.cashAmt < amount) {
-                    return;
+                    return false;
                 }
                 player.cashAmt -= amount;
                 player.savings += amount;
             }
             else {
                 if (player.savings < -amount) {
-                    return;
+                    return false;
                 }
                 player.cashAmt -= amount;
                 player.savings += amount;
             }
+            return true;
         }
 
         public String getType() {
@@ -50,15 +56,21 @@ public class Bank extends SqrBlock {
 
     private static ArrayList<Transaction> transactions = new ArrayList<>();
     
-    public static void processTransactions(Player player) {
+    /**
+     * @return {@code true} when at least one transaction is successfully processed
+     */
+    public static boolean processTransactions(Player player) {
         var iter = transactions.iterator();
+        var res = false;
         while (iter.hasNext()) {
             var t = iter.next();
             if (t.player == player) {
-                t.apply();
+                if (!res)
+                    res = t.apply();
                 iter.remove();
             }
         }
+        return res;
     }
 
     public static ArrayList<Transaction> getTransactions(Player player) {

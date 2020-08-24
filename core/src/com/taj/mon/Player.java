@@ -88,8 +88,9 @@ public class Player {
             || position < 53 && position + steps >= 53
             || position < 67 && position + steps >= 67)
         {
-            Bank.processTransactions(this);
-            instance.createDialog("ShowAlert", "Transactions have been processed.");
+            if (Bank.processTransactions(this)) {
+                instance.createDialog("ShowAlert", "Transactions have been processed.");
+            }
         }
         position = (position + steps) % GameInstance.MAP_SIZE;
         setGroup();

@@ -1,5 +1,6 @@
 # Version History
 ## Version 1.0.3
+* Fixed the behaviour of transaction alerts so they don't appear when there aren't any transactions.
 
 ## Version 1.0.2
 * Fixed a bug that causes the game to crash when selling an already sold property.
