@@ -9,18 +9,20 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.taj.mon.block.Bank;
 import com.taj.mon.block.Block;
-import com.taj.mon.block.Property;
 
 public class BlockImage extends Image {
 
-    private GameScreen screen;
-    private Block block;
+    public enum State {
+        NORMAL, SELL, TRADE
+    }
+
+    protected GameScreen screen;
+    protected Block block;
     private String prevTextureName;
     private ArrayList<PlayerImage> images;
     private int rotate;
-    private boolean selected;
+    protected boolean selected;
 
     public BlockImage(Block block, GameScreen screen, float posX, float posY, int rotate) {
         super(TextureInventory.getRegion(block.getTextureName()));
@@ -32,37 +34,6 @@ public class BlockImage extends Image {
         this.setBounds(posX, posY, block.getDimensions().x, block.getDimensions().y);
         this.rotateBy(rotate * 90f);
         this.addListener(new InputListener() {
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (screen.isTrading()) {
-                    if (selected) {
-                        if (deselect()) {
-                            screen.deselectImage(BlockImage.this);
-                        }
-                    }
-                    else {
-                        if (select()) {
-                            screen.selectImage(BlockImage.this);
-                        }
-                    }
-                }
-                else if (screen.isSelling()) {
-                    // no need to check ownership since other blocks are already disabled
-                    Property p = (Property) BlockImage.this.block;
-                    p.owner.sellProperty(p);
-                }
-                else {
-                    if (block instanceof Property) {
-                        screen.createDialog("ViewProperty", block);
-                    }
-                    else if (block instanceof Bank) {
-                        screen.createDialog("Bank");
-                    }
-                }
-                return true;                
-            }
-
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 BlockImage.this.toFront();
@@ -128,6 +99,24 @@ public class BlockImage extends Image {
         images.remove(image);
     }
 
+    public void stateChanged(State newState) {
+        switch (newState) {
+            case NORMAL:
+                enable();
+                break;
+            case TRADE:
+            case SELL:
+                disable();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void targetPlayerChanged(Player newPlayer) {
+        // implemented in subclasses
+    }
+
     public void disable() {
         if (selected)
             return;
@@ -146,26 +135,12 @@ public class BlockImage extends Image {
         return block;
     }
 
+    // only property can be selected
     public boolean select() {
-        // you can only select unimproved property for trading purporses
-        if (block instanceof Property && ((Property) block).owner != null && ((Property) block).getLevel() == 0) {
-            selected = true;
-            this.setColor(1, 1, 1, 0.6f);
-            return true;
-        }
-        else {
-            return false;
-        }
+        return false;
     }
 
     public boolean deselect() {
-        if (block instanceof Property && ((Property) block).owner != null && ((Property) block).getLevel() == 0) {
-            selected = false;
-            this.setColor(1, 1, 1, 1);
-            return true;
-        }
-        else {
-            return false;
-        }
+        return false;
     }
 }

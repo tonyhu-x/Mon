@@ -17,7 +17,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -27,19 +26,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.taj.mon.block.Metro;
-import com.taj.mon.block.Property;
-import com.taj.mon.dialog.AlertActionDialog;
+import com.taj.mon.dialog.*;
 import com.taj.mon.dialog.AlertActionDialog.AlertAction;
-import com.taj.mon.dialog.AlertDialog;
-import com.taj.mon.dialog.BankDialog;
-import com.taj.mon.dialog.BlindAuctionDialog;
-import com.taj.mon.dialog.HospitalDialog;
-import com.taj.mon.dialog.JailDialog;
-import com.taj.mon.dialog.MetroDialog;
-import com.taj.mon.dialog.PropertyPurchaseDialog;
-import com.taj.mon.dialog.PropertyViewDialog;
-import com.taj.mon.dialog.TradeDialog;
+import com.taj.mon.BlockImage.State;
+import com.taj.mon.block.*;
 
 /**
  * The GUI representation of a game.
@@ -208,6 +198,9 @@ public class GameScreen extends ScreenAdapter {
                     }
                 } else {
                     isTrading = true;
+                    for (var im : blockImages) {
+                        im.stateChanged(State.TRADE);
+                    }
                     tradeButton.setColor(1, 0, 0, 1);
                 }
             }
@@ -225,15 +218,14 @@ public class GameScreen extends ScreenAdapter {
                 if (isSelling) {
                     sellButton.setColor(1, 0, 0, 1);
                     for (var im : blockImages) {
-                        if (im.getBlock() instanceof Property && ((Property) im.getBlock()).owner == currentPlayer)
-                            continue;
-                        im.disable();
+                        im.stateChanged(State.SELL);
+                        im.targetPlayerChanged(currentPlayer);
                     }
                 } else {
-                    for (var im : blockImages) {
-                        im.enable();
-                    }
                     sellButton.setColor(1, 1, 1, 1);
+                    for (var im : blockImages) {
+                        im.stateChanged(State.NORMAL);
+                    }
                 }
             }
         });
@@ -374,7 +366,15 @@ public class GameScreen extends ScreenAdapter {
             int x = Integer.parseInt(tokens[0]), y = Integer.parseInt(tokens[1]);
             int rotate = Integer.parseInt(tokens[2]);
 
-            blockImages.add(new BlockImage(instance.blocks.get(count), this, x, y, rotate));
+            Block b = instance.blocks.get(count);
+            if (b instanceof Property) {
+                blockImages.add(new PropertyImage(b, this, x, y, rotate));
+            }
+            else if (b instanceof Bank) {
+                blockImages.add(new BankImage(b, this, x, y, rotate));
+            }
+            else
+                blockImages.add(new BlockImage(instance.blocks.get(count), this, x, y, rotate));
             count++;
         }
 
@@ -385,44 +385,29 @@ public class GameScreen extends ScreenAdapter {
             return;
         }
         for (var im : blockImages) {
-            im.enable();
-            if (im.getBlock() instanceof Property && ((Property) im.getBlock()).owner == currentPlayer) {
-                continue;
-            }
-            // clear previously selected property
-            if (selectedPlayer != null)
-                im.deselect();
-            // disable other property choices
-            if (im.getBlock() instanceof Property
-                    && ((Property) im.getBlock()).owner != p
-                    && ((Property) im.getBlock()).owner != currentPlayer
-                    || !(im.getBlock() instanceof Property))
-            {
-                if (im.getTouchable() == Touchable.disabled)
-                    break;
-                im.disable();
-            }
+            im.targetPlayerChanged(p);
         }
-        selectedImages.removeIf(i -> ((Property) i.getBlock()).owner != currentPlayer);
+        selectedImages.removeIf(i -> (((Property) i.getBlock()).owner != currentPlayer));
         selectedPlayer = p;
     }
 
     public void selectImage(BlockImage image) {
         Property p = (Property) image.getBlock();
-        if (p.owner != currentPlayer) {
-            selectPlayer(p.owner);
-        }
+        selectPlayer(p.owner);
         selectedImages.add(image);
     }
 
     public void deselectImage(BlockImage image) {
         selectedImages.remove(image);
+        if (selectedImages.stream().allMatch(i -> ((Property) i.block).owner == currentPlayer)) {
+            blockImages.forEach(im -> im.targetPlayerChanged(null));
+            selectedPlayer = null;
+        }
     }
 
     public void exitTrading() {
         for (var b : blockImages) {
-            b.deselect();
-            b.enable();
+            b.stateChanged(State.NORMAL);
         }
         selectedImages.clear();
         selectedPlayer = null;
@@ -458,6 +443,13 @@ public class GameScreen extends ScreenAdapter {
 	public void waitForPlayer(Player player) {
         currentPlayer = player;
         nextButton.setText("Done");
+    }
+
+    /**
+     * Returns the player that is currently interacting with the UI.
+     */
+    public Player getCurrentPlayer() {
+        return currentPlayer;
     }
     
     @Override
