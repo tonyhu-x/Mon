@@ -1,4 +1,7 @@
 # Version History
+## Version 1.0.2
+* Fixed a bug that causes the game to crash when selling an already sold property.
+
 ## Version 1.0.1
 * Fixed (and simplified) trading logic.
 
