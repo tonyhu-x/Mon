@@ -15,7 +15,7 @@ public class PlayerImage extends Image {
     /**
      * The {@link BlockImage} cantaining the player.
      */
-    private BlockImage parent;
+    private BlockImage parentBlock;
     private GameScreen screen;
     private float deltaX, deltaY;
 
@@ -67,14 +67,14 @@ public class PlayerImage extends Image {
     }
 
     public void setBlockParent(BlockImage newParent) {
-        if (parent == newParent) {
+        if (parentBlock == newParent) {
             return;
         }
-        if (parent != null) {
-            parent.removeImage(this);
+        if (parentBlock != null) {
+            parentBlock.removeImage(this);
         }
         newParent.pushImage(this);
-        parent = newParent;
+        parentBlock = newParent;
     }
 
     public void newTarget(float x, float y) {
