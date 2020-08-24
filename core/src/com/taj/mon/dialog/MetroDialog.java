@@ -24,7 +24,7 @@ public class MetroDialog extends Dialog {
 
     @Override
     protected void result(Object object) {
-        if (((boolean) object) == true) {
+        if (((boolean) object)) {
             metro.movePlayer(player);
         }
         else {

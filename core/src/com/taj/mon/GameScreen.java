@@ -74,8 +74,8 @@ public class GameScreen extends ScreenAdapter {
     }
 
     // these values preserve the aspect ratio of the map`
-    final float worldWidth = 270;
-    final float worldHeight = 390;
+    private static final float WORLD_WIDTH = 270;
+    private static final float WORLD_HEIGHT = 390;
 
     private Skin skin;
     private GameApp game;
@@ -132,8 +132,8 @@ public class GameScreen extends ScreenAdapter {
     public void show() {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         camera = new OrthographicCamera();
-        mainStage = new Stage(new FillViewport(worldWidth, worldHeight, camera), game.batch);
-        camera.zoom = worldHeight / (worldWidth * GameApp.ASPECT_RATIO);
+        mainStage = new Stage(new FillViewport(WORLD_WIDTH, WORLD_HEIGHT, camera), game.batch);
+        camera.zoom = WORLD_HEIGHT / (WORLD_WIDTH * GameApp.ASPECT_RATIO);
         deltaZoom = 0f;
         // the x and y aren't real screen coordinates!!!
         // they are the coordinates relative to the stage
@@ -307,7 +307,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void nextMove() {
-        // disable the button and shortcut when trading
+        // disable the button and shortcut when trading or selling
         if (isTrading || isSelling)
             return;
         if (currentPlayer.cashAmt < 0) {
@@ -417,16 +417,6 @@ public class GameScreen extends ScreenAdapter {
 
     public void deselectImage(BlockImage image) {
         selectedImages.remove(image);
-        // long count = selectedImages
-        //                 .stream()
-        //                 .filter(i -> ((Property) i.getBlock()).owner != currentPlayer)
-        //                 .count();
-        // if (count == 0) {
-        //     for (var b : blockImages) {
-        //         b.enable();
-        //     }
-        //     selectedPlayer = null;
-        // }
     }
 
     public void exitTrading() {
@@ -441,12 +431,11 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void gameOver(Player winner) {
-        createDialog("AlertAction", "Game is over! Congratulations to " + winner.name + "!", new AlertAction() {
-			@Override
-			public void apply() {
-				game.setScreen(new TitleScreen(game));
-			}
-        }); 
+        createDialog(
+            "AlertAction",
+            "Game is over! Congratulations to " + winner.name + "!",
+            (AlertAction) () -> game.setScreen(new TitleScreen(game))
+        ); 
     }
 
     public boolean isTrading() {

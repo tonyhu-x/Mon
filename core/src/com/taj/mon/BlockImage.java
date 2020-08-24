@@ -2,7 +2,6 @@ package com.taj.mon;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -31,7 +30,7 @@ public class BlockImage extends Image {
         this.rotate = rotate;
         this.images = new ArrayList<>();
         this.setBounds(posX, posY, block.getDimensions().x, block.getDimensions().y);
-        this.rotateBy(rotate * 90);
+        this.rotateBy(rotate * 90f);
         this.addListener(new InputListener() {
 
             @Override
@@ -105,7 +104,7 @@ public class BlockImage extends Image {
 
     @Override
     public void act(float delta) {
-        if (block.getTextureName() != prevTextureName) {
+        if (!block.getTextureName().equals(prevTextureName)) {
             this.setDrawable(new TextureRegionDrawable(TextureInventory.getRegion(block.getTextureName())));
             this.prevTextureName = block.getTextureName();
         }
