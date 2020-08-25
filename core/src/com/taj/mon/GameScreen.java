@@ -146,7 +146,7 @@ public class GameScreen extends ScreenAdapter {
         blockImages.forEach(mainStage::addActor);
         playerImages.forEach(mainStage::addActor);
 
-        uiStage = new Stage(new FitViewport(GameApp.WINDOW_WIDTH, GameApp.WINDOW_HEIGHT), game.batch);
+        uiStage = new Stage(new FitViewport(GameApp.WIN_WIDTH_HIGH, GameApp.WIN_HEIGHT_HIGH), game.batch);
         infoLabels = new InfoLabel[instance.players.size()];
         infoImages = new PlayerImage[instance.players.size()];
         table = new Table();

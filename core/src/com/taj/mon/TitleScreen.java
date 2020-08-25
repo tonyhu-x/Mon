@@ -54,15 +54,15 @@ public class TitleScreen extends ScreenAdapter {
         text.setColor(Color.WHITE);
         text.setAlignment(Align.center);
         text.setPosition(
-            (GameApp.WINDOW_WIDTH - text.getWidth()) / 2,
-            (GameApp.WINDOW_HEIGHT - text.getHeight()) / 2 - 250
+            (GameApp.WIN_WIDTH_HIGH - text.getWidth()) / 2,
+            (GameApp.WIN_HEIGHT_HIGH - text.getHeight()) / 2 - 250
         );
 
         logo = new Image(new Texture("logo.png"));
         logo.setAlign(Align.center);
         logo.setPosition(
-            (GameApp.WINDOW_WIDTH - logo.getWidth()) / 2,
-            (GameApp.WINDOW_HEIGHT - logo.getImageHeight()) / 2 - 100
+            (GameApp.WIN_WIDTH_HIGH - logo.getWidth()) / 2,
+            (GameApp.WIN_HEIGHT_HIGH - logo.getImageHeight()) / 2 - 100
         );
 
         diceAtlas = new TextureAtlas(Gdx.files.internal("dice.atlas"));
