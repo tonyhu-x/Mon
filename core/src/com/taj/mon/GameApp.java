@@ -10,7 +10,7 @@ public class GameApp extends Game {
 	public static final int VER_PATCH = 3;
 	public static final int WINDOW_WIDTH = 1920;
 	public static final int WINDOW_HEIGHT = 1080;
-	public static final float ASPECT_RATIO = (float) WINDOW_HEIGHT / WINDOW_WIDTH;;
+	public static final float ASPECT_RATIO = (float) WINDOW_HEIGHT / WINDOW_WIDTH;
 	public static final String PATH_TO_ASSETS = "core/assets/";
 	
 	SpriteBatch batch;
