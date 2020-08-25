@@ -12,18 +12,52 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
+
 public class TitleScreen extends ScreenAdapter {
+
+    private class SettingsDialog extends Dialog {
+
+        public SettingsDialog() {
+            super("Settings", skin);
+            var table = this.getContentTable();
+            Label resLabel = new Label("Resolution", skin);
+            TextButton resLow = new TextButton(GameApp.WIN_WIDTH_LOW + " * " + GameApp.WIN_HEIGHT_LOW, skin);
+            resLow.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Gdx.graphics.setWindowedMode(1280, 720);
+                    stage.getViewport().update(1280, 720);
+                }
+            });
+
+            TextButton resHigh = new TextButton(GameApp.WIN_WIDTH_HIGH + " * " + GameApp.WIN_HEIGHT_HIGH, skin);
+            resHigh.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Gdx.graphics.setWindowedMode(1920, 1080);
+                    stage.getViewport().update(1920, 1080);
+                }
+            });
+            table.add(resLabel);
+            table.add(resLow);
+            table.add(resHigh);
+        }
+    }
 
     GameApp game;
     Stage stage;
     Skin skin;
     Label text;
     Image logo;
+    TextButton settingsButton;
     TextureAtlas diceAtlas;
     Animation<TextureRegion> dice;
 
@@ -40,12 +74,17 @@ public class TitleScreen extends ScreenAdapter {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
                 switch (keycode) {
+                    case Input.Keys.S:
+                        settings();
+                        break;
                     case Input.Keys.ESCAPE:
                         System.exit(0);
+                        break;
                     default:
                         game.setScreen(new IntroScreen(game));
-                        return true;
-                }
+                        break;
+                    }
+                    return true;
             }
         });
         skin = new Skin(Gdx.files.internal("uiskin.json"));
@@ -64,13 +103,32 @@ public class TitleScreen extends ScreenAdapter {
             (GameApp.WIN_WIDTH_HIGH - logo.getWidth()) / 2,
             (GameApp.WIN_HEIGHT_HIGH - logo.getImageHeight()) / 2 - 100
         );
-
+        
+        settingsButton = new TextButton("Settings", skin);
+        settingsButton.setPosition(GameApp.WIN_WIDTH_HIGH - 200f, 0);
+        settingsButton.setSize(200, 80);
+        
+        settingsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                settings();
+            }
+        });
+        
         diceAtlas = new TextureAtlas(Gdx.files.internal("dice.atlas"));
         dice = new Animation<>(1 / 2f, diceAtlas.getRegions());
-
+        
         Gdx.input.setInputProcessor(stage);
         stage.addActor(text);
         stage.addActor(logo);
+        stage.addActor(settingsButton);
+    }
+
+    /**
+     * Creates a settings dialog.
+     */
+    public void settings() {
+        new SettingsDialog().show(stage);
     }
 
     @Override
