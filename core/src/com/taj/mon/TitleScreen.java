@@ -49,6 +49,17 @@ public class TitleScreen extends ScreenAdapter {
             table.add(resLabel);
             table.add(resLow);
             table.add(resHigh);
+
+            this.addListener(new InputListener() {
+                @Override    
+                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                    if (x < 0 || x > SettingsDialog.this.getWidth() || y < 0 || y > SettingsDialog.this.getHeight()) {
+                        SettingsDialog.this.hide();
+                        return true;
+                    }
+                    return false;
+                }
+            });
         }
     }
 
