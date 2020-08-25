@@ -88,24 +88,26 @@ public class TitleScreen extends ScreenAdapter {
             }
         });
         skin = new Skin(Gdx.files.internal("uiskin.json"));
+        int wid = Gdx.graphics.getWidth();
+        int hei = Gdx.graphics.getHeight();
 
         text = new Label("Press any key to continue", skin);
         text.setColor(Color.WHITE);
         text.setAlignment(Align.center);
         text.setPosition(
-            (GameApp.WIN_WIDTH_HIGH - text.getWidth()) / 2,
-            (GameApp.WIN_HEIGHT_HIGH - text.getHeight()) / 2 - 250
+            (wid - text.getWidth()) / 2,
+            (hei - text.getHeight()) / 2 - 250
         );
 
         logo = new Image(new Texture("logo.png"));
         logo.setAlign(Align.center);
         logo.setPosition(
-            (GameApp.WIN_WIDTH_HIGH - logo.getWidth()) / 2,
-            (GameApp.WIN_HEIGHT_HIGH - logo.getImageHeight()) / 2 - 100
+            (wid - logo.getWidth()) / 2,
+            (hei - logo.getImageHeight()) / 2 - 100
         );
         
         settingsButton = new TextButton("Settings", skin);
-        settingsButton.setPosition(GameApp.WIN_WIDTH_HIGH - 200f, 0);
+        settingsButton.setPosition(wid - 200f, 0);
         settingsButton.setSize(200, 80);
         
         settingsButton.addListener(new ClickListener() {

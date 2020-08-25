@@ -2,6 +2,7 @@
 ## Version 1.0.3
 * Fixed the behaviour of transaction alerts so they don't appear when there aren't any transactions.
 * Added a low resolution setting and a settings dialog.
+* The game now by default starts on low res settings on screens with lower resolutions. 
 
 ## Version 1.0.2
 * Fixed a bug that causes the game to crash when selling an already sold property.
