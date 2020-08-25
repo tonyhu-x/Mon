@@ -1,18 +1,16 @@
 package com.taj.mon.desktop;
 
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.taj.mon.GameApp;
 
 public class DesktopLauncher {
 
 	public static void main (String[] arg) {
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title = "Mon " + GameApp.VER_MAJOR + "." + GameApp.VER_MINOR + "." + GameApp.VER_PATCH;
-		config.width = GameApp.WINDOW_WIDTH;
-		config.height = GameApp.WINDOW_HEIGHT;
-		config.fullscreen = false;
-		config.resizable = false;
-		new LwjglApplication(new GameApp(), config);
+		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+		config.setTitle("Mon " + GameApp.VER_MAJOR + "." + GameApp.VER_MINOR + "." + GameApp.VER_PATCH);
+		config.setWindowedMode(GameApp.WINDOW_WIDTH, GameApp.WINDOW_HEIGHT);
+		config.setResizable(false);
+		new Lwjgl3Application(new GameApp(), config);
 	}
 }
