@@ -1,11 +1,43 @@
 package com.taj.mon;
 
+import java.util.List;
+
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class PlayerImage extends Image {
+    
+    private class VirtualImage extends Image {
+
+        private static final float EXIST_DURATION = 0.45f;
+        private float timeSinceSpawn;
+
+        private VirtualImage(PlayerImage image) {
+            super(image.getDrawable());
+            this.setSize(WIDTH, HEIGHT);
+            this.setPosition(image.getX(), image.getY());
+            this.addAction(Actions.fadeOut(EXIST_DURATION));
+        }
+
+        @Override
+        public void draw(Batch batch, float parentAlpha) {
+            this.toFront();
+            super.draw(batch, parentAlpha);
+        }
+
+        @Override
+        public void act(float delta) {
+            super.act(delta);
+            this.timeSinceSpawn += delta;
+            if (this.timeSinceSpawn > EXIST_DURATION) {
+                this.remove();
+            }
+        }
+
+    }
 
     public static final int WIDTH = 10; 
     public static final int HEIGHT = 10; 
@@ -16,8 +48,9 @@ public class PlayerImage extends Image {
      * The {@link BlockImage} cantaining the player.
      */
     private BlockImage parentBlock;
+    private List<BlockImage> route;
     private GameScreen screen;
-    private float deltaX, deltaY;
+    private float delta;
 
     private InputListener listener = new InputListener() {
         @Override
@@ -60,10 +93,20 @@ public class PlayerImage extends Image {
 
     @Override
     public void act(float delta) {
-        this.setX(this.getX() + deltaX * 0.1f);
-        this.setY(this.getY() + deltaY * 0.1f);
-        deltaX *= 0.9;
-        deltaY *= 0.9;
+        super.act(delta);
+        this.delta += delta;
+        if (route != null && !route.isEmpty() && this.delta > 0.08f) {
+            this.setBlockParent(route.remove(0));
+            this.delta = 0;
+        }
+    }
+
+    public void addRoute(List<BlockImage> route) {
+        this.route = route;
+    }
+
+    public boolean emptyRoute() {
+        return route == null || route.isEmpty();
     }
 
     public void setBlockParent(BlockImage newParent) {
@@ -83,7 +126,11 @@ public class PlayerImage extends Image {
             this.setY(y);
             return;
         }
-        deltaX = x - this.getX();
-        deltaY = y - this.getY();
+        screen.addActorToStage(new VirtualImage(this));
+        this.setPosition(x, y);
+    }
+
+    public BlockImage getParentBlock() {
+        return parentBlock;
     }
 }

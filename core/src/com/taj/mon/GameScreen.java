@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import com.badlogic.gdx.Gdx;
@@ -14,6 +16,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -26,10 +29,23 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.taj.mon.dialog.*;
-import com.taj.mon.dialog.AlertActionDialog.AlertAction;
 import com.taj.mon.BlockImage.State;
-import com.taj.mon.block.*;
+import com.taj.mon.block.Bank;
+import com.taj.mon.block.Block;
+import com.taj.mon.block.Metro;
+import com.taj.mon.block.Property;
+import com.taj.mon.dialog.AlertActionDialog;
+import com.taj.mon.dialog.AlertActionDialog.AlertAction;
+import com.taj.mon.dialog.AlertDialog;
+import com.taj.mon.dialog.BankDialog;
+import com.taj.mon.dialog.BankImage;
+import com.taj.mon.dialog.BlindAuctionDialog;
+import com.taj.mon.dialog.HospitalDialog;
+import com.taj.mon.dialog.JailDialog;
+import com.taj.mon.dialog.MetroDialog;
+import com.taj.mon.dialog.PropertyPurchaseDialog;
+import com.taj.mon.dialog.PropertyViewDialog;
+import com.taj.mon.dialog.TradeDialog;
 
 /**
  * The GUI representation of a game.
@@ -72,6 +88,11 @@ public class GameScreen extends ScreenAdapter {
     private GameInstance instance;
     private Stage mainStage;
     private ArrayList<BlockImage> blockImages;
+    /**
+     * A convenience variable holding (some duplicate) block images to match the map
+     * route.
+     */
+    private ArrayList<BlockImage> virtualBlockImages;
     private ArrayList<PlayerImage> playerImages;
 
     private Stage uiStage;
@@ -103,6 +124,7 @@ public class GameScreen extends ScreenAdapter {
         this.instance = new GameInstance(this, arr);
         this.currentPlayer = instance.getCurrentPlayer();
         blockImages = new ArrayList<>();
+        virtualBlockImages = new ArrayList<>();
         playerImages = new ArrayList<>();
         selectedImages = new ArrayList<>();
 
@@ -270,8 +292,8 @@ public class GameScreen extends ScreenAdapter {
             if (p.player.isBankrupt) {
                 p.remove();
                 iter.remove();
-            } else
-                p.setBlockParent(blockImages.get(instance.convertPos(p.player.getPosition())));
+            } else if (p.emptyRoute() && p.getParentBlock() != virtualBlockImages.get(p.player.getPosition()))
+                p.addRoute(createRoute(p.player.getLastPosition(), p.player.getPosition(), p.player.isBackwards()));
         }
 
         mainStage.getViewport().apply();
@@ -296,6 +318,26 @@ public class GameScreen extends ScreenAdapter {
                 dialogs.peek().show(uiStage);
             }
         }
+    }
+
+    // TODO Advance to Go and Going Back 2 Spaces
+    private List<BlockImage> createRoute(int ori, int dst, boolean backwards) {
+        // ori should NOT equal dst
+        ArrayList<BlockImage> temp = new ArrayList<>();
+        if (backwards) {
+            int t = ori;
+            ori = dst;
+            dst = t;
+        }
+        if (ori < dst) {
+            temp.addAll(virtualBlockImages.subList(ori, dst + 1));
+        }
+        else {
+            temp.addAll(virtualBlockImages.subList(ori, virtualBlockImages.size()));
+            temp.addAll(virtualBlockImages.subList(0, dst + 1));
+        }
+        if (backwards) Collections.reverse(temp);
+        return temp;
     }
 
     public void nextMove() {
@@ -376,6 +418,9 @@ public class GameScreen extends ScreenAdapter {
             else
                 blockImages.add(new BlockImage(instance.blocks.get(count), this, x, y, rotate));
             count++;
+        }
+        for (int i = 0; i < GameInstance.MAP_SIZE; i++) {
+            virtualBlockImages.add(blockImages.get(instance.convertPos(i)));
         }
 
     }
