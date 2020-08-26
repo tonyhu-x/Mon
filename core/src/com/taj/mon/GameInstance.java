@@ -63,8 +63,8 @@ public class GameInstance {
                 hospital = (Hospital) b;
         }
         
-        for (int i = 0; i < 4; i++) {
-            addPlayer(names[i]);
+        for (var name : names) {
+            addPlayer(name);
         }
 
         this.dice.add(new Dice());
@@ -217,7 +217,7 @@ public class GameInstance {
             p1.payTo(p2, amt);
         }
         else {
-            p2.payTo(p1, amt);
+            p2.payTo(p1, -amt);
         }
         pro1.forEach(p -> p1.transferProperty(p, p2));
         pro2.forEach(p -> p2.transferProperty(p, p1));
