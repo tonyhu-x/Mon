@@ -405,6 +405,10 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
+    public void addActorToStage(Actor actor) {
+        mainStage.addActor(actor);
+    }
+
     public void exitTrading() {
         for (var b : blockImages) {
             b.stateChanged(State.NORMAL);
