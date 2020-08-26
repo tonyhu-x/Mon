@@ -23,7 +23,7 @@ allprojects {
     apply plugin: "eclipse"
     apply plugin: "de.fuerstenau.buildconfig"
 
-    version = '1.0.3'
+    version = '1.0.5'
     ext {
         appName = "Mon"
         gdxVersion = '1.9.10'
