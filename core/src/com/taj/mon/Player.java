@@ -33,6 +33,8 @@ public class Player {
      * the map. The starting position is 0.
      */
     private int position;
+    private int lastPosition;
+    private boolean backwards;
 
     /**
      * The number of rounds the player has completed, equivalent to the number of
@@ -76,6 +78,8 @@ public class Player {
     }
 
     public void forward(int steps) {
+        lastPosition = position;
+        backwards = false;
         // the player has passed Go
         if (position + steps >= GameInstance.MAP_SIZE) {
             roundCount++;
@@ -97,6 +101,8 @@ public class Player {
     }
 
     public void backward(int steps) {
+        lastPosition = position;
+        backwards = true;
         position = position - steps;
         if (position < 0) {
             position += GameInstance.MAP_SIZE;
@@ -106,8 +112,9 @@ public class Player {
 
     // directly teleports player, does not pass Go or bank
     public void to(int pos) {
+        lastPosition = position;
+        backwards = false;
         position = pos;
-        System.out.println(pos);
         setGroup();
     }
 
@@ -204,6 +211,14 @@ public class Player {
         return position;
     }
 
+    public int getLastPosition() {
+        return lastPosition;
+    }
+
+    public boolean isBackwards() {
+        return backwards;
+    }
+    
     public boolean upgradeable(Property property) {
         return
             this.group == property.getGroup()
