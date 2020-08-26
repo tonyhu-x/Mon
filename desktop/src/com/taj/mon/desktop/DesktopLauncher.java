@@ -6,11 +6,13 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.taj.mon.GameApp;
 
+import Mon.BuildConfig;
+
 public class DesktopLauncher {
 
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		config.setTitle("Mon " + GameApp.VER_MAJOR + "." + GameApp.VER_MINOR + "." + GameApp.VER_PATCH);
+		config.setTitle("Mon " + BuildConfig.VERSION);
 
 		Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 

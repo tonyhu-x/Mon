@@ -5,9 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameApp extends Game {
 
-	public static final int VER_MAJOR = 1;
-	public static final int VER_MINOR = 0;
-	public static final int VER_PATCH = 3;
 	public static final int WIN_WIDTH_HIGH = 1920;
 	public static final int WIN_HEIGHT_HIGH = 1080;
 	public static final int WIN_WIDTH_LOW = 1280;
