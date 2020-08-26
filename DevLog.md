@@ -1,9 +1,10 @@
 # Version History
-## Version 1.0.3
+## Version 1.0.5
 * Fixed a bug that causes a player to pay money when he/she should receive the amount instead.
 * Fixed the behaviour of transaction alerts so they don't appear when there aren't any transactions.
 * Added a low resolution setting and a settings dialog.
 * The game now by default starts on low res settings on screens with lower resolutions. 
+* Added support for two- and three-player games.
 * Improved players' movement animation.
 
 ## Version 1.0.2
