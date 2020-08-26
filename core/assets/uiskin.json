@@ -28,7 +28,7 @@
         "default": {
             "parent": "default",
             "font": "default-font",
-            "fontColor": "white",
+            "fontColor": "white"
         }
     },
     "LabelStyle": {
@@ -52,7 +52,7 @@
             "titleFontColor": "white"
         },
         "dialog": {
-            "parent": "default",
+            "parent": "default"
         }
     }
 }
