@@ -10,6 +10,7 @@ public class TextureInventory {
 
     private static final TextureAtlas TEXTURE = new TextureAtlas(Gdx.files.internal("blocks.atlas"));
     private static final TextureAtlas TOKENS = new TextureAtlas(Gdx.files.internal("tokens.atlas"));
+    private static final TextureAtlas DICE = new TextureAtlas(Gdx.files.internal("dice.atlas"));
 
     private static HashMap<String, TextureRegion> regions = new HashMap<>();
 
@@ -33,5 +34,9 @@ public class TextureInventory {
             regions.put(name, temp);
             return temp;
         }
+    }
+
+    public static TextureAtlas getDiceAtlas() {
+        return DICE;
     }
 }
