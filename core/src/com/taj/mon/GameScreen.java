@@ -77,9 +77,13 @@ public class GameScreen extends ScreenAdapter {
                 this.setColor(1, 1, 1, 1);
             }
         }
+
+        private static void setCurPlayer(Player player) {
+            curPlayer = player;
+        }
     }
 
-    // these values preserve the aspect ratio of the map`
+    // these values preserve the aspect ratio of the map
     private static final float WORLD_WIDTH = 270;
     private static final float WORLD_HEIGHT = 390;
 
@@ -300,7 +304,8 @@ public class GameScreen extends ScreenAdapter {
         mainStage.act(delta);
         mainStage.draw();
 
-        InfoLabel.curPlayer = currentPlayer;
+        InfoLabel.setCurPlayer(currentPlayer);
+
         // near bankrupt, allow selling
         if (currentPlayer.cashAmt < 0) {
             sellButton.setVisible(true);
