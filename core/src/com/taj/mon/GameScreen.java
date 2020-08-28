@@ -126,7 +126,6 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(GameApp game, String[] arr) {
         this.game = game;
         this.instance = new GameInstance(this, arr);
-        this.currentPlayer = instance.getCurrentPlayer();
         blockImages = new ArrayList<>();
         virtualBlockImages = new ArrayList<>();
         playerImages = new ArrayList<>();
@@ -277,6 +276,7 @@ public class GameScreen extends ScreenAdapter {
 
         var input = new InputMultiplexer(uiStage, mainStage);
         Gdx.input.setInputProcessor(input);
+        
     }
 
     @Override
@@ -307,7 +307,10 @@ public class GameScreen extends ScreenAdapter {
         InfoLabel.setCurPlayer(currentPlayer);
 
         // near bankrupt, allow selling
-        if (currentPlayer.cashAmt < 0) {
+        if (currentPlayer == null) {
+            // I'm lazy
+        }
+        else if (currentPlayer.cashAmt < 0) {
             sellButton.setVisible(true);
         } else if (!isSelling) {
             sellButton.setVisible(false);
@@ -349,7 +352,7 @@ public class GameScreen extends ScreenAdapter {
         // disable the button and shortcut when trading or selling
         if (isTrading || isSelling)
             return;
-        if (currentPlayer.cashAmt < 0) {
+        if (currentPlayer != null && currentPlayer.cashAmt < 0) {
             return;
         }
         nextButton.setText("Next Player\n(Space)");

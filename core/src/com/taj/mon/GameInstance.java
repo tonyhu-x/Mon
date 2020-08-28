@@ -75,7 +75,7 @@ public class GameInstance {
                 turn = p.number;
             }
         }
-
+        turn = turn == 0 ? players.size() - 1 : turn - 1;
     }
     
     public void addPlayer(String name) {
