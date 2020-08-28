@@ -15,28 +15,37 @@ public class TextureInventory {
     private static HashMap<String, TextureRegion> regions = new HashMap<>();
 
     public static TextureRegion getRegion(String name) {
-        if (regions.containsKey(name)) {
-            return regions.get(name);
-        }
-        else {
-            var temp = TEXTURE.findRegion(name);
-            regions.put(name, temp);
-            return temp;
-        }
+        return get(TEXTURE, name);
     }
 
     public static TextureRegion getToken(String name) {
-        if (regions.containsKey(name)) {
-            return regions.get(name);
-        }
-        else {
-            var temp = TOKENS.findRegion(name);
-            regions.put(name, temp);
-            return temp;
-        }
+        return get(TOKENS, name);
     }
 
     public static TextureAtlas getDiceAtlas() {
         return DICE;
+    }
+
+    /**
+     * Retrieves a dice texture based on the parameters.
+     * 
+     * @param whichColor  0-6
+     * @param whichNumber 1-6
+     * @return the corresponding image
+     */
+    public static TextureRegion getDiceRegion(int whichColor, int whichNumber) {
+        String name = Integer.toString(whichColor) + Integer.toString(whichNumber);
+        return get(DICE, name);
+    }
+
+    private static TextureRegion get(TextureAtlas atlas, String name) {
+        if (regions.containsKey(name)) {
+            return regions.get(name);
+        }
+        else {
+            var temp = atlas.findRegion(name);
+            regions.put(name, temp);
+            return temp;
+        }
     }
 }
