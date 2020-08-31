@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.function.Consumer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -109,6 +110,9 @@ public class GameScreen extends ScreenAdapter {
     private TextButton nextButton;
     private TextButton tradeButton;
     private TextButton sellButton;
+    private DiceVisual[] dice;
+    private ArrayList<Integer> diceRolls;
+    private Consumer<List<Integer>> diceRollListener;
     private Table table;
     private OrthographicCamera camera;
     private float deltaZoom;
@@ -130,6 +134,8 @@ public class GameScreen extends ScreenAdapter {
         virtualBlockImages = new ArrayList<>();
         playerImages = new ArrayList<>();
         selectedImages = new ArrayList<>();
+        dice = new DiceVisual[2];
+        diceRolls = new ArrayList<>();
 
         try {
             createImages();
@@ -255,6 +261,12 @@ public class GameScreen extends ScreenAdapter {
             }
         });
 
+        for (int i = 0; i < dice.length; i++) {
+            dice[i] = new DiceVisual(this);
+            dice[i].setPosition(50f + i * 80, 700f);
+            uiStage.addActor(dice[i]);
+        }
+
         uiStage.addActor(nextButton);
         uiStage.addActor(tradeButton);
         uiStage.addActor(sellButton);
@@ -356,8 +368,26 @@ public class GameScreen extends ScreenAdapter {
             return;
         }
         nextButton.setText("Next Player\n(Space)");
-        instance.nextPlayer();
+        for (var d : dice) {
+            d.show();
+        }
         currentPlayer = instance.getCurrentPlayer();
+    }
+
+    public void receiveDiceRoll(int roll) {
+        diceRolls.add(roll);
+        if (diceRolls.size() == dice.length) {
+            diceRollListener.accept(diceRolls);
+            diceRolls.clear();
+        }
+    }
+
+    public void requestDiceRoll(Consumer<List<Integer>> diceRollListener) {
+        this.diceRollListener = diceRollListener;
+        for (var d : dice) {
+            d.show();
+            d.getDiceRoll();
+        }
     }
 
     @SuppressWarnings("unchecked")
