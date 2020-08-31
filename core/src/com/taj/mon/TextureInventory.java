@@ -34,7 +34,7 @@ public class TextureInventory {
      * @return the corresponding image
      */
     public static TextureRegion getDiceRegion(int whichColor, int whichNumber) {
-        String name = Integer.toString(whichColor) + Integer.toString(whichNumber);
+        String name = "d" + Integer.toString(whichColor) + Integer.toString(whichNumber);
         return get(DICE, name);
     }
 
