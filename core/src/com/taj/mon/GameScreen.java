@@ -206,7 +206,7 @@ public class GameScreen extends ScreenAdapter {
         tradeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (isSelling)
+                if (isSelling || dice[0].isInAction())
                     return;
                 if (isTrading) {
                     if (selectedImages.isEmpty()) {
@@ -289,6 +289,7 @@ public class GameScreen extends ScreenAdapter {
         var input = new InputMultiplexer(uiStage, mainStage);
         Gdx.input.setInputProcessor(input);
         
+        instance.onShow();
     }
 
     @Override
@@ -361,7 +362,8 @@ public class GameScreen extends ScreenAdapter {
 
     public void nextMove() {
         // disable the button and shortcut when trading or selling
-        if (isTrading || isSelling)
+        // also disable it when the dice animation is running
+        if (isTrading || isSelling || dice[0].isVisible())
             return;
         if (currentPlayer != null && currentPlayer.cashAmt < 0) {
             return;
@@ -370,6 +372,7 @@ public class GameScreen extends ScreenAdapter {
         for (var d : dice) {
             d.show();
         }
+        instance.nextPlayer();
         currentPlayer = instance.getCurrentPlayer();
     }
 
@@ -381,11 +384,12 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
-    public void requestDiceRoll(Consumer<List<Integer>> diceRollListener) {
+    public void requestDiceRoll(Consumer<List<Integer>> diceRollListener, boolean waitForClick) {
         this.diceRollListener = diceRollListener;
         for (var d : dice) {
             d.show();
-            d.getDiceRoll();
+            if (!waitForClick)
+                d.getDiceRoll();
         }
     }
 
@@ -536,6 +540,10 @@ public class GameScreen extends ScreenAdapter {
      */
     public Player getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    public DiceVisual[] getDice() {
+        return dice;
     }
     
     @Override

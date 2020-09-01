@@ -2,6 +2,8 @@ package com.taj.mon;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 
 import com.taj.mon.block.Bank;
 import com.taj.mon.block.Block;
@@ -32,7 +34,6 @@ public class GameInstance {
      * The list of players. Currently the game supports 4 players.
      */
     public ArrayList<Player> players = new ArrayList<>();
-    ArrayList<Dice> dice = new ArrayList<>();
     ArrayList<Block> blocks;
     private int lastDiceRoll = -1;
 
@@ -67,15 +68,30 @@ public class GameInstance {
             addPlayer(name);
         }
 
-        this.dice.add(new Dice());
-        this.dice.add(new Dice());
-        // determine the first player
-        for (Player p : players) {
-            if ((p.lastDiceRoll = getDiceRoll()) > players.get(turn).lastDiceRoll) {
-                turn = p.number;
+    }
+
+    /**
+     * Called at the end of {@link GameScreen#show()}.
+     */
+    public void onShow() {
+        screen.requestDiceRoll(new Consumer<List<Integer>>() {
+            private int which = 0;
+
+            @Override
+            public void accept(List<Integer> list) {
+                if ((players.get(which).lastDiceRoll = diceRollSum(list)) > players.get(turn).lastDiceRoll) {
+                    turn = which;
+                }
+                if (which != players.size() - 1) {
+                    which++;
+                    screen.requestDiceRoll(this, false);
+                }
+                else {
+                    screen.createDialog("ShowAlert", players.get(turn).name + " will go first.");
+                    turn = turn == 0 ? players.size() - 1 : turn - 1;
+                }
             }
-        }
-        turn = turn == 0 ? players.size() - 1 : turn - 1;
+        }, false);
     }
     
     public void addPlayer(String name) {
@@ -93,8 +109,7 @@ public class GameInstance {
     private void nextPlayer(boolean next, boolean newDiceRoll) {
         Player p;
         if (next) {
-            p = players.get(turn);
-            p.turnEnd();
+            players.get(turn).turnEnd();
             turn = (turn + 1) % players.size();
             p = players.get(turn);
             p.turnStart();
@@ -102,8 +117,19 @@ public class GameInstance {
         else {
             p = players.get(turn);
         }
-        p.move(newDiceRoll ? getDiceRoll() : lastDiceRoll);
-        queryBlock(p);
+        if (p.immobilized > 0) {
+            queryBlock(p);
+        }
+        if (newDiceRoll) {
+            screen.requestDiceRoll(d -> {
+                p.move(diceRollSum(d));
+                queryBlock(p);
+            }, true);
+        }
+        else {
+            p.move(lastDiceRoll);
+            queryBlock(p);
+        }
     }
     
     /**
@@ -182,33 +208,38 @@ public class GameInstance {
     }
 
     public void tryToReleaseFromJail(Player player) {
-        getDiceRoll();
-        if (isDouble) {
-            jail.release(player);
-            nextPlayer(false, false);
-        }
-        else if (player.immobilized == 1) {
-            screen.createDialog("ShowAlert", "Oops! No double this time. You have to pay now.");
-            payAndRelease(player);
-        }
-        else {
-            screen.createDialog("ShowAlert", "Oops! No double this time.");
-        }
+        screen.requestDiceRoll(d -> {
+            // is double or not
+            if (d.get(0).equals(d.get(1))) {
+                jail.release(player);
+                // set lastDiceRoll
+                diceRollSum(d);
+                nextPlayer(false, false);
+            }
+            else if (player.immobilized == 1) {
+                screen.createDialog("ShowAlert", "Oops! No double this time. You have to pay now.");
+                payAndRelease(player);
+            }
+            else {
+                screen.createDialog("ShowAlert", "Oops! No double this time.");
+            }
+        }, false);
     }
-    
+
     public void tryToReleaseFromHospital(Player player) {
-        int roll = getDiceRoll();
-        if (roll <= 5) {
-            hospital.release(player);
-            nextPlayer(false, false);
-        }
-        else if (player.immobilized == 1) {
-            screen.createDialog("ShowAlert", "Oops! Not enough luck this time. You have to pay now.");
-            payAndCure(player);
-        }
-        else {
-            screen.createDialog("ShowAlert", "Oops! Not enough luck this time.");
-        }
+        screen.requestDiceRoll(d -> {
+            if (diceRollSum(d) <= 5) {
+                hospital.release(player);
+                nextPlayer(false, false);
+            }
+            else if (player.immobilized == 1) {
+                screen.createDialog("ShowAlert", "Oops! Not enough luck this time. You have to pay now.");
+                payAndCure(player);
+            }
+            else {
+                screen.createDialog("ShowAlert", "Oops! Not enough luck this time.");
+            }
+        }, false);
     }
 
     // it is assumed that the parameters are correct
@@ -352,14 +383,9 @@ public class GameInstance {
         return pos;
     }
 
-    private int getDiceRoll() {
-        int roll1, roll2;
-        roll1 = dice.get(0).next();
-        roll2 = dice.get(1).next();
-        isDouble = roll1 == roll2;
-        lastDiceRoll = roll1 + roll2;
-        System.out.println("The dice roll is " + roll1 + " and " + roll2);
-        return roll1 + roll2;
+    private int diceRollSum(List<Integer> rolls) {
+        lastDiceRoll = rolls.stream().mapToInt(Integer::intValue).sum();
+        return lastDiceRoll;
     }
 
     /**

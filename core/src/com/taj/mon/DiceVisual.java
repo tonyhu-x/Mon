@@ -31,7 +31,9 @@ public class DiceVisual extends Image {
         this.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                getDiceRoll();
+                for (var d : screen.getDice()) {
+                    d.getDiceRoll();
+                }
                 return true;
             }
         });
@@ -80,5 +82,9 @@ public class DiceVisual extends Image {
                 this.setDrawable(new TextureRegionDrawable(TextureInventory.getDiceRegion(whichDice, internalDice.next())));
             }
         }
+    }
+
+    public boolean isInAction() {
+        return inAction;
     }
 }

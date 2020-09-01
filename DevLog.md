@@ -1,6 +1,7 @@
 # Version History
 ## Version 1.0.6
 * Fixed an issue that causes the player with the highest dice roll to be the player that moves last.
+* Added dice roll visuals.
 
 ## Version 1.0.5
 * Fixed a bug that causes a player to pay money when he/she should receive the amount instead.
