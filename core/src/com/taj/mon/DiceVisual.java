@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class DiceVisual extends Image {
     
-    private static final float ANIM_DURATION = 2.0f;
+    private static final float ANIM_DURATION = 1.2f;
     private static final float ANIM_SUSPEND = 1.0f;
     private static final float ANIM_REFRESH_FREQ = 0.2f;
     private static final float REFRESH_FREQ = 0.6f;
