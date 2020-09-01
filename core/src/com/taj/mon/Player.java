@@ -60,14 +60,24 @@ public class Player {
         this.cashAmt = cashAmt;
     }
 
-    public void move(int steps) {
-        lastDiceRoll = steps;
+    /**
+     * Called at the beginning of each of the player's turns.
+     */
+    public void turnStart() {
+        Bank.refresh(this);
+    }
+
+    /**
+     * Called at the end of each of the player's turns.
+     */
+    public void turnEnd() {
         if (immobilized > 0) {
             immobilized--;
         }
-        if (immobilized > 0) {
-            return;
-        }
+    }
+
+    public void move(int steps) {
+        lastDiceRoll = steps;
         forward(steps);
         System.out.println("The current position is " + position);
     }

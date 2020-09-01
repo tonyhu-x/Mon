@@ -93,9 +93,11 @@ public class GameInstance {
     private void nextPlayer(boolean next, boolean newDiceRoll) {
         Player p;
         if (next) {
+            p = players.get(turn);
+            p.turnEnd();
             turn = (turn + 1) % players.size();
             p = players.get(turn);
-            Bank.refresh(p);            
+            p.turnStart();
         }
         else {
             p = players.get(turn);
