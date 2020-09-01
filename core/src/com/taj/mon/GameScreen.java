@@ -340,7 +340,6 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
-    // TODO Advance to Go and Going Back 2 Spaces
     private List<BlockImage> createRoute(int ori, int dst, boolean backwards) {
         // ori should NOT equal dst
         ArrayList<BlockImage> temp = new ArrayList<>();
