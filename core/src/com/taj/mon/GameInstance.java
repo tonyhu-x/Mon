@@ -74,24 +74,26 @@ public class GameInstance {
      * Called at the end of {@link GameScreen#show()}.
      */
     public void onShow() {
-        screen.requestDiceRoll(new Consumer<List<Integer>>() {
-            private int which = 0;
+        screen.createDialog("AlertAction", "Who's going first?", (AlertAction) () ->
+            screen.requestDiceRoll(new Consumer<List<Integer>>() {
+                private int which = 0;
 
-            @Override
-            public void accept(List<Integer> list) {
-                if ((players.get(which).lastDiceRoll = diceRollSum(list)) > players.get(turn).lastDiceRoll) {
-                    turn = which;
+                @Override
+                public void accept(List<Integer> list) {
+                    if ((players.get(which).lastDiceRoll = diceRollSum(list)) > players.get(turn).lastDiceRoll) {
+                        turn = which;
+                    }
+                    if (which != players.size() - 1) {
+                        which++;
+                        screen.requestDiceRoll(this, false);
+                    }
+                    else {
+                        screen.createDialog("ShowAlert", players.get(turn).name + " will go first.");
+                        turn = turn == 0 ? players.size() - 1 : turn - 1;
+                    }
                 }
-                if (which != players.size() - 1) {
-                    which++;
-                    screen.requestDiceRoll(this, false);
-                }
-                else {
-                    screen.createDialog("ShowAlert", players.get(turn).name + " will go first.");
-                    turn = turn == 0 ? players.size() - 1 : turn - 1;
-                }
-            }
-        }, false);
+            }, false)
+        );
     }
     
     public void addPlayer(String name) {
