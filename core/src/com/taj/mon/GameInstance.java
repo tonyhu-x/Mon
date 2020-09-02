@@ -31,7 +31,7 @@ public class GameInstance {
     GameScreen screen;
 
     /**
-     * The list of players. Currently the game supports 4 players.
+     * The list of players.
      */
     public ArrayList<Player> players = new ArrayList<>();
     ArrayList<Block> blocks;
