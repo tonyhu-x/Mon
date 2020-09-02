@@ -13,6 +13,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setTitle("Mon " + BuildConfig.VERSION);
+		config.setWindowIcon("icon.png");
 
 		Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 
